@@ -1,0 +1,1 @@
+"""Python protocol implementation placeholder."""

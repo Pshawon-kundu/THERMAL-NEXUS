@@ -1,0 +1,19 @@
+project:
+  name: thermal-nexus
+  random_seed: 20260718
+  default_sample_interval_seconds: 60
+  default_experiment_duration_seconds: 7200
+  lower_temperature_limit_c: 2.0
+  upper_temperature_limit_c: 8.0
+  prediction_horizons_minutes:
+    - 5
+    - 10
+    - 15
+  output_directories:
+    raw_data: ml/data/raw
+    synthetic_data: ml/data/synthetic
+    processed_data: ml/data/processed
+    splits: ml/data/splits
+    evidence: evidence
+    releases: releases
+
