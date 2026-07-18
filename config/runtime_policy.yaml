@@ -1,0 +1,50 @@
+disclaimer: Preliminary software-simulation policy values, not final hardware settings.
+
+states:
+  STABLE:
+    sampling_interval_seconds: 60
+    transmission_interval_seconds: 300
+    immediate_transmission: false
+  TRANSITION:
+    sampling_interval_seconds: 15
+    transmission_interval_seconds: 60
+    immediate_transmission: false
+  EXCURSION_RISK:
+    sampling_interval_seconds: 5
+    transmission_interval_seconds: 5
+    immediate_transmission: true
+  SENSOR_FAULT:
+    sampling_interval_seconds: 10
+    transmission_interval_seconds: 10
+    immediate_transmission: true
+  MODEL_FAULT:
+    sampling_interval_seconds: 30
+    transmission_interval_seconds: 60
+    immediate_transmission: true
+  LOW_BATTERY:
+    sampling_interval_seconds: 120
+    transmission_interval_seconds: 600
+    immediate_transmission: false
+
+minimum_state_duration_seconds: 60
+hysteresis_probability: 0.10
+state_entry_thresholds:
+  TRANSITION: 0.45
+  EXCURSION_RISK: 0.55
+state_exit_thresholds:
+  TRANSITION: 0.30
+  EXCURSION_RISK: 0.40
+maximum_safe_sampling_interval_seconds: 300
+maximum_safe_transmission_interval_seconds: 900
+sensor_fault_fallback_interval_seconds: 10
+model_failure_fallback_mode: MODE_B_RULE_BASED
+low_battery_threshold_percent: 20
+low_battery_behavior:
+  sampling_interval_seconds: 120
+  transmission_interval_seconds: 600
+immediate_physical_threshold_override: true
+battery:
+  initial_percent: 100.0
+  sensing_cost_percent: 0.002
+  inference_cost_percent: 0.001
+  transmission_cost_percent: 0.01

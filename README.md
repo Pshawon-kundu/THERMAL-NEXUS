@@ -134,3 +134,27 @@ python -m ml.evaluation.evaluate_final_model --model ml/models/selected --test m
 ```
 
 The trained model is provisional and based on synthetic software data. It is not an embedded artifact and is not a hardware result.
+
+## End-to-End Software Simulation
+
+Run the three operating modes against one generated synthetic run:
+
+```powershell
+.\tools\run_end_to_end_demo.ps1
+```
+
+Equivalent direct command:
+
+```powershell
+python -m simulator.run_end_to_end `
+  --scenario gradual_warming `
+  --runs 1 `
+  --modes fixed rule_based ml `
+  --radio-config config/radio_simulation.yaml `
+  --policy-config config/runtime_policy.yaml `
+  --output evidence/end_to_end
+```
+
+Outputs are written under `evidence/end_to_end/`. Energy values are labeled
+`ESTIMATED SOFTWARE VALUE`; they are not measured hardware energy, range, or
+accuracy claims.

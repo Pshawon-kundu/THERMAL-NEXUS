@@ -1,0 +1,20 @@
+{
+  "description": "Golden protocol v1 telemetry packet for software simulation tests.",
+  "packet": {
+    "protocol_version": 1,
+    "message_type": 1,
+    "node_id": 7,
+    "sequence_number": 42,
+    "timestamp_seconds": 120.0,
+    "measured_temperature_c": 5.25,
+    "predicted_state_code": 2,
+    "risk_probability": 0.87,
+    "sampling_interval_seconds": 5,
+    "transmission_interval_seconds": 5,
+    "battery_percent": 99.4,
+    "sensor_valid": true,
+    "fault_flags": 0,
+    "model_version_id": 1234
+  },
+  "hex": "010100070000002a405e000000000000020d02570005000503e2010004d2350c"
+}

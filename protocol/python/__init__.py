@@ -1,1 +1,1 @@
-"""Python protocol implementation placeholder."""
+"""Python packet protocol implementation."""

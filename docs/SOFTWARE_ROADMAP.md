@@ -36,6 +36,10 @@
 - Implement packet encoding and decoding
 - Simulate wireless channel behavior
 - Implement virtual reader ingestion
+- Load selected model at runtime without retraining
+- Run fixed, rule-based, and learned-model simulation modes
+- Generate end-to-end software-simulation mode comparisons
+- Clearly label estimated energy as software-estimated only
 
 ## Phase 6: Dashboard and KPI Analysis
 
