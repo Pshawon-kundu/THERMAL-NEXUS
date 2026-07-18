@@ -1,7 +1,7 @@
 {
   "status": "pass",
   "issues": [],
-  "total_rows": 9379,
+  "total_rows": 8681,
   "total_runs": 83,
   "runs_by_scenario": {
     "gradual_warming": 11,
@@ -19,57 +19,36 @@
     "temporary_sensor_fault": 6
   },
   "rows_by_thermal_state": {
-    "STABLE": 4641,
-    "EXCURSION_RISK": 3644,
-    "TRANSITION": 1094
+    "STABLE": 4045,
+    "EXCURSION_RISK": 3560,
+    "TRANSITION": 1076
   },
   "invalid_and_unavailable_rows": {
-    "feature_invalid": 601,
+    "feature_invalid": 0,
     "unavailable_targets": 0
   },
   "missing_value_counts": {
-    "current_temperature": 270,
-    "previous_temperature": 83,
-    "temperature_difference": 353,
-    "temperature_slope": 353,
-    "temperature_acceleration": 533,
-    "distance_from_upper_limit": 270,
-    "distance_from_lower_limit": 270,
-    "distance_from_nearest_limit": 270,
-    "time_since_previous_valid_sample": 83,
-    "rolling_mean_5": 118,
-    "rolling_standard_deviation_5": 118,
-    "rolling_minimum_5": 118,
-    "rolling_maximum_5": 118,
-    "rolling_range_5": 118,
-    "valid_ratio_5": 118,
-    "temperature_slope_ls_5": 230,
-    "rolling_mean_10": 58,
-    "rolling_standard_deviation_10": 58,
-    "rolling_minimum_10": 58,
-    "rolling_maximum_10": 58,
-    "rolling_range_10": 58,
-    "valid_ratio_10": 58,
-    "temperature_slope_ls_10": 170,
-    "temperature_slope_ls_20": 84,
-    "feature_invalid_reason": 8778
+    "feature_invalid_reason": 8681
   },
   "feature_validity_counts": {
-    "True": 8778,
-    "False": 601
+    "True": 8681
   },
   "duplicate_rows": 0,
   "duplicate_timestamps_within_run": 0,
   "constant_or_near_constant_features": [
+    "time_since_previous_valid_sample",
     "valid_ratio_5",
+    "maximum_gap_seconds_5",
     "valid_ratio_10",
-    "valid_ratio_20"
+    "maximum_gap_seconds_10",
+    "valid_ratio_20",
+    "maximum_gap_seconds_20"
   ],
   "highly_correlated_features": [
     {
       "feature_a": "current_temperature",
       "feature_b": "previous_temperature",
-      "correlation": 0.9986607139446079
+      "correlation": 0.9986370393650181
     },
     {
       "feature_a": "current_temperature",
@@ -79,87 +58,82 @@
     {
       "feature_a": "current_temperature",
       "feature_b": "distance_from_lower_limit",
-      "correlation": 1.0
+      "correlation": 0.9999999999999998
     },
     {
       "feature_a": "current_temperature",
       "feature_b": "rolling_mean_5",
-      "correlation": 0.9972245434298297
+      "correlation": 0.9971067839656321
     },
     {
       "feature_a": "current_temperature",
       "feature_b": "rolling_minimum_5",
-      "correlation": 0.9925880986128689
+      "correlation": 0.9922828747022407
     },
     {
       "feature_a": "current_temperature",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9982080940177341
+      "correlation": 0.9981516907448861
     },
     {
       "feature_a": "current_temperature",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9912361659003406
-    },
-    {
-      "feature_a": "current_temperature",
-      "feature_b": "rolling_minimum_10",
-      "correlation": 0.980169618991239
+      "correlation": 0.9907979903554676
     },
     {
       "feature_a": "current_temperature",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.991982120707907
+      "correlation": 0.991626468897873
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "distance_from_upper_limit",
-      "correlation": 0.9986607139446081
+      "correlation": 0.9986370393650181
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "distance_from_lower_limit",
-      "correlation": 0.9986607139446075
+      "correlation": 0.9986370393650179
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_mean_5",
-      "correlation": 0.9990033004755098
+      "correlation": 0.9989595959872126
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_minimum_5",
-      "correlation": 0.9951148816945558
+      "correlation": 0.9949158952415932
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9982029796518348
+      "correlation": 0.998142819225543
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9941417323512851
+      "correlation": 0.993828741240875
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_minimum_10",
-      "correlation": 0.9829261018753676
+      "correlation": 0.9821667858240691
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9931059138867075
+      "correlation": 0.9927992010551259
     },
     {
       "feature_a": "previous_temperature",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.9814356031240876
+      "correlation": 0.9803699534141225
     },
     {
       "feature_a": "temperature_difference",
       "feature_b": "temperature_slope",
-      "correlation": 0.9999210761668602
+      "correlation": 1.0
     },
     {
       "feature_a": "distance_from_upper_limit",
@@ -169,142 +143,127 @@
     {
       "feature_a": "distance_from_upper_limit",
       "feature_b": "rolling_mean_5",
-      "correlation": 0.9972245434298294
+      "correlation": 0.9971067839656316
     },
     {
       "feature_a": "distance_from_upper_limit",
       "feature_b": "rolling_minimum_5",
-      "correlation": 0.9925880986128679
+      "correlation": 0.9922828747022406
     },
     {
       "feature_a": "distance_from_upper_limit",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9982080940177336
+      "correlation": 0.9981516907448861
     },
     {
       "feature_a": "distance_from_upper_limit",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9912361659003406
-    },
-    {
-      "feature_a": "distance_from_upper_limit",
-      "feature_b": "rolling_minimum_10",
-      "correlation": 0.9801696189912392
+      "correlation": 0.9907979903554673
     },
     {
       "feature_a": "distance_from_upper_limit",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9919821207079073
+      "correlation": 0.9916264688978728
     },
     {
       "feature_a": "distance_from_lower_limit",
       "feature_b": "rolling_mean_5",
-      "correlation": 0.9972245434298301
+      "correlation": 0.9971067839656313
     },
     {
       "feature_a": "distance_from_lower_limit",
       "feature_b": "rolling_minimum_5",
-      "correlation": 0.9925880986128679
+      "correlation": 0.9922828747022406
     },
     {
       "feature_a": "distance_from_lower_limit",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9982080940177336
+      "correlation": 0.9981516907448861
     },
     {
       "feature_a": "distance_from_lower_limit",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9912361659003406
-    },
-    {
-      "feature_a": "distance_from_lower_limit",
-      "feature_b": "rolling_minimum_10",
-      "correlation": 0.980169618991239
+      "correlation": 0.9907979903554671
     },
     {
       "feature_a": "distance_from_lower_limit",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.991982120707907
+      "correlation": 0.9916264688978725
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_minimum_5",
-      "correlation": 0.9978532993473181
+      "correlation": 0.9977595269685516
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9978532566641561
+      "correlation": 0.9977520883584797
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.997251620531881
+      "correlation": 0.9970776583258302
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_minimum_10",
-      "correlation": 0.9868747579144447
+      "correlation": 0.9862027798549632
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9940228290982702
+      "correlation": 0.9937302265625246
     },
     {
       "feature_a": "rolling_mean_5",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.9859434337173955
+      "correlation": 0.9850563814204143
     },
     {
       "feature_a": "rolling_standard_deviation_5",
       "feature_b": "rolling_range_5",
-      "correlation": 0.9933275231820352
+      "correlation": 0.9933542249919275
     },
     {
       "feature_a": "rolling_minimum_5",
       "feature_b": "rolling_maximum_5",
-      "correlation": 0.9920557418640338
+      "correlation": 0.9917063602244126
     },
     {
       "feature_a": "rolling_minimum_5",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9973841697035479
+      "correlation": 0.9972552513980034
     },
     {
       "feature_a": "rolling_minimum_5",
       "feature_b": "rolling_minimum_10",
-      "correlation": 0.9921055196806292
+      "correlation": 0.9916733610062681
     },
     {
       "feature_a": "rolling_minimum_5",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9872272815217314
+      "correlation": 0.98665622881537
     },
     {
       "feature_a": "rolling_minimum_5",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.9877658681437905
+      "correlation": 0.9870282188491861
     },
     {
       "feature_a": "rolling_maximum_5",
       "feature_b": "rolling_mean_10",
-      "correlation": 0.9934654142865766
+      "correlation": 0.9930893388342488
     },
     {
       "feature_a": "rolling_maximum_5",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9972492547696249
-    },
-    {
-      "feature_a": "rolling_maximum_5",
-      "feature_b": "rolling_mean_20",
-      "correlation": 0.9809487059469733
+      "correlation": 0.9970933105247759
     },
     {
       "feature_a": "rolling_maximum_5",
       "feature_b": "rolling_maximum_20",
-      "correlation": 0.9811765389344131
+      "correlation": 0.9801017497460296
     },
     {
       "feature_a": "sample_count_5",
@@ -312,59 +271,44 @@
       "correlation": 1.0
     },
     {
-      "feature_a": "maximum_gap_seconds_5",
-      "feature_b": "maximum_gap_seconds_10",
-      "correlation": 1.0
-    },
-    {
-      "feature_a": "maximum_gap_seconds_5",
-      "feature_b": "maximum_gap_seconds_20",
-      "correlation": 1.0
-    },
-    {
       "feature_a": "rolling_mean_10",
       "feature_b": "rolling_minimum_10",
-      "correlation": 0.9933989576080244
+      "correlation": 0.993103034987632
     },
     {
       "feature_a": "rolling_mean_10",
       "feature_b": "rolling_maximum_10",
-      "correlation": 0.9928685195434629
+      "correlation": 0.9925044989164927
     },
     {
       "feature_a": "rolling_mean_10",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.9937426080055031
-    },
-    {
-      "feature_a": "rolling_mean_10",
-      "feature_b": "rolling_maximum_20",
-      "correlation": 0.9802264521790363
+      "correlation": 0.9933264774378328
     },
     {
       "feature_a": "rolling_standard_deviation_10",
       "feature_b": "rolling_range_10",
-      "correlation": 0.9888069910792487
+      "correlation": 0.9887760351399515
     },
     {
       "feature_a": "rolling_minimum_10",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.9925159079908943
+      "correlation": 0.9921285101849122
     },
     {
       "feature_a": "rolling_minimum_10",
       "feature_b": "rolling_minimum_20",
-      "correlation": 0.9840928433167326
+      "correlation": 0.9832561603727008
     },
     {
       "feature_a": "rolling_maximum_10",
       "feature_b": "rolling_mean_20",
-      "correlation": 0.983355804598736
+      "correlation": 0.982380193220361
     },
     {
       "feature_a": "rolling_maximum_10",
       "feature_b": "rolling_maximum_20",
-      "correlation": 0.9909739048746844
+      "correlation": 0.9904025885702108
     },
     {
       "feature_a": "sample_count_10",
@@ -372,24 +316,14 @@
       "correlation": 1.0
     },
     {
-      "feature_a": "maximum_gap_seconds_10",
-      "feature_b": "maximum_gap_seconds_20",
-      "correlation": 1.0
-    },
-    {
       "feature_a": "rolling_mean_20",
       "feature_b": "rolling_minimum_20",
-      "correlation": 0.9831973755625897
-    },
-    {
-      "feature_a": "rolling_mean_20",
-      "feature_b": "rolling_maximum_20",
-      "correlation": 0.9803438940257144
+      "correlation": 0.9825624815699381
     },
     {
       "feature_a": "rolling_standard_deviation_20",
       "feature_b": "rolling_range_20",
-      "correlation": 0.9888544493155991
+      "correlation": 0.9886822994983296
     },
     {
       "feature_a": "sample_count_20",
@@ -398,30 +332,5 @@
     }
   ],
   "features_with_infinite_values": [],
-  "features_with_nan_values": [
-    "current_temperature",
-    "previous_temperature",
-    "temperature_difference",
-    "temperature_slope",
-    "temperature_acceleration",
-    "distance_from_upper_limit",
-    "distance_from_lower_limit",
-    "distance_from_nearest_limit",
-    "time_since_previous_valid_sample",
-    "rolling_mean_5",
-    "rolling_standard_deviation_5",
-    "rolling_minimum_5",
-    "rolling_maximum_5",
-    "rolling_range_5",
-    "valid_ratio_5",
-    "temperature_slope_ls_5",
-    "rolling_mean_10",
-    "rolling_standard_deviation_10",
-    "rolling_minimum_10",
-    "rolling_maximum_10",
-    "rolling_range_10",
-    "valid_ratio_10",
-    "temperature_slope_ls_10",
-    "temperature_slope_ls_20"
-  ]
+  "features_with_nan_values": []
 }

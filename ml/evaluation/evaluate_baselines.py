@@ -33,6 +33,7 @@ def evaluate_baselines(
     validation_path: Path,
     test_path: Path,
     config_path: Path,
+    output_dir: Path = OUT_DIR,
 ) -> dict[str, Any]:
     """Evaluate fixed-threshold and rule-based baselines."""
 
@@ -47,8 +48,9 @@ def evaluate_baselines(
         upper_limit_c=float(raw_config["fixed_threshold"]["upper_limit_c"]),
     )
     rule_config = load_rule_config(config_path)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    PLOT_DIR.mkdir(parents=True, exist_ok=True)
+    plot_dir = output_dir / "plots"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    plot_dir.mkdir(parents=True, exist_ok=True)
 
     results: dict[str, Any] = {"fixed_threshold": {}, "rule_based": {}}
     predictions: dict[str, dict[str, pd.DataFrame]] = {
@@ -63,14 +65,14 @@ def evaluate_baselines(
         results["fixed_threshold"][split] = evaluate_predictions(frame, fixed_pred)
         results["rule_based"][split] = evaluate_predictions(frame, rule_pred)
 
-    _write_json(OUT_DIR / "fixed_threshold_metrics.json", results["fixed_threshold"])
-    _write_json(OUT_DIR / "rule_based_metrics.json", results["rule_based"])
+    _write_json(output_dir / "fixed_threshold_metrics.json", results["fixed_threshold"])
+    _write_json(output_dir / "rule_based_metrics.json", results["rule_based"])
     comparison = _comparison(results)
-    comparison.to_csv(OUT_DIR / "baseline_comparison.csv", index=False)
-    (OUT_DIR / "baseline_report.md").write_text(
+    comparison.to_csv(output_dir / "baseline_comparison.csv", index=False)
+    (output_dir / "baseline_report.md").write_text(
         _report_markdown(results, comparison), encoding="utf-8"
     )
-    _plots(results, datasets, predictions)
+    _plots(results, datasets, predictions, plot_dir)
     return results
 
 
@@ -104,6 +106,7 @@ def _plots(
     results: dict[str, Any],
     datasets: dict[str, pd.DataFrame],
     predictions: dict[str, dict[str, pd.DataFrame]],
+    plot_dir: Path,
 ) -> None:
     for baseline, split_metrics in results.items():
         for split, metrics in split_metrics.items():
@@ -120,28 +123,35 @@ def _plots(
                     axis.text(j, i, int(matrix.iloc[i, j]), ha="center", va="center")
             fig.colorbar(image, ax=axis)
             fig.tight_layout()
-            fig.savefig(PLOT_DIR / f"{baseline}_{split}_confusion_matrix.png", dpi=140)
+            fig.savefig(plot_dir / f"{baseline}_{split}_confusion_matrix.png", dpi=140)
             plt.close(fig)
     comparison = _comparison(results)
-    _bar_plot(comparison, "macro_f1", "precision_recall_f1_comparison.png")
-    _bar_plot(comparison, "median_warning_lead_time_seconds", "warning_lead_time.png")
-    _bar_plot(comparison, "false_alarm_rate", "false_alarm_comparison.png")
-    _bar_plot(comparison, "missed_event_rate", "missed_event_comparison.png")
-    _example_timeline(datasets["test"], predictions["rule_based"]["test"])
+    _bar_plot(comparison, "macro_f1", "precision_recall_f1_comparison.png", plot_dir)
+    _bar_plot(
+        comparison,
+        "median_warning_lead_time_seconds",
+        "warning_lead_time.png",
+        plot_dir,
+    )
+    _bar_plot(comparison, "false_alarm_rate", "false_alarm_comparison.png", plot_dir)
+    _bar_plot(comparison, "missed_event_rate", "missed_event_comparison.png", plot_dir)
+    _example_timeline(datasets["test"], predictions["rule_based"]["test"], plot_dir)
 
 
-def _bar_plot(frame: pd.DataFrame, metric: str, name: str) -> None:
+def _bar_plot(frame: pd.DataFrame, metric: str, name: str, plot_dir: Path) -> None:
     fig, axis = plt.subplots(figsize=(8, 4))
     labels = frame["baseline"] + "\n" + frame["split"]
     axis.bar(labels, frame[metric].fillna(0))
     axis.set_title(metric)
     axis.tick_params(axis="x", labelrotation=45)
     fig.tight_layout()
-    fig.savefig(PLOT_DIR / name, dpi=140)
+    fig.savefig(plot_dir / name, dpi=140)
     plt.close(fig)
 
 
-def _example_timeline(frame: pd.DataFrame, prediction: pd.DataFrame) -> None:
+def _example_timeline(
+    frame: pd.DataFrame, prediction: pd.DataFrame, plot_dir: Path
+) -> None:
     run_id = frame["run_id"].iloc[0]
     run = frame[frame["run_id"] == run_id].merge(prediction, on=["timestamp", "run_id"])
     times = pd.to_datetime(run["timestamp"], utc=True)
@@ -153,7 +163,7 @@ def _example_timeline(frame: pd.DataFrame, prediction: pd.DataFrame) -> None:
     axis.legend()
     fig.autofmt_xdate()
     fig.tight_layout()
-    fig.savefig(PLOT_DIR / "example_prediction_timeline.png", dpi=140)
+    fig.savefig(plot_dir / "example_prediction_timeline.png", dpi=140)
     plt.close(fig)
 
 

@@ -12,6 +12,8 @@ from typing import Any
 
 import pandas as pd
 
+from ml.features.feature_schema import model_feature_columns
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -55,12 +57,23 @@ def split_dataset(
 
 
 def _filter_available_targets(frame: pd.DataFrame) -> pd.DataFrame:
-    """Keep rows with available primary targets for model/evaluation splits."""
+    """Keep rows ready for supervised model/evaluation splits."""
 
     if "label_available_10m" not in frame.columns:
         return frame
     available = frame["label_available_10m"].astype(str).str.lower().isin({"true", "1"})
-    return frame[available & frame["thermal_state"].notna()].copy()
+    valid_features = (
+        frame["feature_valid"].astype(str).str.lower().isin({"true", "1"})
+        if "feature_valid" in frame.columns
+        else True
+    )
+    filtered = frame[available & valid_features & frame["thermal_state"].notna()].copy()
+    feature_columns = model_feature_columns(filtered)
+    numeric = filtered[feature_columns].select_dtypes(include="number")
+    finite_features = ~numeric.isna().any(axis=1) & ~numeric.isin(
+        [float("inf"), float("-inf")]
+    ).any(axis=1)
+    return filtered[finite_features].copy()
 
 
 def _assign_runs(

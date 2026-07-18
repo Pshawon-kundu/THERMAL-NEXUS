@@ -256,7 +256,7 @@ rule_based:
 """,
         encoding="utf-8",
     )
-    evaluate_baselines(train, validation, test, config_path)
+    evaluate_baselines(train, validation, test, config_path, tmp_path / "baselines")
     assert (tmp_path / "eda" / "dataset_health_report.json").exists()
     assert (tmp_path / "eda" / "plots" / "overall_class_distribution.png").exists()
-    assert Path("evidence/baselines/fixed_threshold_metrics.json").exists()
+    assert (tmp_path / "baselines" / "fixed_threshold_metrics.json").exists()

@@ -1,0 +1,6 @@
+{
+  "selected_model": "decision_tree",
+  "artifact_dir": "ml\\models\\selected\\provisional_20260718_161144_decision_tree",
+  "selected_from_validation": true,
+  "test_evaluated": false
+}

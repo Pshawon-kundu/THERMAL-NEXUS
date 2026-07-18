@@ -28,6 +28,8 @@
 - Train lightweight predictive models
 - Evaluate candidate models against baselines
 - Export deployment-ready model artifacts
+- Enforce training-only preprocessing, group-aware CV, validation-based selection, and locked test evaluation
+- Keep Random Forest as a non-deployment reference unless later approved
 
 ## Phase 5: Protocol and Simulation
 

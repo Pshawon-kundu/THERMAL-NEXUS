@@ -1,14 +1,14 @@
 # Split Report
 
 Status: `pass`
-Input runs: 83
-Input rows: 9379
+Input runs: 12
+Input rows: 24
 
 ## Run Counts
 
-- test: 13
-- train: 56
-- validation: 14
+- test: 2
+- train: 8
+- validation: 2
 
 ## Overlap Check
 

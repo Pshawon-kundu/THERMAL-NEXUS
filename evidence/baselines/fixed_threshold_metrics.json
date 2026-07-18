@@ -1,11 +1,11 @@
 {
   "train": {
-    "row_count": 6328,
+    "row_count": 5865,
     "confusion_matrix": {
       "STABLE": {
-        "STABLE": 3090,
-        "TRANSITION": 747,
-        "EXCURSION_RISK": 426
+        "STABLE": 2695,
+        "TRANSITION": 735,
+        "EXCURSION_RISK": 402
       },
       "TRANSITION": {
         "STABLE": 0,
@@ -15,14 +15,14 @@
       "EXCURSION_RISK": {
         "STABLE": 18,
         "TRANSITION": 17,
-        "EXCURSION_RISK": 2030
+        "EXCURSION_RISK": 1998
       }
     },
     "per_class": {
       "STABLE": {
-        "precision": 0.724841660802252,
-        "recall": 0.9942084942084942,
-        "f1": 0.8384208384208384
+        "precision": 0.7032881002087683,
+        "recall": 0.9933652782897162,
+        "f1": 0.823529411764706
       },
       "TRANSITION": {
         "precision": 0.0,
@@ -30,18 +30,18 @@
         "f1": 0.0
       },
       "EXCURSION_RISK": {
-        "precision": 0.9830508474576272,
-        "recall": 0.8265472312703583,
-        "f1": 0.8980314089803141
+        "precision": 0.9827840629611412,
+        "recall": 0.8325,
+        "f1": 0.9014211594856756
       }
     },
-    "macro_f1": 0.5788174158003841,
-    "weighted_f1": 0.76033140111688,
-    "balanced_accuracy": 0.6069185751596176,
+    "macro_f1": 0.5749835237501272,
+    "weighted_f1": 0.7498117778147091,
+    "balanced_accuracy": 0.6086217594299054,
     "prediction_count_by_class": {
-      "STABLE": 4263,
+      "STABLE": 3832,
       "TRANSITION": 0,
-      "EXCURSION_RISK": 2065
+      "EXCURSION_RISK": 2033
     },
     "number_of_state_changes": 84,
     "false_alarm_rate": 0.07142857142857142,
@@ -54,10 +54,10 @@
       0.0,
       0.0,
       0.0,
-      -480.0,
-      -480.0,
-      -480.0,
-      -480.0,
+      -240.0,
+      -240.0,
+      -240.0,
+      -240.0,
       -540.0,
       -540.0,
       -540.0,
@@ -70,10 +70,10 @@
       -600.0,
       -600.0,
       -600.0,
-      -600.0,
-      -600.0,
-      -600.0,
-      -600.0,
+      -480.0,
+      -480.0,
+      -480.0,
+      -480.0,
       -600.0,
       -600.0,
       -600.0,
@@ -104,16 +104,16 @@
       -600.0
     ],
     "median_warning_lead_time_seconds": -600.0,
-    "mean_warning_lead_time_seconds": -488.0769230769231,
+    "mean_warning_lead_time_seconds": -460.38461538461536,
     "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
   },
   "validation": {
-    "row_count": 1582,
+    "row_count": 1462,
     "confusion_matrix": {
       "STABLE": {
-        "STABLE": 772,
-        "TRANSITION": 187,
-        "EXCURSION_RISK": 108
+        "STABLE": 669,
+        "TRANSITION": 184,
+        "EXCURSION_RISK": 102
       },
       "TRANSITION": {
         "STABLE": 0,
@@ -123,14 +123,14 @@
       "EXCURSION_RISK": {
         "STABLE": 5,
         "TRANSITION": 4,
-        "EXCURSION_RISK": 506
+        "EXCURSION_RISK": 498
       }
     },
     "per_class": {
       "STABLE": {
-        "precision": 0.7235238987816307,
-        "recall": 0.9935649935649936,
-        "f1": 0.8373101952277657
+        "precision": 0.7005235602094241,
+        "recall": 0.9925816023738873,
+        "f1": 0.8213627992633518
       },
       "TRANSITION": {
         "precision": 0.0,
@@ -138,18 +138,18 @@
         "f1": 0.0
       },
       "EXCURSION_RISK": {
-        "precision": 0.9825242718446602,
-        "recall": 0.8241042345276873,
-        "f1": 0.8963684676705049
+        "precision": 0.9822485207100592,
+        "recall": 0.83,
+        "f1": 0.8997289972899729
       }
     },
-    "macro_f1": 0.5778928876327569,
-    "weighted_f1": 0.7591404935788015,
-    "balanced_accuracy": 0.6058897426975604,
+    "macro_f1": 0.5736972655177749,
+    "weighted_f1": 0.7479041895194821,
+    "balanced_accuracy": 0.6075272007912957,
     "prediction_count_by_class": {
-      "STABLE": 1067,
+      "STABLE": 955,
       "TRANSITION": 0,
-      "EXCURSION_RISK": 515
+      "EXCURSION_RISK": 507
     },
     "number_of_state_changes": 21,
     "false_alarm_rate": 0.07142857142857142,
@@ -159,11 +159,11 @@
     "number_of_alerts": 14,
     "warning_lead_times_seconds": [
       0.0,
-      -480.0,
+      -240.0,
       -600.0,
       -540.0,
       -600.0,
-      -600.0,
+      -480.0,
       -600.0,
       -600.0,
       -600.0,
@@ -173,16 +173,16 @@
       -600.0
     ],
     "median_warning_lead_time_seconds": -600.0,
-    "mean_warning_lead_time_seconds": -493.84615384615387,
+    "mean_warning_lead_time_seconds": -466.15384615384613,
     "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
   },
   "test": {
-    "row_count": 1469,
+    "row_count": 1354,
     "confusion_matrix": {
       "STABLE": {
-        "STABLE": 752,
-        "TRANSITION": 135,
-        "EXCURSION_RISK": 97
+        "STABLE": 654,
+        "TRANSITION": 132,
+        "EXCURSION_RISK": 91
       },
       "TRANSITION": {
         "STABLE": 0,
@@ -192,14 +192,14 @@
       "EXCURSION_RISK": {
         "STABLE": 4,
         "TRANSITION": 4,
-        "EXCURSION_RISK": 477
+        "EXCURSION_RISK": 469
       }
     },
     "per_class": {
       "STABLE": {
-        "precision": 0.7642276422764228,
-        "recall": 0.9947089947089947,
-        "f1": 0.864367816091954
+        "precision": 0.7457240592930444,
+        "recall": 0.993920972644377,
+        "f1": 0.8521172638436482
       },
       "TRANSITION": {
         "precision": 0.0,
@@ -207,18 +207,18 @@
         "f1": 0.0
       },
       "EXCURSION_RISK": {
-        "precision": 0.9835051546391752,
-        "recall": 0.8310104529616724,
-        "f1": 0.9008498583569404
+        "precision": 0.9832285115303984,
+        "recall": 0.8375,
+        "f1": 0.9045323047251689
       }
     },
-    "macro_f1": 0.5884058914829647,
-    "weighted_f1": 0.7968345048756984,
-    "balanced_accuracy": 0.6085731492235557,
+    "macro_f1": 0.5855498561896056,
+    "weighted_f1": 0.7882062409565842,
+    "balanced_accuracy": 0.6104736575481257,
     "prediction_count_by_class": {
-      "STABLE": 984,
+      "STABLE": 877,
       "TRANSITION": 0,
-      "EXCURSION_RISK": 485
+      "EXCURSION_RISK": 477
     },
     "number_of_state_changes": 18,
     "false_alarm_rate": 0.0,
@@ -228,10 +228,10 @@
     "number_of_alerts": 12,
     "warning_lead_times_seconds": [
       0.0,
-      -480.0,
+      -240.0,
       -540.0,
       -600.0,
-      -600.0,
+      -480.0,
       -600.0,
       -600.0,
       -600.0,
@@ -241,7 +241,7 @@
       -600.0
     ],
     "median_warning_lead_time_seconds": -600.0,
-    "mean_warning_lead_time_seconds": -485.0,
+    "mean_warning_lead_time_seconds": -455.0,
     "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
   }
 }

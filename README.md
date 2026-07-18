@@ -112,3 +112,25 @@ powershell -ExecutionPolicy Bypass -File .\tools\run_baseline_analysis.ps1
 ```
 
 The fixed-threshold baseline is reactive: it alerts only after measured temperature is already outside limits. The rule-based baseline is a non-learned predictive comparison using current and historical features only. Thresholds are configured and must be selected from training data only.
+
+## Train Lightweight Candidate Models
+
+Train candidate models using train plus validation only:
+
+```powershell
+python -m ml.training.train_models --config config/models.yaml
+```
+
+Or:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\train_candidate_models.ps1
+```
+
+Final test evaluation is locked and must be explicitly confirmed:
+
+```powershell
+python -m ml.evaluation.evaluate_final_model --model ml/models/selected --test ml/data/splits/test.csv --confirm-test-evaluation
+```
+
+The trained model is provisional and based on synthetic software data. It is not an embedded artifact and is not a hardware result.

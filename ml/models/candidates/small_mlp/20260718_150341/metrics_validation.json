@@ -1,0 +1,387 @@
+{
+  "row_count": 1462,
+  "confusion_matrix": {
+    "STABLE": {
+      "STABLE": 663,
+      "TRANSITION": 11,
+      "EXCURSION_RISK": 0
+    },
+    "TRANSITION": {
+      "STABLE": 61,
+      "TRANSITION": 125,
+      "EXCURSION_RISK": 2
+    },
+    "EXCURSION_RISK": {
+      "STABLE": 52,
+      "TRANSITION": 7,
+      "EXCURSION_RISK": 541
+    }
+  },
+  "per_class": {
+    "STABLE": {
+      "precision": 0.854381443298969,
+      "recall": 0.983679525222552,
+      "f1": 0.9144827586206896
+    },
+    "TRANSITION": {
+      "precision": 0.8741258741258742,
+      "recall": 0.6648936170212766,
+      "f1": 0.7552870090634441
+    },
+    "EXCURSION_RISK": {
+      "precision": 0.996316758747698,
+      "recall": 0.9016666666666666,
+      "f1": 0.9466316710411199
+    }
+  },
+  "macro_f1": 0.8721338129084178,
+  "weighted_f1": 0.9072054306695925,
+  "balanced_accuracy": 0.8500799363034983,
+  "prediction_distribution": {
+    "STABLE": 776,
+    "EXCURSION_RISK": 543,
+    "TRANSITION": 143
+  },
+  "number_of_unnecessary_state_changes": 46,
+  "excursion_events": 13,
+  "detected_excursion_events": 13,
+  "missed_excursion_events": 0,
+  "false_alert_events": 3,
+  "event_level_recall": 1.0,
+  "false_alarm_rate": 0.1875,
+  "missed_event_rate": 0.0,
+  "warning_lead_times_seconds": [
+    0.0,
+    0.0,
+    -120.0,
+    60.0,
+    -480.0,
+    0.0,
+    -480.0,
+    -120.0,
+    -120.0,
+    -480.0,
+    -480.0,
+    0.0,
+    -600.0
+  ],
+  "mean_warning_lead_time_seconds": -216.92307692307693,
+  "median_warning_lead_time_seconds": -120.0,
+  "minimum_warning_lead_time_seconds": -600.0,
+  "probability_calibration_summary": {
+    "mean_max_probability": 0.8836703547950858,
+    "median_max_probability": 0.902218983296371,
+    "min_max_probability": 0.3553772746471045
+  },
+  "model_name": "small_mlp",
+  "best_params": {
+    "hidden_layer_sizes": [
+      16,
+      8
+    ],
+    "alpha": 0.0001
+  },
+  "cross_validation": {
+    "mean_macro_f1": 0.8559827876269902,
+    "fold_macro_f1": [
+      0.8847806868558479,
+      0.8580695406188993,
+      0.8250981354062231
+    ],
+    "fold_metrics": [
+      {
+        "row_count": 1960,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 865,
+            "TRANSITION": 19,
+            "EXCURSION_RISK": 2
+          },
+          "TRANSITION": {
+            "STABLE": 68,
+            "TRANSITION": 192,
+            "EXCURSION_RISK": 5
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 82,
+            "TRANSITION": 2,
+            "EXCURSION_RISK": 725
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.8522167487684729,
+            "recall": 0.9762979683972912,
+            "f1": 0.9100473435034192
+          },
+          "TRANSITION": {
+            "precision": 0.9014084507042254,
+            "recall": 0.7245283018867924,
+            "f1": 0.803347280334728
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.9904371584699454,
+            "recall": 0.896168108776267,
+            "f1": 0.9409474367293965
+          }
+        },
+        "macro_f1": 0.8847806868558479,
+        "weighted_f1": 0.9083752305851093,
+        "balanced_accuracy": 0.8656647930201169,
+        "prediction_distribution": {
+          "STABLE": 1015,
+          "EXCURSION_RISK": 732,
+          "TRANSITION": 213
+        },
+        "number_of_unnecessary_state_changes": 73,
+        "excursion_events": 19,
+        "detected_excursion_events": 19,
+        "missed_excursion_events": 0,
+        "false_alert_events": 2,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.09523809523809523,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          60.0,
+          0.0,
+          0.0,
+          0.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          0.0,
+          -600.0
+        ],
+        "mean_warning_lead_time_seconds": -252.6315789473684,
+        "median_warning_lead_time_seconds": -480.0,
+        "minimum_warning_lead_time_seconds": -600.0
+      },
+      {
+        "row_count": 2007,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 911,
+            "TRANSITION": 10,
+            "EXCURSION_RISK": 2
+          },
+          "TRANSITION": {
+            "STABLE": 94,
+            "TRANSITION": 163,
+            "EXCURSION_RISK": 12
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 73,
+            "TRANSITION": 8,
+            "EXCURSION_RISK": 734
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.8450834879406308,
+            "recall": 0.9869989165763814,
+            "f1": 0.9105447276361819
+          },
+          "TRANSITION": {
+            "precision": 0.9005524861878453,
+            "recall": 0.6059479553903345,
+            "f1": 0.7244444444444444
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.9812834224598931,
+            "recall": 0.9006134969325154,
+            "f1": 0.9392194497760716
+          }
+        },
+        "macro_f1": 0.8580695406188993,
+        "weighted_f1": 0.8972457352921025,
+        "balanced_accuracy": 0.831186789633077,
+        "prediction_distribution": {
+          "STABLE": 1078,
+          "EXCURSION_RISK": 748,
+          "TRANSITION": 181
+        },
+        "number_of_unnecessary_state_changes": 70,
+        "excursion_events": 17,
+        "detected_excursion_events": 17,
+        "missed_excursion_events": 0,
+        "false_alert_events": 9,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.34615384615384615,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          0.0,
+          0.0,
+          0.0,
+          120.0,
+          120.0,
+          -120.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -120.0,
+          -180.0,
+          -300.0,
+          -480.0,
+          0.0,
+          0.0,
+          -600.0,
+          -600.0
+        ],
+        "mean_warning_lead_time_seconds": -211.76470588235293,
+        "median_warning_lead_time_seconds": -120.0,
+        "minimum_warning_lead_time_seconds": -600.0
+      },
+      {
+        "row_count": 1898,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 891,
+            "TRANSITION": 6,
+            "EXCURSION_RISK": 7
+          },
+          "TRANSITION": {
+            "STABLE": 103,
+            "TRANSITION": 106,
+            "EXCURSION_RISK": 9
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 74,
+            "TRANSITION": 4,
+            "EXCURSION_RISK": 698
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.8342696629213483,
+            "recall": 0.9856194690265486,
+            "f1": 0.9036511156186613
+          },
+          "TRANSITION": {
+            "precision": 0.9137931034482759,
+            "recall": 0.48623853211009177,
+            "f1": 0.6347305389221557
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.9775910364145658,
+            "recall": 0.8994845360824743,
+            "f1": 0.9369127516778524
+          }
+        },
+        "macro_f1": 0.8250981354062231,
+        "weighted_f1": 0.8863625718157603,
+        "balanced_accuracy": 0.7904475124063716,
+        "prediction_distribution": {
+          "STABLE": 1068,
+          "EXCURSION_RISK": 714,
+          "TRANSITION": 116
+        },
+        "number_of_unnecessary_state_changes": 46,
+        "excursion_events": 16,
+        "detected_excursion_events": 16,
+        "missed_excursion_events": 0,
+        "false_alert_events": 4,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.2,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          0.0,
+          0.0,
+          240.0,
+          180.0,
+          -480.0,
+          -480.0,
+          0.0,
+          0.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          0.0,
+          -600.0
+        ],
+        "mean_warning_lead_time_seconds": -251.25,
+        "median_warning_lead_time_seconds": -480.0,
+        "minimum_warning_lead_time_seconds": -600.0
+      }
+    ]
+  },
+  "model_file_size_bytes": 29377,
+  "preprocessing_artifact_size_bytes": 2552,
+  "total_artifact_size_bytes": 61306,
+  "training_timestamp": "20260718_150341",
+  "source_git_commit": "2d0fe9012d54076cc15db6c1894e2e7487424b5a",
+  "mean_inference_latency_ms": 0.003072148436444877,
+  "p95_inference_latency_ms": 0.0033550390597270052,
+  "converged": true,
+  "iterations": 55,
+  "trainable_parameter_count": 723,
+  "loss_curve": [
+    0.7586411015648179,
+    0.6496086323995162,
+    0.5844006888615126,
+    0.536691882587274,
+    0.504771307263271,
+    0.4797919027579683,
+    0.4612479544912819,
+    0.44637111612432895,
+    0.4353549821620359,
+    0.4256350953028127,
+    0.41749008764917345,
+    0.41112079880967556,
+    0.4049605480532328,
+    0.39940493028541124,
+    0.3944629502547024,
+    0.3896866244288092,
+    0.38530296823058935,
+    0.3807133157428576,
+    0.3767974437171384,
+    0.37329594663677396,
+    0.3689938271704513,
+    0.36525740211911806,
+    0.36188147201637505,
+    0.357851816060857,
+    0.3544233672270383,
+    0.35017336623579387,
+    0.34624574417492376,
+    0.3427989888954166,
+    0.3389738415395645,
+    0.3357452921197335,
+    0.33262385957887974,
+    0.3291082492635338,
+    0.3265474412014743,
+    0.3238648617270589,
+    0.32083909357333534,
+    0.318695077895226,
+    0.31570295864781084,
+    0.31305109716576074,
+    0.3112004406152227,
+    0.3085285344249427,
+    0.30709149173053985,
+    0.30450470208110797,
+    0.3021432046325315,
+    0.3003682663638672,
+    0.2986899290107966,
+    0.2966657646699752,
+    0.2950568643270471,
+    0.293275838754128,
+    0.2915836969270279,
+    0.29001033919016217,
+    0.2888081188639482,
+    0.28778807976336124,
+    0.28549227861613236,
+    0.2838794932519048,
+    0.2830254501731784
+  ]
+}

@@ -111,7 +111,8 @@ def _fail_fast_issues(
 
 
 def _feature_summary(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
-    summary = frame[columns].agg(["min", "max", "mean", "std"]).T.reset_index()
+    finite = _finite_numeric_frame(frame, columns)
+    summary = finite.agg(["min", "max", "mean", "std"]).T.reset_index()
     return summary.rename(columns={"index": "feature"})
 
 
@@ -138,15 +139,16 @@ def _duplicate_timestamps(frame: pd.DataFrame) -> int:
 
 def _near_constant(frame: pd.DataFrame, columns: list[str]) -> list[str]:
     near_constant = []
-    for column in columns:
-        series = pd.to_numeric(frame[column], errors="coerce").dropna()
+    finite = _finite_numeric_frame(frame, columns)
+    for column in finite.columns:
+        series = finite[column].dropna()
         if not series.empty and series.std() <= 1e-9:
             near_constant.append(column)
     return near_constant
 
 
 def _highly_correlated(frame: pd.DataFrame, columns: list[str]) -> list[dict[str, Any]]:
-    corr = frame[columns].corr(numeric_only=True).abs()
+    corr = _finite_numeric_frame(frame, columns).corr(numeric_only=True).abs()
     pairs = []
     for left_index, left in enumerate(corr.columns):
         for right in corr.columns[left_index + 1 :]:
@@ -165,6 +167,11 @@ def _infinite_features(frame: pd.DataFrame, columns: list[str]) -> list[str]:
 
 def _nan_features(frame: pd.DataFrame, columns: list[str]) -> list[str]:
     return [col for col in columns if frame[col].isna().any()]
+
+
+def _finite_numeric_frame(frame: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    numeric = frame[columns].select_dtypes(include=[np.number]).copy()
+    return numeric.replace([np.inf, -np.inf], np.nan)
 
 
 def _count_dict(series: pd.Series) -> dict[str, int]:

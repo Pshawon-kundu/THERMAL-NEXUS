@@ -1,16 +1,16 @@
 {
   "status": "pass",
-  "input_rows": 9379,
-  "input_runs": 83,
+  "input_rows": 24,
+  "input_runs": 12,
   "split_run_counts": {
-    "train": 56,
-    "validation": 14,
-    "test": 13
+    "train": 8,
+    "validation": 2,
+    "test": 2
   },
   "split_row_counts": {
-    "train": 6328,
-    "validation": 1582,
-    "test": 1469
+    "train": 16,
+    "validation": 4,
+    "test": 4
   },
   "overlaps": {
     "train_validation": [],
