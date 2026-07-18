@@ -1,8 +1,7 @@
-black>=24.0
+black==24.10.0
 matplotlib>=3.8
 numpy>=1.26
 pandas>=2.1
 pytest>=8.0
 PyYAML>=6.0
 ruff>=0.5
-

@@ -1,0 +1,8 @@
+window_sizes_samples:
+  - 5
+  - 10
+  - 20
+minimum_history_samples: 5
+minimum_valid_ratio: 0.8
+maximum_gap_seconds: 180
+

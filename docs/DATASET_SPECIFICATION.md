@@ -33,3 +33,23 @@ Every run writes a PNG plot showing true temperature, measured temperature, and 
 
 Raw generated CSV files should not be manually modified. Regenerate data with a new run if configuration changes are required.
 
+## Audit and Manifest
+
+The dataset audit validates every synthetic CSV and matching metadata JSON under `ml/data/synthetic/`.
+
+Audit outputs:
+
+- `ml/data/processed/dataset_manifest.csv`
+- `evidence/dataset_audit_report.json`
+- `evidence/dataset_audit_report.md`
+
+The audit checks required columns, readable CSV/JSON files, unique `run_id`, recognized scenario, timestamp ordering, limit consistency, numeric temperatures, explicit invalid samples, and metadata consistency.
+
+## Processed Dataset
+
+`ml/data/processed/labeled_feature_rows.csv` contains source rows plus labels and features.
+
+`ml/data/processed/model_ready_dataset.csv` contains identifiers, target labels, and past-only feature columns. Future helper columns such as `future_temperature_10m` are excluded from model-ready inputs to prevent leakage.
+
+Synthetic labels use `true_temperature` as ground truth. Features use `measured_temperature` only. Later hardware work must regenerate labels and retrain using real TMP117 data.
+
