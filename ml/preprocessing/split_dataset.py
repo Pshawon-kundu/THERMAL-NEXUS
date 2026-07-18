@@ -30,7 +30,7 @@ def split_dataset(
 
     if round(train_ratio + validation_ratio + test_ratio, 6) != 1.0:
         raise SplitError("Split ratios must sum to 1.0.")
-    frame = pd.read_csv(input_path)
+    frame = _filter_available_targets(pd.read_csv(input_path))
     output_dir.mkdir(parents=True, exist_ok=True)
     assignments = _assign_runs(frame, train_ratio, validation_ratio)
 
@@ -52,6 +52,15 @@ def split_dataset(
     if report["status"] != "pass":
         raise SplitError("Split validation failed.")
     return report
+
+
+def _filter_available_targets(frame: pd.DataFrame) -> pd.DataFrame:
+    """Keep rows with available primary targets for model/evaluation splits."""
+
+    if "label_available_10m" not in frame.columns:
+        return frame
+    available = frame["label_available_10m"].astype(str).str.lower().isin({"true", "1"})
+    return frame[available & frame["thermal_state"].notna()].copy()
 
 
 def _assign_runs(

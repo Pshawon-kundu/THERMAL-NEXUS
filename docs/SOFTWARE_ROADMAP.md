@@ -20,6 +20,8 @@
 - Implement Mode A fixed sampling/transmission baseline
 - Implement Mode B rule-based adaptive baseline
 - Establish energy, packet, and excursion-warning metrics
+- Audit dataset health and EDA plots
+- Evaluate fixed-threshold and rule-based predictive baselines without training learned models
 
 ## Phase 4: TinyML Modeling
 
@@ -44,4 +46,3 @@
 - Integrate TMP117 and STM32U585 firmware
 - Validate XBee-PRO 900HP communication
 - Compare physical measurements with simulation assumptions
-

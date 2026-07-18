@@ -1,0 +1,19 @@
+fixed_threshold:
+  lower_limit_c: 2.0
+  upper_limit_c: 8.0
+
+rule_based:
+  lower_limit_c: 2.0
+  upper_limit_c: 8.0
+  risk_distance_c: 0.75
+  risk_slope_c_per_second: 0.003
+  transition_slope_c_per_second: 0.001
+  transition_rolling_range_c: 0.7
+  acceleration_risk_c_per_second2: 0.00005
+  rolling_range_column: rolling_range_10
+  slope_column: temperature_slope_ls_10
+  invalid_feature_fallback_state: STABLE
+  sensor_fault_state: STABLE
+  hysteresis_distance_c: 0.25
+  minimum_state_duration_seconds: 120
+

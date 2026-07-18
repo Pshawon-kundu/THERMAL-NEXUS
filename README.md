@@ -94,3 +94,21 @@ Synthetic labels use `true_temperature` because the simulator knows the ground-t
 Invalid or missing sensor samples are explicitly marked and receive `feature_valid=false` with a reason. They are not silently imputed.
 
 No model is trained in this phase. Future competition claims require real hardware measurements, and future models must be retrained or validated using real TMP117 data.
+
+## EDA and Baseline Evaluation
+
+Run dataset health, EDA, fixed-threshold baseline, rule-based baseline, and baseline evaluation:
+
+```powershell
+python -m analysis.dataset_health --train ml/data/splits/train.csv --validation ml/data/splits/validation.csv --test ml/data/splits/test.csv
+python -m analysis.eda --train ml/data/splits/train.csv --output evidence/eda
+python -m ml.evaluation.evaluate_baselines --train ml/data/splits/train.csv --validation ml/data/splits/validation.csv --test ml/data/splits/test.csv --config config/baselines.yaml
+```
+
+Or:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\run_baseline_analysis.ps1
+```
+
+The fixed-threshold baseline is reactive: it alerts only after measured temperature is already outside limits. The rule-based baseline is a non-learned predictive comparison using current and historical features only. Thresholds are configured and must be selected from training data only.

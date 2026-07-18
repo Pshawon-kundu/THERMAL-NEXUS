@@ -21,7 +21,14 @@ include = ["simulator*", "ml*", "protocol*", "host*"]
 line-length = 88
 target-version = ["py310"]
 exclude = '''
-/(.venv|.matplotlib-cache|.pytest_cache|.ruff_cache|ml/data|evidence)/
+.*(
+  [\\/]\.venv[\\/]
+  | [\\/]\.matplotlib-cache[\\/]
+  | [\\/]\.pytest_cache[\\/]
+  | [\\/]\.ruff_cache[\\/]
+  | [\\/]ml[\\/]data[\\/]
+  | [\\/]evidence[\\/]
+).*
 '''
 
 [tool.ruff]
