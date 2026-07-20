@@ -158,3 +158,41 @@ python -m simulator.run_end_to_end `
 Outputs are written under `evidence/end_to_end/`. Energy values are labeled
 `ESTIMATED SOFTWARE VALUE`; they are not measured hardware energy, range, or
 accuracy claims.
+
+## Offline Dashboard, KPI, and Embedded Preparation
+
+Initialize the local SQLite database and import end-to-end evidence:
+
+```powershell
+.\tools\initialize_dashboard.ps1
+.\tools\import_latest_experiments.ps1
+```
+
+Generate KPI reports:
+
+```powershell
+.\tools\generate_kpi_reports.ps1
+```
+
+Run the offline dashboard:
+
+```powershell
+.\tools\run_dashboard.ps1
+```
+
+Prepare hardware-independent embedded export artifacts:
+
+```powershell
+.\tools\prepare_embedded_export.ps1
+.\tools\run_embedded_parity.ps1
+```
+
+Run the dashboard-phase verification workflow:
+
+```powershell
+.\tools\verify_dashboard_phase.ps1
+```
+
+All dashboard, KPI, radio, energy, and embedded-readiness outputs are
+preliminary software results unless later replaced by real TMP117, STM32U585,
+XBee-PRO, and reader measurements.

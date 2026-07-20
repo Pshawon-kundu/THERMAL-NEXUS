@@ -1,0 +1,11 @@
+{
+  "tested_vector_count": 12,
+  "compiler": "unavailable",
+  "compiler_flags": "",
+  "preprocessing_max_absolute_error": null,
+  "probability_max_absolute_error": null,
+  "class_mismatch_count": null,
+  "policy_mismatch_count": null,
+  "status": "blocked_no_compiler",
+  "notes": "No C compiler found. Install GCC or configure MSVC cl."
+}

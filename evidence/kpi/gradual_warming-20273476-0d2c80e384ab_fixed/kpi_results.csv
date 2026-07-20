@@ -1,0 +1,32 @@
+metric_name,metric_value,unit,value_type,method,notes
+total_sensor_samples,121.0,count,SIMULATED_SOFTWARE_VALUE,count(node_decisions),Software simulation only.
+total_transmissions,56.0,count,SIMULATED_SOFTWARE_VALUE,sum(transmission_requested),Not measured RF traffic.
+total_inferences,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+delivered_packets,56.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+dropped_packets,3.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+corrupted_packets,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+duplicated_packets,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+out_of_order_packets,1.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+retries,4.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+packet_delivery_ratio,1.0,ratio,SIMULATED_SOFTWARE_VALUE,accepted reader records / requested transmissions,Software radio model only.
+packet_loss_rate,0.05357142857142857,ratio,SIMULATED_SOFTWARE_VALUE,dropped events / transmissions,No physical range claim.
+mean_latency,1250.8873195098276,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+median_latency,984.8419222666962,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+p95_latency,1740.9394115970827,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+accepted_packets,56.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+rejected_packets,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+alerts_generated,40.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+missed_event_rate,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+false_alert_event_rate,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+mean_warning_lead_time,0.0,seconds,SIMULATED_SOFTWARE_VALUE,first excursion timestamp - first EXCURSION_RISK state timestamp,Single-run result has no statistical significance.
+median_warning_lead_time,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+minimum_warning_lead_time,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+state_transitions,1.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+sensor_fault_duration,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+model_fallback_duration,0.0,value,SIMULATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+estimated_sensing_energy,0.242,value,ESTIMATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+estimated_inference_energy,0.0,value,ESTIMATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+estimated_processing_energy,0.0605,value,ESTIMATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+estimated_radio_energy,0.56,value,ESTIMATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.
+estimated_total_energy,0.8625,estimated unit,ESTIMATED_SOFTWARE_VALUE,sensing estimate + inference estimate + radio estimate,Not measured Wh or STM32 consumption.
+estimated_energy_per_delivered_packet,0.015401785714285715,value,ESTIMATED_SOFTWARE_VALUE,calculated from imported evidence,Software simulation result.

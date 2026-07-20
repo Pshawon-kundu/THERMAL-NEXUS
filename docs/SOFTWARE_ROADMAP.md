@@ -46,6 +46,9 @@
 - Build offline dashboard
 - Add replay and comparison tools
 - Summarize KPI results with clear simulation disclaimers
+- Import end-to-end evidence into local SQLite
+- Generate embedded preparation manifests, C99 source, golden vectors, parity
+  evidence, and resource estimates without physical firmware
 
 ## Phase 7: Hardware Integration
 

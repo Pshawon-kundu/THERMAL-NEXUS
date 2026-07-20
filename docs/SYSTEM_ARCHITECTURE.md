@@ -39,12 +39,16 @@ Current authorized implementation scope:
 - Protocol v1 binary packet simulation
 - Deterministic radio-channel simulation
 - Virtual reader validation and CSV storage
+- Offline SQLite experiment ingestion
+- Streamlit dashboard and replay service
+- KPI reporting and hardware-independent embedded export preparation
 
 Deferred work:
 
 - Sensor-node firmware
 - Offline dashboard
 - KPI analysis
+- Physical embedded deployment
 - Physical TMP117, STM32U585, and XBee-PRO integration
 - Final hardware accuracy, range, and energy claims
 

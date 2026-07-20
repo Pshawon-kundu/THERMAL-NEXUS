@@ -1,0 +1,46 @@
+# KPI Report
+
+SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS
+
+Generated: 2026-07-20T07:43:41.736945+00:00
+Experiment: `gradual_warming-20273476-0d2c80e384ab:ml`
+Scenario: `gradual_warming`
+Operating mode: `ml`
+Model version: `provisional_20260718_161144_decision_tree`
+Policy version: `runtime_policy_v1`
+
+| metric | value | unit | value_type |
+| --- | ---: | --- | --- |
+| total_sensor_samples | 121.0 | count | SIMULATED_SOFTWARE_VALUE |
+| total_transmissions | 107.0 | count | SIMULATED_SOFTWARE_VALUE |
+| total_inferences | 121.0 | value | SIMULATED_SOFTWARE_VALUE |
+| delivered_packets | 107.0 | value | SIMULATED_SOFTWARE_VALUE |
+| dropped_packets | 8.0 | value | SIMULATED_SOFTWARE_VALUE |
+| corrupted_packets | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| duplicated_packets | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| out_of_order_packets | 4.0 | value | SIMULATED_SOFTWARE_VALUE |
+| retries | 11.0 | value | SIMULATED_SOFTWARE_VALUE |
+| packet_delivery_ratio | 1.0 | ratio | SIMULATED_SOFTWARE_VALUE |
+| packet_loss_rate | 0.07476635514018691 | ratio | SIMULATED_SOFTWARE_VALUE |
+| mean_latency | 1424.6373044707834 | value | SIMULATED_SOFTWARE_VALUE |
+| median_latency | 1017.3061208752188 | value | SIMULATED_SOFTWARE_VALUE |
+| p95_latency | 2969.3891247334227 | value | SIMULATED_SOFTWARE_VALUE |
+| accepted_packets | 107.0 | value | SIMULATED_SOFTWARE_VALUE |
+| rejected_packets | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| alerts_generated | 49.0 | value | SIMULATED_SOFTWARE_VALUE |
+| missed_event_rate | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| false_alert_event_rate | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| mean_warning_lead_time | 600.0 | seconds | SIMULATED_SOFTWARE_VALUE |
+| median_warning_lead_time | 600.0 | value | SIMULATED_SOFTWARE_VALUE |
+| minimum_warning_lead_time | 600.0 | value | SIMULATED_SOFTWARE_VALUE |
+| state_transitions | 3.0 | value | SIMULATED_SOFTWARE_VALUE |
+| sensor_fault_duration | 0.0 | value | SIMULATED_SOFTWARE_VALUE |
+| model_fallback_duration | 4.0 | value | SIMULATED_SOFTWARE_VALUE |
+| estimated_sensing_energy | 0.242 | value | ESTIMATED_SOFTWARE_VALUE |
+| estimated_inference_energy | 0.121 | value | ESTIMATED_SOFTWARE_VALUE |
+| estimated_processing_energy | 0.0605 | value | ESTIMATED_SOFTWARE_VALUE |
+| estimated_radio_energy | 1.07 | value | ESTIMATED_SOFTWARE_VALUE |
+| estimated_total_energy | 1.4935 | estimated unit | ESTIMATED_SOFTWARE_VALUE |
+| estimated_energy_per_delivered_packet | 0.013957943925233645 | value | ESTIMATED_SOFTWARE_VALUE |
+
+Energy KPIs are ESTIMATED_SOFTWARE_VALUE and are not measured Wh.

@@ -1,0 +1,250 @@
+[
+  {
+    "metric_name": "total_sensor_samples",
+    "metric_value": 121.0,
+    "unit": "count",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "count(node_decisions)",
+    "notes": "Software simulation only."
+  },
+  {
+    "metric_name": "total_transmissions",
+    "metric_value": 56.0,
+    "unit": "count",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "sum(transmission_requested)",
+    "notes": "Not measured RF traffic."
+  },
+  {
+    "metric_name": "total_inferences",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "delivered_packets",
+    "metric_value": 56.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "dropped_packets",
+    "metric_value": 3.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "corrupted_packets",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "duplicated_packets",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "out_of_order_packets",
+    "metric_value": 1.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "retries",
+    "metric_value": 4.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "packet_delivery_ratio",
+    "metric_value": 1.0,
+    "unit": "ratio",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "accepted reader records / requested transmissions",
+    "notes": "Software radio model only."
+  },
+  {
+    "metric_name": "packet_loss_rate",
+    "metric_value": 0.05357142857142857,
+    "unit": "ratio",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "dropped events / transmissions",
+    "notes": "No physical range claim."
+  },
+  {
+    "metric_name": "mean_latency",
+    "metric_value": 1250.8873195098276,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "median_latency",
+    "metric_value": 984.8419222666962,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "p95_latency",
+    "metric_value": 1740.9394115970827,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "accepted_packets",
+    "metric_value": 56.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "rejected_packets",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "alerts_generated",
+    "metric_value": 40.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "missed_event_rate",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "false_alert_event_rate",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "mean_warning_lead_time",
+    "metric_value": 0.0,
+    "unit": "seconds",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "first excursion timestamp - first EXCURSION_RISK state timestamp",
+    "notes": "Single-run result has no statistical significance."
+  },
+  {
+    "metric_name": "median_warning_lead_time",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "minimum_warning_lead_time",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "state_transitions",
+    "metric_value": 1.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "sensor_fault_duration",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "model_fallback_duration",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "SIMULATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "estimated_sensing_energy",
+    "metric_value": 0.242,
+    "unit": "value",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "estimated_inference_energy",
+    "metric_value": 0.0,
+    "unit": "value",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "estimated_processing_energy",
+    "metric_value": 0.0605,
+    "unit": "value",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "estimated_radio_energy",
+    "metric_value": 0.56,
+    "unit": "value",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  },
+  {
+    "metric_name": "estimated_total_energy",
+    "metric_value": 0.8625,
+    "unit": "estimated unit",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "sensing estimate + inference estimate + radio estimate",
+    "notes": "Not measured Wh or STM32 consumption."
+  },
+  {
+    "metric_name": "estimated_energy_per_delivered_packet",
+    "metric_value": 0.015401785714285715,
+    "unit": "value",
+    "value_type": "ESTIMATED_SOFTWARE_VALUE",
+    "method": "calculated from imported evidence",
+    "notes": "Software simulation result."
+  }
+]

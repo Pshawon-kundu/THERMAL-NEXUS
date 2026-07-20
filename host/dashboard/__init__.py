@@ -1,1 +1,1 @@
-"""Dashboard package placeholder."""
+"""Dashboard package for Thermal Nexus."""

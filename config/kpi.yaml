@@ -1,0 +1,13 @@
+enabled_kpis: all
+event_merging_gap_seconds: 60
+warning_lead_time_convention: first_excursion_timestamp_minus_first_warning_timestamp
+energy_estimate_constants:
+  sensing_per_sample: 0.002
+  inference_per_sample: 0.001
+  processing_per_sample: 0.0005
+  radio_per_transmission: 0.01
+comparison_compatibility:
+  require_same_scenario: true
+  require_same_run_id: true
+  require_same_policy_version: false
+report_output_path: evidence/kpi

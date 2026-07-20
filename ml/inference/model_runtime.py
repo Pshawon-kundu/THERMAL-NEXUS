@@ -171,7 +171,7 @@ class ModelRuntime:
             return state, int(
                 self.class_mapping.get(state, CODE_BY_STATE.get(state, 0))
             )
-        code = int(label)
+        code = int(float(str(label)))
         return self._state_for_code(code), code
 
     def _fallback(self, reason: str) -> RuntimePrediction:
