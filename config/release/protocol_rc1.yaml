@@ -1,0 +1,5 @@
+version: protocol_rc1
+protocol_version: 1
+packet_length_bytes: 32
+crc: CRC-16/CCITT-FALSE
+description: Frozen protocol configuration for software release candidate 1.

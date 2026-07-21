@@ -50,7 +50,16 @@
 - Generate embedded preparation manifests, C99 source, golden vectors, parity
   evidence, and resource estimates without physical firmware
 
-## Phase 7: Hardware Integration
+## Phase 7: Release Hardening
+
+- Freeze software release-candidate manifests, checksums, and configuration
+  snapshots
+- Add real TMP117 data ingestion and labeling protocols
+- Harden local backup, restore, validation, demo, and competition evidence
+  packaging
+- Maintain software-only limitation notices until real hardware is validated
+
+## Phase 8: Hardware Integration
 
 - Integrate TMP117 and STM32U585 firmware
 - Validate XBee-PRO 900HP communication

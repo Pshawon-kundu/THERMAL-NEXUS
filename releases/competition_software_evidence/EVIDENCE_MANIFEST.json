@@ -1,0 +1,25 @@
+{
+  "checksums": {
+    "docs/END_TO_END_SIMULATION_GUIDE.md": "1cb895a0d6156c2ac43a1f23f65d4c712ab405a8a9470c93f7dd205bce523d51",
+    "docs/RUNTIME_INFERENCE_SPECIFICATION.md": "d11d8cb9e8886db130508a833869bec50cd322c5010440568bafc58a23152e94",
+    "docs/SOFTWARE_ROADMAP.md": "f95269ed347bf4ae1ba8e665bdc263234ab629ae48741ef5418e5e230fe64a34",
+    "docs/SYSTEM_ARCHITECTURE.md": "37bde65ee7d5cd9c96b5ec4e0f2b9996dad2cad3518cd1fbe0c776e94ec4a8ba",
+    "evidence/dashboard/import_report.md": "a0817a28aa2bbc9ca6845b9317a232508910932ffe00ddc807aa5f207cfb3289",
+    "evidence/end_to_end/mode_comparison.csv": "4e216940957a49eaa22b594fcefca1b28b330ee966778b6c624a12251bbda73b",
+    "evidence/end_to_end/runtime_report.md": "accfe6853689c732f2b91243db2f08dc6041b3b7eedfef4bcce14f83496ec551",
+    "releases/software_rc1/RELEASE_MANIFEST.json": "45af42b98fe0759d384e89799cc937abe8d21092860364bed01881ad4176638f"
+  },
+  "created_at_utc": "2026-07-20T08:25:33.810236+00:00",
+  "entries": [
+    "docs/SYSTEM_ARCHITECTURE.md",
+    "docs/SOFTWARE_ROADMAP.md",
+    "docs/RUNTIME_INFERENCE_SPECIFICATION.md",
+    "docs/END_TO_END_SIMULATION_GUIDE.md",
+    "evidence/end_to_end/runtime_report.md",
+    "evidence/end_to_end/mode_comparison.csv",
+    "evidence/dashboard/import_report.md",
+    "releases/software_rc1/RELEASE_MANIFEST.json"
+  ],
+  "limitations_notice": "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS",
+  "software_version": "software_rc1"
+}

@@ -42,18 +42,24 @@ Current authorized implementation scope:
 - Offline SQLite experiment ingestion
 - Streamlit dashboard and replay service
 - KPI reporting and hardware-independent embedded export preparation
+- Release-candidate manifests, checksums, backup/restore scripts, and
+  competition software evidence packaging
+- Real TMP117 CSV ingestion contract and conservative real-data labeling helper
 
 Deferred work:
 
 - Sensor-node firmware
-- Offline dashboard
-- KPI analysis
 - Physical embedded deployment
 - Physical TMP117, STM32U585, and XBee-PRO integration
 - Final hardware accuracy, range, and energy claims
 
-Operating modes to support in later phases:
+Implemented software operating modes:
 
 - Mode A: fixed sampling and fixed transmission without prediction
 - Mode B: rule-based adaptive sampling and transmission
 - Mode C: TinyML predictive adaptive sampling and transmission
+
+Hardware replacement interfaces are prepared under `embedded/interfaces/` and
+`simulator/sensor_node/interfaces.py`. They define boundaries for TMP117,
+STM32 clock/battery/storage/logging, and XBee transport integration without
+claiming physical performance.

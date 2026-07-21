@@ -1,0 +1,3 @@
+version: kpi_rc1
+source: ../kpi.yaml
+description: Frozen KPI configuration for software release candidate 1.

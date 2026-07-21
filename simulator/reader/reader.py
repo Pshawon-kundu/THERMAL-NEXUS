@@ -38,6 +38,7 @@ class VirtualReader:
             "node_id": packet.node_id,
             "sequence_number": packet.sequence_number,
             "timestamp_seconds": packet.timestamp_seconds,
+            "protocol_version": packet.protocol_version,
             "delivery_time_seconds": delivery.delivery_time_seconds,
             "packet_latency_seconds": latency,
             "predicted_state_code": packet.predicted_state_code,

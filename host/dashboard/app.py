@@ -20,7 +20,11 @@ def main() -> None:
 
     config = load_dashboard_config()
     service = DashboardDataService(Path(config["database_path"]))
-    st.set_page_config(page_title=config["dashboard_title"], layout="wide")
+    st.set_page_config(
+        page_title=config["dashboard_title"],
+        page_icon=":material/ac_unit:",
+        layout="wide",
+    )
     _apply_theme()
     _header(config)
     tabs = st.tabs(
@@ -124,7 +128,7 @@ def _browser(service: DashboardDataService) -> None:
                 "imported_at",
             ]
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
     if filtered.empty:
@@ -195,7 +199,7 @@ def _mode_comparison(service: DashboardDataService) -> None:
                 "value_type",
             ]
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
     numeric = frame[pd.to_numeric(frame["metric_value"], errors="coerce").notna()]
@@ -218,7 +222,7 @@ def _mode_comparison(service: DashboardDataService) -> None:
                 paper_bgcolor="white",
                 plot_bgcolor="white",
             ),
-            use_container_width=True,
+            width="stretch",
         )
     st.caption("Energy metrics are ESTIMATED SOFTWARE VALUE.")
 
@@ -238,7 +242,7 @@ def _alerts(service: DashboardDataService) -> None:
         default=sorted(frame["alert_type"].dropna().unique().tolist()),
     )
     filtered = frame[frame["alert_type"].isin(alert_type)]
-    st.dataframe(filtered, use_container_width=True, hide_index=True)
+    st.dataframe(filtered, width="stretch", hide_index=True)
 
 
 def _kpis(service: DashboardDataService) -> None:
@@ -247,7 +251,7 @@ def _kpis(service: DashboardDataService) -> None:
     if frame.empty:
         st.info("No KPI reports available.")
         return
-    st.dataframe(frame, use_container_width=True, hide_index=True)
+    st.dataframe(frame, width="stretch", hide_index=True)
 
 
 def _model_readiness() -> None:
@@ -276,7 +280,7 @@ def _simple_table(service: DashboardDataService, title: str, kind: str) -> None:
         ) + service.repository.get_reader_records(selected)
     else:
         rows = []
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
 def _apply_theme() -> None:
@@ -460,7 +464,7 @@ def _overview_mode_chart(service: DashboardDataService) -> None:
         height=320,
         margin={"l": 20, "r": 20, "t": 60, "b": 40},
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 if __name__ == "__main__":

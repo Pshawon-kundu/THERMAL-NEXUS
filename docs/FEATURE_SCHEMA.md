@@ -31,3 +31,10 @@ Baselines and future model pipelines must call the schema guard before predictio
 
 Training fails if prohibited fields are configured as inputs or if unexpected NaN or infinite feature values remain after the model-ready split step.
 
+## Release Contract
+
+Release RC1 records the selected feature schema checksum in
+`releases/software_rc1/RELEASE_MANIFEST.json`. Any change to model input feature
+order requires a new candidate artifact and a new checksum. `scenario` and
+`run_id` remain metadata-only fields for grouping, reporting, and event-level
+evaluation.

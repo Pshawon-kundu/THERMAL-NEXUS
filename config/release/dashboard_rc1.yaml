@@ -1,0 +1,3 @@
+version: dashboard_rc1
+source: ../dashboard.yaml
+description: Frozen dashboard configuration for software release candidate 1.

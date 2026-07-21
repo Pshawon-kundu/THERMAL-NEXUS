@@ -141,6 +141,8 @@ class VirtualSensorNode:
                 "run_id": row["run_id"],
                 "node_id": self.node_id,
                 "operating_mode": self.operating_mode.value,
+                "policy_version": "runtime_policy_v1",
+                "protocol_version": PROTOCOL_VERSION,
                 "measured_temperature": measured_value,
                 "sensor_valid": sensor_valid,
                 "predicted_state": predicted_state,

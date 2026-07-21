@@ -1,0 +1,3 @@
+version: runtime_policy_rc1
+source: ../runtime_policy.yaml
+description: Frozen runtime policy configuration for software release candidate 1.

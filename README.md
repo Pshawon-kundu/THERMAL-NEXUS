@@ -2,7 +2,15 @@
 
 Thermal Nexus is a software-only digital prototype for an AI-assisted predictive long-range wireless temperature-monitoring system for cold-chain logistics.
 
-This foundation implements the project layout, configuration files, documentation, and a synthetic temperature-data generator. It does not train machine-learning models, build a dashboard, implement STM32 firmware, or claim hardware results.
+The current software release candidate includes synthetic data generation,
+labeling, feature extraction, baselines, lightweight provisional ML training,
+runtime simulation, binary packet simulation, a virtual reader, local SQLite
+ingestion, an offline Streamlit dashboard, KPI reports, and embedded-readiness
+templates.
+
+All current results are simulated or preliminary software results. No physical
+TMP117 accuracy, STM32 energy, XBee range, or hardware battery-life claim is
+made.
 
 ## Windows PowerShell Setup
 
@@ -196,3 +204,50 @@ Run the dashboard-phase verification workflow:
 All dashboard, KPI, radio, energy, and embedded-readiness outputs are
 preliminary software results unless later replaced by real TMP117, STM32U585,
 XBee-PRO, and reader measurements.
+
+## Release Hardening and Complete Demo
+
+Create release-candidate evidence:
+
+```powershell
+python -m analysis.release_hardening release
+python -m analysis.release_hardening evidence
+python -m analysis.release_hardening validate
+```
+
+Run the complete software-only demo workflow:
+
+```powershell
+.\tools\run_complete_software_demo.ps1
+```
+
+Back up and validate the local dashboard database:
+
+```powershell
+.\tools\backup_local_database.ps1
+.\tools\validate_release_artifacts.ps1
+```
+
+Restore only after explicit confirmation:
+
+```powershell
+.\tools\restore_local_database.ps1 -BackupPath evidence\backups\<backup-file>.db -ConfirmRestore
+```
+
+## Real TMP117 Data Preparation
+
+Import a future real-data CSV without creating synthetic truth or labels:
+
+```powershell
+python -m host.ingestion.import_real_temperature_data --input path\to\real_tmp117.csv --output evidence\real_data
+```
+
+Create conservative future labels only after the experiment definition and
+labeling source are documented:
+
+```powershell
+python -m ml.preprocessing.create_real_data_labels --input evidence\real_data\real_run_raw.csv --config config\real_labeling_example.yaml --output evidence\real_data\real_run_labeled.csv
+```
+
+Real-data models must be retrained or revalidated with real TMP117 runs before
+competition hardware claims.

@@ -109,6 +109,6 @@
   "estimated_flash_bytes": 0,
   "protocol_version": 1,
   "policy_version": "runtime_policy_v1",
-  "export_timestamp": "2026-07-20T07:55:06.395214+00:00",
-  "source_git_commit": "320212d45f468446f663084e490ac492e0a4df9e"
+  "export_timestamp": "2026-07-20T08:25:12.127740+00:00",
+  "source_git_commit": "99ff94e1293dce657f1e474cf1287631e6cd5fb5"
 }

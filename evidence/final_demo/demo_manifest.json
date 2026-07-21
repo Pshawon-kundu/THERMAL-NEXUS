@@ -1,0 +1,20 @@
+{
+  "artifacts": [
+    "evidence\\end_to_end\\runtime_report.md",
+    "evidence\\end_to_end\\runtime_metrics.json",
+    "evidence\\end_to_end\\mode_comparison.csv",
+    "evidence\\dashboard\\import_report.md",
+    "embedded\\generated\\deployment_manifest.json"
+  ],
+  "checksums": {
+    "embedded\\generated\\deployment_manifest.json": "72ab04bb5aacf86886ddc96827a29c65691f01cb0896b5680a988e2ca9a64345",
+    "evidence\\dashboard\\import_report.md": "a0817a28aa2bbc9ca6845b9317a232508910932ffe00ddc807aa5f207cfb3289",
+    "evidence\\end_to_end\\mode_comparison.csv": "4e216940957a49eaa22b594fcefca1b28b330ee966778b6c624a12251bbda73b",
+    "evidence\\end_to_end\\runtime_metrics.json": "422b8794de6aebc441dafbd17c89c277e32307ed0f8e58f7616855ff68188c6c",
+    "evidence\\end_to_end\\runtime_report.md": "accfe6853689c732f2b91243db2f08dc6041b3b7eedfef4bcce14f83496ec551"
+  },
+  "created_at_utc": "2026-07-20T08:25:29.282067+00:00",
+  "demo_scope": "software-only simulation and offline evidence review",
+  "limitations_notice": "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS",
+  "software_version": "software_rc1"
+}

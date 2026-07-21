@@ -1,0 +1,8 @@
+lower_temperature_limit: 2.0
+upper_temperature_limit: 8.0
+prediction_horizons_minutes:
+  - 5
+  - 10
+  - 15
+label_source_column: measured_temperature
+notes: Example only. Replace with documented real experiment limits and source.

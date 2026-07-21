@@ -1,0 +1,3 @@
+version: model_rc1
+selected_model_pointer: ml/models/selected/latest_selected.json
+description: Frozen selected-model pointer for software release candidate 1.
