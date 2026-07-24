@@ -1,0 +1,16 @@
+{
+  "rows": 4137,
+  "daily_runs": 45,
+  "start": "2012-03-13T11:45:00",
+  "end": "2012-05-02T07:30:00",
+  "duplicate_timestamps": 0,
+  "input_sha256": {
+    "NEW-DATA-1.T15.txt": "bd5a4c4f1f6a0652258179c9963fb5c90885eedee4a981617898c18d6b5c4541",
+    "NEW-DATA-2.T15.txt": "1c008643381903a51557a0599cbd7706ae71b07f2d449d165b17f13b6e12a97e"
+  },
+  "limitations": [
+    "Building-environment data, not cold-chain data.",
+    "15-minute sampling; use 30/60/90-minute horizons.",
+    "No independent true-temperature reference."
+  ]
+}

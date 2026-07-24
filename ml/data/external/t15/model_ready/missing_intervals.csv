@@ -1,0 +1,3 @@
+run_id,previous_timestamp,next_timestamp,gap_seconds,missing_15m_intervals
+t15_20120502,2012-05-02T02:45:00,2012-05-02T03:15:00,1800,1
+t15_20120502,2012-05-02T04:30:00,2012-05-02T05:00:00,1800,1

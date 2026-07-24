@@ -1,0 +1,80 @@
+{
+  "dataset_label": "EXTERNAL_DERIVED_BENCHMARK",
+  "row_count": 4137,
+  "run_count": 45,
+  "split_run_counts": {
+    "train": 31,
+    "validation": 6,
+    "test": 8
+  },
+  "invalid_timestamps": 0,
+  "duplicate_timestamps": 0,
+  "sample_interval_seconds": 900,
+  "missing_interval_count_inside_runs": 2,
+  "zero_run_overlap_between_splits": true,
+  "manifest_rows": 45,
+  "source_audit_combined": {
+    "row_count": 4137,
+    "column_count_original": 24,
+    "timestamp_start": "2012-03-13T11:45:00",
+    "timestamp_end": "2012-05-02T07:30:00",
+    "unique_daily_runs": 45,
+    "duplicate_timestamps": 0,
+    "missing_cell_count_after_parse": 0,
+    "expected_interval_seconds": 900,
+    "non_15_minute_gaps": 3,
+    "split_run_counts": {
+      "train": 31,
+      "test": 8,
+      "validation": 6
+    },
+    "temperature_ranges_c": {
+      "dining": {
+        "min": 11.352,
+        "max": 28.924,
+        "mean": 20.493529949238578
+      },
+      "room": {
+        "min": 11.076,
+        "max": 28.548,
+        "mean": 20.146049915397633
+      },
+      "exterior": {
+        "min": 9.22333,
+        "max": 29.908,
+        "mean": 18.01933111916848
+      }
+    },
+    "important_limitations": [
+      "This is a building-environment dataset, not a vaccine or cold-chain dataset.",
+      "The 15-minute interval cannot support genuine 5-minute or 10-minute prediction horizons.",
+      "No independent reference thermometer or true_temperature field is available.",
+      "The second indoor temperature sensor is an auxiliary sensor, not ground truth.",
+      "Two 15-minute timestamps are absent within NEW-DATA-2, and there is a multi-day gap between files.",
+      "Day_Of_Week contains fractional boundary values and should be recomputed from timestamp if used."
+    ]
+  },
+  "temperature_ranges_c": {
+    "temperature_dining_c": {
+      "min": 11.352,
+      "max": 28.924,
+      "mean": 20.493529949238578
+    },
+    "temperature_room_c": {
+      "min": 11.076,
+      "max": 28.548,
+      "mean": 20.146049915397633
+    },
+    "temperature_exterior_c": {
+      "min": 9.22333,
+      "max": 29.908,
+      "mean": 18.01933111916848
+    }
+  },
+  "limitations": [
+    "External building-environment dataset, not Thermal Nexus-collected data.",
+    "Not a cold-chain/vaccine dataset and not evidence of final cold-chain performance.",
+    "Targets are future measured temperatures derived from the same source series.",
+    "Models and preprocessing are stored outside ml/models/selected."
+  ]
+}

@@ -1,0 +1,49 @@
+dataset:
+  name: thermal_nexus_external_t15_benchmark_v1
+  source_type: EXTERNAL_DERIVED_BENCHMARK
+  sampling_interval_seconds: 900
+  primary_temperature_column: temperature_dining_c
+  auxiliary_temperature_columns:
+    - temperature_room_c
+    - temperature_exterior_c
+
+run_policy:
+  type: calendar_day
+  run_id_format: t15_YYYYMMDD
+
+split_policy:
+  type: chronological_by_complete_run
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  random_shuffle: false
+
+recommended_external_benchmark_settings:
+  prediction_horizons_minutes:
+    - 30
+    - 60
+    - 90
+  feature_windows_samples:
+    - 4
+    - 8
+    - 12
+  note: >
+    These settings match 15-minute sampling. Do not use 5-minute or 10-minute
+    horizons because the source data has no observations at those times.
+
+labeling:
+  enabled: false
+  reason: >
+    Safety thresholds must be defined for the intended benchmark task.
+    Do not use vaccine 2-8 C thresholds on this room-temperature dataset.
+  allowed_future_method: future_measured_temperature_crossing
+  prohibited_claim: independent_ground_truth
+
+provenance:
+  claim_as_project_collected_data: false
+  use_for_final_cold_chain_claims: false
+  suitable_uses:
+    - parser and ingestion testing
+    - temporal feature validation
+    - external robustness benchmark
+    - dashboard and replay testing
