@@ -7,8 +7,8 @@
     "Models and preprocessing are stored outside ml/models/selected."
   ],
   "prohibited_claims": [
-    "Thermal Nexus collected this external dataset",
-    "External T15 results prove cold-chain field performance",
-    "Future measured derived targets are independent ground truth"
+    "Do not claim that Thermal Nexus collected the external T15 dataset.",
+    "Do not claim that external T15 results prove cold-chain field performance.",
+    "Do not describe future-derived temperature targets as independent ground truth."
   ]
 }
