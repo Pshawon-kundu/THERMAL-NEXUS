@@ -1,0 +1,18 @@
+{
+  "dataset_label": "EXTERNAL_DERIVED_BENCHMARK",
+  "training_only_preprocessing": true,
+  "locked_test_split": true,
+  "split_run_counts": {
+    "temperature_only": {
+      "train": 31,
+      "validation": 6,
+      "test": 8
+    },
+    "multivariate": {
+      "train": 31,
+      "validation": 6,
+      "test": 8
+    }
+  },
+  "model_artifact_dir": "E:\\OneDrive\\Desktop\\HART\\thermal-nexus\\ml\\data\\external\\t15\\model_ready\\models"
+}
