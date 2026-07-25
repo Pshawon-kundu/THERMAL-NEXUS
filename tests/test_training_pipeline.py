@@ -136,13 +136,17 @@ def test_test_lock_blocks_without_confirmation(tmp_path: Path) -> None:
         evaluate_final_model(tmp_path, tmp_path / "test.csv", False)
 
 
-def test_artifact_reload_reproduces_predictions() -> None:
+def test_artifact_reload_reproduces_predictions(tmp_path: Path) -> None:
     latest = json.loads(Path("ml/models/selected/latest_selected.json").read_text())
     artifact_dir = Path(latest["artifact_dir"])
     pipeline = joblib.load(artifact_dir / "pipeline.joblib")
     schema_config = yaml.safe_load(Path("config/models.yaml").read_text())
     features = schema_config["features"]["selected"]
-    frame = pd.read_csv("ml/data/splits/validation.csv").head(10)
+    validation_path = tmp_path / "validation.csv"
+    pd.read_csv("tests/fixtures/main_ml/validation_minimal.csv").to_csv(
+        validation_path, index=False
+    )
+    frame = pd.read_csv(validation_path).head(10)
     first = pipeline.predict(frame[features])
     second = joblib.load(artifact_dir / "pipeline.joblib").predict(frame[features])
     assert list(first) == list(second)

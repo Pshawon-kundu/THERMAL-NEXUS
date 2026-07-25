@@ -211,8 +211,12 @@ def test_deterministic_splitting_and_zero_overlap(tmp_path: Path) -> None:
     input_path = tmp_path / "model_ready.csv"
     dataset.to_csv(input_path, index=False)
 
-    report_a = split_dataset(input_path, tmp_path / "splits_a")
-    report_b = split_dataset(input_path, tmp_path / "splits_b")
+    report_a = split_dataset(
+        input_path, tmp_path / "splits_a", report_dir=tmp_path / "reports_a"
+    )
+    report_b = split_dataset(
+        input_path, tmp_path / "splits_b", report_dir=tmp_path / "reports_b"
+    )
     assert report_a["split_run_counts"] == report_b["split_run_counts"]
     assert not any(report_a["overlaps"].values())
     assert report_a["status"] == "pass"

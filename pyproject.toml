@@ -24,6 +24,7 @@ exclude = '''
 .*(
   [\\/]\.venv[\\/]
   | [\\/]\.matplotlib-cache[\\/]
+  | [\\/]\.black-cache[\\/]
   | [\\/]\.pytest_cache[\\/]
   | [\\/]\.ruff_cache[\\/]
   | [\\/]ml[\\/]data[\\/]
@@ -42,3 +43,7 @@ select = ["E", "F", "I", "UP", "B", "ANN"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+  "external_t15_integration: requires the ignored full external T15 source dataset",
+  "generated_artifact_integration: requires ignored generated external T15 artifacts",
+]

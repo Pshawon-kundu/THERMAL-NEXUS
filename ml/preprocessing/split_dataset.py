@@ -24,6 +24,7 @@ class SplitError(ValueError):
 def split_dataset(
     input_path: Path,
     output_dir: Path,
+    report_dir: Path = Path("evidence"),
     train_ratio: float = 0.70,
     validation_ratio: float = 0.15,
     test_ratio: float = 0.15,
@@ -45,10 +46,11 @@ def split_dataset(
 
     assignments.to_csv(output_dir / "split_manifest.csv", index=False)
     report = _validate_split(frame, split_frames, assignments)
-    (Path("evidence") / "split_report.json").write_text(
+    report_dir.mkdir(parents=True, exist_ok=True)
+    (report_dir / "split_report.json").write_text(
         json.dumps(report, indent=2), encoding="utf-8"
     )
-    (Path("evidence") / "split_report.md").write_text(
+    (report_dir / "split_report.md").write_text(
         _split_report_markdown(report), encoding="utf-8"
     )
     if report["status"] != "pass":

@@ -8,14 +8,18 @@ import subprocess
 from pathlib import Path
 
 
-def run_parity() -> dict[str, object]:
+def run_parity(
+    golden_vector_path: Path = Path("embedded/golden_vectors/golden_vectors.json"),
+    generated_model_source: Path = Path("embedded/generated/thermal_nexus_model.c"),
+    evidence_dir: Path = Path("evidence/embedded"),
+) -> dict[str, object]:
     """Compile and run C parity harness when a compiler is available."""
 
-    out = Path("evidence/embedded")
+    out = evidence_dir
     out.mkdir(parents=True, exist_ok=True)
     compiler = shutil.which("gcc") or shutil.which("cl")
     report = {
-        "tested_vector_count": _vector_count(),
+        "tested_vector_count": _vector_count(golden_vector_path),
         "compiler": compiler or "unavailable",
         "compiler_flags": (
             "-std=c99" if compiler and compiler.endswith("gcc.exe") else ""
@@ -34,7 +38,7 @@ def run_parity() -> dict[str, object]:
         command = [
             compiler,
             "embedded/tests/parity_runner.c",
-            "embedded/generated/thermal_nexus_model.c",
+            str(generated_model_source),
             "-o",
             str(exe),
         ]
@@ -58,8 +62,7 @@ def run_parity() -> dict[str, object]:
     return report
 
 
-def _vector_count() -> int:
-    path = Path("embedded/golden_vectors/golden_vectors.json")
+def _vector_count(path: Path) -> int:
     if not path.exists():
         return 0
     return len(json.loads(path.read_text(encoding="utf-8")))

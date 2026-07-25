@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
+
+import yaml
 
 from embedded.deployment.estimate_resources import estimate_resources
 from embedded.deployment.export_feature_schema import export_feature_schema
@@ -14,17 +17,28 @@ from embedded.deployment.export_protocol import export_protocol
 from embedded.deployment.generate_golden_vectors import generate_golden_vectors
 
 
-def prepare_export() -> dict[str, object]:
+def prepare_export(
+    config_path: Path = Path("config/embedded_export.yaml"),
+    golden_source_csv: Path = Path("ml/data/splits/validation.csv"),
+    golden_output_dir: Path = Path("embedded/golden_vectors"),
+    resource_evidence_dir: Path = Path("evidence/embedded"),
+) -> dict[str, object]:
     """Run all embedded preparation steps."""
 
-    manifest = create_manifest()
-    model = export_model()
-    export_preprocessing()
-    export_feature_schema()
-    export_policy()
-    export_protocol()
-    vectors = generate_golden_vectors()
-    resources = estimate_resources()
+    config_path = Path(config_path)
+    golden_source_csv = Path(golden_source_csv)
+    golden_output_dir = Path(golden_output_dir)
+    resource_evidence_dir = Path(resource_evidence_dir)
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    generated_output_dir = Path(config["output_path"])
+    manifest = create_manifest(config_path)
+    model = export_model(config_path)
+    export_preprocessing(config_path)
+    export_feature_schema(config_path)
+    export_policy(output_dir=generated_output_dir)
+    export_protocol(generated_output_dir)
+    vectors = generate_golden_vectors(config_path, golden_source_csv, golden_output_dir)
+    resources = estimate_resources(config_path, resource_evidence_dir)
     return {
         "manifest_model": manifest["model_type"],
         "exported_model": model["model_type"],

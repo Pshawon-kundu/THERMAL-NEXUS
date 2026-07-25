@@ -30,12 +30,16 @@ from simulator.sensor_node.state_machine import (
 )
 
 
-def test_model_runtime_loading_validation_and_fallback() -> None:
+def test_model_runtime_loading_validation_and_fallback(tmp_path: Path) -> None:
     runtime = ModelRuntime(Path("ml/models/selected"))
     assert runtime.loaded
     assert runtime.feature_order
 
-    good = pd.read_csv("ml/data/splits/validation.csv").iloc[[0]][runtime.feature_order]
+    validation_path = tmp_path / "validation.csv"
+    pd.read_csv("tests/fixtures/main_ml/validation_minimal.csv").to_csv(
+        validation_path, index=False
+    )
+    good = pd.read_csv(validation_path).iloc[[0]][runtime.feature_order]
     result = runtime.predict(good)
     assert result.predicted_state in {"STABLE", "TRANSITION", "EXCURSION_RISK"}
     assert set(result.probabilities)

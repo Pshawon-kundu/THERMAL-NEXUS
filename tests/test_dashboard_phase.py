@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+import yaml
 
 from analysis.compare_experiments import ComparisonError, compare_experiments
 from analysis.kpi_engine import calculate_kpis
@@ -115,20 +116,38 @@ def test_kpi_reports_and_comparison(tmp_path: Path) -> None:
         compare_experiments(incompatible_ids, db, tmp_path / "bad")
 
 
-def test_embedded_manifest_export_golden_vectors_resources_and_parity() -> None:
-    result = prepare_export()
+def test_embedded_manifest_export_golden_vectors_resources_and_parity(
+    tmp_path: Path,
+) -> None:
+    config = yaml.safe_load(Path("config/embedded_export.yaml").read_text())
+    config["selected_model_path"] = str(Path("ml/models/selected").resolve())
+    config["output_path"] = str(tmp_path / "generated")
+    config_path = tmp_path / "embedded_export.yaml"
+    config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
+    validation_path = tmp_path / "validation.csv"
+    pd.read_csv("tests/fixtures/main_ml/validation_minimal.csv").to_csv(
+        validation_path, index=False
+    )
+    golden_dir = tmp_path / "golden_vectors"
+    evidence_dir = tmp_path / "embedded_evidence"
+
+    result = prepare_export(config_path, validation_path, golden_dir, evidence_dir)
     assert result["exported_model"] == "DecisionTreeClassifier"
-    manifest = create_manifest()
+    manifest = create_manifest(config_path)
     assert manifest["feature_count"] > 0
-    assert Path("embedded/generated/thermal_nexus_model.c").exists()
+    assert (tmp_path / "generated" / "thermal_nexus_model.c").exists()
     vectors = json.loads(
-        Path("embedded/golden_vectors/golden_vectors.json").read_text(encoding="utf-8")
+        (golden_dir / "golden_vectors.json").read_text(encoding="utf-8")
     )
     states = {vector["python_predicted_class"] for vector in vectors}
     assert {"STABLE", "TRANSITION", "EXCURSION_RISK"} & states
-    resources = estimate_resources()
+    resources = estimate_resources(config_path, evidence_dir)
     assert resources["value_type"] == "ESTIMATED_SOFTWARE_VALUE"
-    parity = run_parity()
+    parity = run_parity(
+        golden_dir / "golden_vectors.json",
+        tmp_path / "generated" / "thermal_nexus_model.c",
+        evidence_dir,
+    )
     assert parity["status"] in {"pass", "blocked_no_compiler", "failed"}
     if parity["status"] == "blocked_no_compiler":
         assert "No C compiler found" in str(parity["notes"])
