@@ -1,0 +1,104 @@
+/* Thermal Nexus — Streamlit theme
+ * Loaded by host/dashboard/components/theme.py
+ * Keep selectors narrow to avoid clashing with Streamlit internals.
+ */
+.stApp {
+    background: linear-gradient(180deg, #f7faf9 0%, #eef7f4 100%);
+    color: #10211f;
+}
+[data-testid="stHeader"] {
+    background: rgba(247, 250, 249, 0.92);
+    border-bottom: 1px solid #dce9e5;
+}
+.block-container {
+    padding-top: 2.2rem;
+    max-width: 1260px;
+}
+.tn-hero {
+    background: #ffffff;
+    border: 1px solid #dbeae5;
+    border-radius: 8px;
+    padding: 22px 26px;
+    box-shadow: 0 10px 30px rgba(15, 118, 110, 0.08);
+    margin-bottom: 18px;
+}
+.tn-team {
+    color: #0f766e;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.tn-title {
+    color: #10211f;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+}
+.tn-subtitle {
+    color: #50615d;
+    font-size: 16px;
+    margin-top: 8px;
+    max-width: 820px;
+}
+.tn-banner {
+    color: #5a3700;
+    background: #fff4d6;
+    border: 1px solid #f4ce72;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 700;
+    margin-top: 16px;
+}
+.tn-card {
+    background: #ffffff;
+    border: 1px solid #dbeae5;
+    border-radius: 8px;
+    padding: 16px 18px;
+    min-height: 126px;
+    box-shadow: 0 8px 24px rgba(16, 33, 31, 0.06);
+    margin-bottom: 12px;
+}
+.tn-card-label {
+    color: #51625f;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.tn-card-value {
+    color: #0f3f3a;
+    font-size: 34px;
+    font-weight: 800;
+    margin-top: 8px;
+    word-break: break-word;
+}
+.tn-card-caption {
+    color: #6b7c78;
+    font-size: 13px;
+    margin-top: 6px;
+}
+div[data-testid="stMetric"] {
+    background: #ffffff;
+    border: 1px solid #dbeae5;
+    border-radius: 8px;
+    padding: 14px;
+}
+.stTabs [data-baseweb="tab-list"] {
+    gap: 6px;
+    border-bottom: 1px solid #dbeae5;
+}
+.stTabs [data-baseweb="tab"] {
+    background: #ffffff;
+    border: 1px solid #dbeae5;
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    color: #304541;
+    font-weight: 700;
+    padding: 8px 14px;
+}
+.stTabs [aria-selected="true"] {
+    color: #0f766e;
+    background: #ecfdf8;
+}

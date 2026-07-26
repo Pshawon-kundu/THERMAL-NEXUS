@@ -6,38 +6,38 @@
   "folds": [
     {
       "fold": 0,
-      "train_run_count": 37,
-      "validation_run_count": 19,
+      "train_run_count": 18,
+      "validation_run_count": 8,
       "overlap_count": 0,
       "overlap_runs": [],
       "validation_class_counts": {
-        "STABLE": 886,
-        "EXCURSION_RISK": 809,
-        "TRANSITION": 265
+        "STABLE": 462,
+        "EXCURSION_RISK": 351,
+        "TRANSITION": 59
       }
     },
     {
       "fold": 1,
-      "train_run_count": 37,
-      "validation_run_count": 19,
+      "train_run_count": 17,
+      "validation_run_count": 9,
       "overlap_count": 0,
       "overlap_runs": [],
       "validation_class_counts": {
-        "STABLE": 923,
-        "EXCURSION_RISK": 815,
-        "TRANSITION": 269
+        "STABLE": 442,
+        "EXCURSION_RISK": 385,
+        "TRANSITION": 107
       }
     },
     {
       "fold": 2,
-      "train_run_count": 38,
-      "validation_run_count": 18,
+      "train_run_count": 17,
+      "validation_run_count": 9,
       "overlap_count": 0,
       "overlap_runs": [],
       "validation_class_counts": {
-        "STABLE": 904,
-        "EXCURSION_RISK": 776,
-        "TRANSITION": 218
+        "STABLE": 427,
+        "EXCURSION_RISK": 384,
+        "TRANSITION": 106
       }
     }
   ]

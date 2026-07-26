@@ -1,0 +1,319 @@
+{
+  "row_count": 1364,
+  "confusion_matrix": {
+    "STABLE": {
+      "STABLE": 607,
+      "TRANSITION": 33,
+      "EXCURSION_RISK": 28
+    },
+    "TRANSITION": {
+      "STABLE": 100,
+      "TRANSITION": 5,
+      "EXCURSION_RISK": 31
+    },
+    "EXCURSION_RISK": {
+      "STABLE": 44,
+      "TRANSITION": 29,
+      "EXCURSION_RISK": 487
+    }
+  },
+  "per_class": {
+    "STABLE": {
+      "precision": 0.8082556591211718,
+      "recall": 0.9086826347305389,
+      "f1": 0.8555320648343904
+    },
+    "TRANSITION": {
+      "precision": 0.07462686567164178,
+      "recall": 0.03676470588235294,
+      "f1": 0.04926108374384237
+    },
+    "EXCURSION_RISK": {
+      "precision": 0.891941391941392,
+      "recall": 0.8696428571428572,
+      "f1": 0.8806509945750453
+    }
+  },
+  "macro_f1": 0.5951480477177594,
+  "weighted_f1": 0.7854541669065694,
+  "balanced_accuracy": 0.605030065918583,
+  "prediction_distribution": {
+    "STABLE": 751,
+    "EXCURSION_RISK": 546,
+    "TRANSITION": 67
+  },
+  "number_of_unnecessary_state_changes": 54,
+  "excursion_events": 12,
+  "detected_excursion_events": 12,
+  "missed_excursion_events": 0,
+  "false_alert_events": 12,
+  "event_level_recall": 1.0,
+  "false_alarm_rate": 0.5217391304347826,
+  "missed_event_rate": 0.0,
+  "warning_lead_times_seconds": [
+    0.0,
+    0.0,
+    60.0,
+    -480.0,
+    0.0,
+    -480.0,
+    1020.0,
+    -480.0,
+    -60.0,
+    -480.0,
+    0.0,
+    -600.0
+  ],
+  "mean_warning_lead_time_seconds": -125.0,
+  "median_warning_lead_time_seconds": -30.0,
+  "minimum_warning_lead_time_seconds": -600.0,
+  "probability_calibration_summary": {
+    "mean_max_probability": 0.5931783436164573,
+    "median_max_probability": 0.4844722763425523,
+    "min_max_probability": 0.336275080368692
+  },
+  "model_name": "small_mlp",
+  "best_params": {
+    "hidden_layer_sizes": [
+      12
+    ],
+    "alpha": 0.0001
+  },
+  "cross_validation": {
+    "mean_macro_f1": 0.5859254004615059,
+    "fold_macro_f1": [
+      0.6068696193166532,
+      0.5896401441758988,
+      0.5612664378919655
+    ],
+    "fold_metrics": [
+      {
+        "row_count": 872,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 394,
+            "TRANSITION": 52,
+            "EXCURSION_RISK": 16
+          },
+          "TRANSITION": {
+            "STABLE": 54,
+            "TRANSITION": 5,
+            "EXCURSION_RISK": 0
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 34,
+            "TRANSITION": 12,
+            "EXCURSION_RISK": 305
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.8174273858921162,
+            "recall": 0.8528138528138528,
+            "f1": 0.8347457627118644
+          },
+          "TRANSITION": {
+            "precision": 0.07246376811594203,
+            "recall": 0.0847457627118644,
+            "f1": 0.078125
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.9501557632398754,
+            "recall": 0.8689458689458689,
+            "f1": 0.9077380952380952
+          }
+        },
+        "macro_f1": 0.6068696193166532,
+        "weighted_f1": 0.8129334733961615,
+        "balanced_accuracy": 0.602168494823862,
+        "prediction_distribution": {
+          "STABLE": 482,
+          "EXCURSION_RISK": 321,
+          "TRANSITION": 69
+        },
+        "number_of_unnecessary_state_changes": 16,
+        "excursion_events": 6,
+        "detected_excursion_events": 6,
+        "missed_excursion_events": 0,
+        "false_alert_events": 1,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.14285714285714285,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          -480.0,
+          -480.0,
+          -480.0,
+          0.0,
+          0.0,
+          -600.0
+        ],
+        "mean_warning_lead_time_seconds": -340.0,
+        "median_warning_lead_time_seconds": -480.0,
+        "minimum_warning_lead_time_seconds": -600.0
+      },
+      {
+        "row_count": 934,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 438,
+            "TRANSITION": 0,
+            "EXCURSION_RISK": 4
+          },
+          "TRANSITION": {
+            "STABLE": 99,
+            "TRANSITION": 0,
+            "EXCURSION_RISK": 8
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 49,
+            "TRANSITION": 0,
+            "EXCURSION_RISK": 336
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.7474402730375427,
+            "recall": 0.9909502262443439,
+            "f1": 0.8521400778210116
+          },
+          "TRANSITION": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.9655172413793104,
+            "recall": 0.8727272727272727,
+            "f1": 0.9167803547066848
+          }
+        },
+        "macro_f1": 0.5896401441758988,
+        "weighted_f1": 0.7811631166584162,
+        "balanced_accuracy": 0.6212258329905388,
+        "prediction_distribution": {
+          "STABLE": 586,
+          "EXCURSION_RISK": 348
+        },
+        "number_of_unnecessary_state_changes": 32,
+        "excursion_events": 9,
+        "detected_excursion_events": 9,
+        "missed_excursion_events": 0,
+        "false_alert_events": 10,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.5263157894736842,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0
+        ],
+        "mean_warning_lead_time_seconds": -266.6666666666667,
+        "median_warning_lead_time_seconds": -480.0,
+        "minimum_warning_lead_time_seconds": -480.0
+      },
+      {
+        "row_count": 917,
+        "confusion_matrix": {
+          "STABLE": {
+            "STABLE": 403,
+            "TRANSITION": 6,
+            "EXCURSION_RISK": 18
+          },
+          "TRANSITION": {
+            "STABLE": 83,
+            "TRANSITION": 1,
+            "EXCURSION_RISK": 22
+          },
+          "EXCURSION_RISK": {
+            "STABLE": 72,
+            "TRANSITION": 0,
+            "EXCURSION_RISK": 312
+          }
+        },
+        "per_class": {
+          "STABLE": {
+            "precision": 0.7222222222222222,
+            "recall": 0.9437939110070258,
+            "f1": 0.8182741116751269
+          },
+          "TRANSITION": {
+            "precision": 0.14285714285714285,
+            "recall": 0.009433962264150943,
+            "f1": 0.017699115044247787
+          },
+          "EXCURSION_RISK": {
+            "precision": 0.8863636363636364,
+            "recall": 0.8125,
+            "f1": 0.8478260869565217
+          }
+        },
+        "macro_f1": 0.5612664378919655,
+        "weighted_f1": 0.7381072729239626,
+        "balanced_accuracy": 0.588575957757059,
+        "prediction_distribution": {
+          "STABLE": 558,
+          "EXCURSION_RISK": 352,
+          "TRANSITION": 7
+        },
+        "number_of_unnecessary_state_changes": 42,
+        "excursion_events": 9,
+        "detected_excursion_events": 9,
+        "missed_excursion_events": 0,
+        "false_alert_events": 14,
+        "event_level_recall": 1.0,
+        "false_alarm_rate": 0.6086956521739131,
+        "missed_event_rate": 0.0,
+        "warning_lead_times_seconds": [
+          0.0,
+          0.0,
+          -120.0,
+          0.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -480.0,
+          -600.0
+        ],
+        "mean_warning_lead_time_seconds": -293.3333333333333,
+        "median_warning_lead_time_seconds": -480.0,
+        "minimum_warning_lead_time_seconds": -600.0
+      }
+    ]
+  },
+  "model_file_size_bytes": 21694,
+  "preprocessing_artifact_size_bytes": 2552,
+  "total_artifact_size_bytes": 45940,
+  "training_timestamp": "20260726_201550",
+  "source_git_commit": "089e195e89481a341b9f58ab7321009b7adc40f8",
+  "mean_inference_latency_ms": 0.0009194988280114558,
+  "p95_inference_latency_ms": 0.0012889644519731291,
+  "converged": true,
+  "iterations": 18,
+  "trainable_parameter_count": 459,
+  "loss_curve": [
+    1.4970569262306699,
+    1.1444260102595807,
+    0.9495908715877774,
+    0.8548275088984804,
+    0.7922070841972427,
+    0.7422231781531602,
+    0.6982529469614138,
+    0.65730218286236,
+    0.6180123856968828,
+    0.5829413580460523,
+    0.5548218248003759,
+    0.5318629235104965,
+    0.5159716623622133,
+    0.504752819031696,
+    0.49708038552425254,
+    0.4910080559493215,
+    0.48615755139120514,
+    0.4819293995705934
+  ]
+}

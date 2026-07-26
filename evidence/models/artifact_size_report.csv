@@ -1,5 +1,5 @@
 model_name,total_artifact_size_bytes
 logistic_regression,10874
-decision_tree,10757
-random_forest_reference,387669
-small_mlp,61306
+decision_tree,12229
+random_forest_reference,259669
+small_mlp,45940

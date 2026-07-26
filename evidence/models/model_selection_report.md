@@ -2,6 +2,6 @@
 
 Results are preliminary synthetic software results.
 
-Selected provisional model: `decision_tree`
+Selected provisional model: `logistic_regression`
 
-Selection score: `6.1258`
+Selection score: `5.3927`

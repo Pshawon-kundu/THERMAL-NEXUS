@@ -1,10 +1,10 @@
 {
-  "model_type": "DecisionTreeClassifier",
+  "model_type": "LogisticRegression",
   "feature_count": 34,
   "class_mapping": {
     "STABLE": 0,
     "TRANSITION": 1,
     "EXCURSION_RISK": 2
   },
-  "model_version": "provisional_20260718_161144_decision_tree"
+  "model_version": "provisional_20260726_201550_logistic_regression"
 }

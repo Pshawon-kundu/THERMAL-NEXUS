@@ -2,11 +2,11 @@
 
 SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS
 
-Generated: 2026-07-20T07:43:41.736945+00:00
+Generated: 2026-07-26T13:53:23.473556+00:00
 Experiment: `gradual_warming-20273476-0d2c80e384ab:ml`
 Scenario: `gradual_warming`
 Operating mode: `ml`
-Model version: `provisional_20260718_161144_decision_tree`
+Model version: `ml\models\selected\provisional_20260718_161144_decision_tree`
 Policy version: `runtime_policy_v1`
 
 | metric | value | unit | value_type |

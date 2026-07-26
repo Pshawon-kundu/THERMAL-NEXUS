@@ -1,13 +1,13 @@
 # Feature Quality Report
 
-Rows: 10043
-Feature-valid rows: 9437
-Feature-invalid rows: 606
+Rows: 6292
+Feature-valid rows: 5915
+Feature-invalid rows: 377
 
 ## Invalid Row Reasons
 
-- current sensor sample invalid: 275
-- insufficient history: 331
+- current sensor sample invalid: 170
+- insufficient history: 207
 
 ## Leakage Check
 
