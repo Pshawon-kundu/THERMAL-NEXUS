@@ -6,12 +6,12 @@ states:
     transmission_interval_seconds: 300
     immediate_transmission: false
   TRANSITION:
-    sampling_interval_seconds: 15
-    transmission_interval_seconds: 60
+    sampling_interval_seconds: 30
+    transmission_interval_seconds: 120
     immediate_transmission: false
   EXCURSION_RISK:
-    sampling_interval_seconds: 5
-    transmission_interval_seconds: 5
+    sampling_interval_seconds: 10
+    transmission_interval_seconds: 600
     immediate_transmission: true
   SENSOR_FAULT:
     sampling_interval_seconds: 10
@@ -25,6 +25,23 @@ states:
     sampling_interval_seconds: 120
     transmission_interval_seconds: 600
     immediate_transmission: false
+
+# Minimum time between two consecutive transmissions in the same state.
+# EXCURSION_RISK is the only state with a *longer* cooldown than interval:
+# the burst alert on entry is the priority signal, and sustained EXCURSION
+# is re-confirmed only after 10 minutes to avoid flooding the radio while
+# a single incident is ongoing.
+state_transmission_cooldown_seconds:
+  STABLE: 300
+  TRANSITION: 120
+  EXCURSION_RISK: 600
+  SENSOR_FAULT: 10
+  MODEL_FAULT: 60
+  LOW_BATTERY: 600
+
+# How many packets to send on entering EXCURSION_RISK before the cooldown
+# kicks in. 1 = single initial alert; 3 = alert burst for redundancy.
+excursion_alert_burst_count: 1
 
 minimum_state_duration_seconds: 60
 hysteresis_probability: 0.10

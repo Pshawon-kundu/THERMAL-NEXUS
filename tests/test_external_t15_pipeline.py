@@ -1,10 +1,20 @@
-"""Tests for the separate external T15 benchmark pipeline."""
+"""Tests for the separate external T15 benchmark pipeline.
+
+These tests are gated as ``external_t15`` and ``integration`` markers so they
+are skipped on a clean clone (where the raw ``NEW-DATA-*.T15.txt`` files are
+intentionally gitignored). Run them explicitly with::
+
+    pytest -m external_t15
+
+or unpack the raw T15 sources into ``ml/data/external/t15/raw/`` first.
+"""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from ml.external_t15 import DATASET_LABEL
 from ml.external_t15.dataset import (
@@ -15,6 +25,8 @@ from ml.external_t15.dataset import (
 )
 from ml.external_t15.modeling import verify_external_phase
 from ml.external_t15.paths import EVIDENCE_DIR, MODEL_READY_DIR
+
+pytestmark = [pytest.mark.external_t15, pytest.mark.integration]  # type: ignore[list-item]  # noqa: E501
 
 
 def test_external_source_contract_matches_verified_properties() -> None:

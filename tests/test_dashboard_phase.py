@@ -80,6 +80,11 @@ def test_recursive_import_replay_and_dashboard_details(tmp_path: Path) -> None:
     assert session.step_forward() is not None
     assert session.step_backward() == first
     assert session.jump_to_next("alert_") is not None
+    # Restart before searching for a radio_dropped event: the relative order
+    # of alerts and radio events depends on the run-time policy, so we
+    # verify the prefix search works from a known position rather than
+    # relying on a specific sequence ordering.
+    session.restart()
     assert session.jump_to_next("radio_dropped") is not None
     session.pause()
     assert not session.running

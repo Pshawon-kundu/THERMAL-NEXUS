@@ -1,0 +1,30 @@
+{
+  "run_id": "sudden_spike-20268971-d97598db4237",
+  "scenario": "sudden_spike",
+  "random_seed": 20268971,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/sudden_spike-20268971-d97598db4237.csv",
+  "plot_path": "ml/data/synthetic_max/sudden_spike-20268971-d97598db4237.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 4.0,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.08,
+    "output_dir": "ml/data/synthetic",
+    "type": "sudden_spike",
+    "event_start_seconds": 2400,
+    "event_duration_seconds": 180,
+    "spike_amplitude_c": 7.0,
+    "recovery_time_constant_seconds": 600
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}

@@ -1,0 +1,31 @@
+{
+  "run_id": "short_door_opening-20279008-7a857f26ad75",
+  "scenario": "short_door_opening",
+  "random_seed": 20279008,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/short_door_opening-20279008-7a857f26ad75.csv",
+  "plot_path": "ml/data/synthetic_max/short_door_opening-20279008-7a857f26ad75.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 4.0,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.08,
+    "output_dir": "ml/data/synthetic",
+    "type": "door_opening",
+    "event_start_seconds": 1800,
+    "event_duration_seconds": 300,
+    "warming_time_constant_seconds": 180,
+    "recovery_time_constant_seconds": 900,
+    "disturbance_strength": 0.45
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}

@@ -10,6 +10,7 @@ from typing import Any
 import pandas as pd
 import yaml
 
+from embedded.deployment.export_model import _c_float_list
 from ml.inference.model_runtime import ModelRuntime
 from simulator.sensor_node.config import load_runtime_policy
 from simulator.sensor_node.policy import policy_for_state
@@ -80,7 +81,7 @@ def _header(vectors: list[dict[str, Any]], runtime: ModelRuntime) -> str:
         values = vector["raw_feature_values"]
         rows.append(
             "    {"
-            + ", ".join(f"{float(values[name]):.9g}f" for name in runtime.feature_order)
+            + _c_float_list([float(values[name]) for name in runtime.feature_order])
             + "}"
         )
     joined_rows = ",\n".join(rows)

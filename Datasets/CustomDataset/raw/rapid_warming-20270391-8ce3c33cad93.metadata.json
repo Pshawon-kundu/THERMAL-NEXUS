@@ -1,0 +1,28 @@
+{
+  "run_id": "rapid_warming-20270391-8ce3c33cad93",
+  "scenario": "rapid_warming",
+  "random_seed": 20270391,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/rapid_warming-20270391-8ce3c33cad93.csv",
+  "plot_path": "ml/data/synthetic_max/rapid_warming-20270391-8ce3c33cad93.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 3.5,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.08,
+    "output_dir": "ml/data/synthetic",
+    "type": "gradual_warming",
+    "final_temperature_c": 14.0,
+    "response_time_seconds": 1200
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}

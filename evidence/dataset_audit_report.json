@@ -1,7 +1,7 @@
 {
   "status": "pass",
-  "input_dir": "ml/data/synthetic",
-  "runs_audited": 52,
+  "input_dir": "ml/data/synthetic_max",
+  "runs_audited": 104,
   "recognized_scenarios": [
     "ambient_to_cold",
     "cold_to_ambient",

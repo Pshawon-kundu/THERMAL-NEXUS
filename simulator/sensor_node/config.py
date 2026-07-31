@@ -44,6 +44,8 @@ class RuntimePolicyConfig:
     low_battery_threshold_percent: float
     immediate_physical_threshold_override: bool
     battery: BatteryPolicy
+    state_transmission_cooldown_seconds: dict[str, float]
+    excursion_alert_burst_count: int
 
 
 def load_runtime_policy(path: Path) -> RuntimePolicyConfig:
@@ -61,6 +63,14 @@ def load_runtime_policy(path: Path) -> RuntimePolicyConfig:
         for name, values in raw["states"].items()
     }
     battery = raw["battery"]
+    cooldown_raw = raw.get("state_transmission_cooldown_seconds", {})
+    cooldowns = {
+        name: float(value) for name, value in cooldown_raw.items()
+    }
+    # Fill in missing cooldowns with each state's transmission_interval_seconds
+    # so the dataclass always has a value per state.
+    for name, policy in states.items():
+        cooldowns.setdefault(name, policy.transmission_interval_seconds)
     config = RuntimePolicyConfig(
         states=states,
         minimum_state_duration_seconds=float(raw["minimum_state_duration_seconds"]),
@@ -91,6 +101,8 @@ def load_runtime_policy(path: Path) -> RuntimePolicyConfig:
             inference_cost_percent=float(battery["inference_cost_percent"]),
             transmission_cost_percent=float(battery["transmission_cost_percent"]),
         ),
+        state_transmission_cooldown_seconds=cooldowns,
+        excursion_alert_burst_count=int(raw.get("excursion_alert_burst_count", 1)),
     )
     _validate(config)
     return config

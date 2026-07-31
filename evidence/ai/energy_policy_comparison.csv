@@ -1,0 +1,4 @@
+mode,total_transmissions,delivered_packets,missed_excursion_events,estimated_total_energy,scenarios,excursion_false_positives,median_lead_seconds,estimated_total_energy_label
+fixed,128,128,0,2.7319999999999998,6,0,0.0,ESTIMATED SOFTWARE VALUE
+ml,193,193,0,4.108,6,4,0.0,ESTIMATED SOFTWARE VALUE
+rule_based,154,154,0,2.992,6,78,1740.0,ESTIMATED SOFTWARE VALUE

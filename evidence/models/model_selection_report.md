@@ -2,6 +2,6 @@
 
 Results are preliminary synthetic software results.
 
-Selected provisional model: `logistic_regression`
+Selected provisional model: `small_mlp`
 
-Selection score: `5.3927`
+Selection score: `6.0175`

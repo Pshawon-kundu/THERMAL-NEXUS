@@ -42,3 +42,8 @@ select = ["E", "F", "I", "UP", "B", "ANN"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+  "integration: opt-in tests requiring external datasets (T15) or hardware",
+  "external_t15: external T15 dataset tests (skipped on clean clone)",
+  "hardware: hardware demonstrator tests (skipped without --runs-hardware)",
+]

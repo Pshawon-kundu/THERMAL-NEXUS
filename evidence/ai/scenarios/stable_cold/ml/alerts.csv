@@ -1,0 +1,2 @@
+node_id,sequence_number,alert,timestamp_seconds
+3,,STALE_NODE:3,7801.0

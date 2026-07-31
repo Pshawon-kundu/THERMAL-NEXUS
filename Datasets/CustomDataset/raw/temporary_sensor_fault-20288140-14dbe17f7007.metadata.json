@@ -1,0 +1,28 @@
+{
+  "run_id": "temporary_sensor_fault-20288140-14dbe17f7007",
+  "scenario": "temporary_sensor_fault",
+  "random_seed": 20288140,
+  "sample_count": 121,
+  "valid_sample_count": 105,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/temporary_sensor_fault-20288140-14dbe17f7007.csv",
+  "plot_path": "ml/data/synthetic_max/temporary_sensor_fault-20288140-14dbe17f7007.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 4.0,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.06,
+    "output_dir": "ml/data/synthetic",
+    "type": "temporary_sensor_fault",
+    "fault_start_seconds": 2700,
+    "fault_duration_seconds": 900
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}
