@@ -2,6 +2,6 @@
 
 Results are preliminary synthetic software results.
 
-Selected provisional model: `decision_tree`
+Selected provisional model: `small_mlp`
 
-Selection score: `6.1258`
+Selection score: `6.0175`

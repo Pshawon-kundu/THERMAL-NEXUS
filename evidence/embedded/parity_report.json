@@ -5,7 +5,8 @@
   "preprocessing_max_absolute_error": null,
   "probability_max_absolute_error": null,
   "class_mismatch_count": null,
-  "policy_mismatch_count": null,
+  "policy_mismatch_count": 0,
+  "uniform_stub_count": null,
   "status": "blocked_no_compiler",
-  "notes": "No C compiler found. Install GCC or configure MSVC cl."
+  "notes": "No C compiler found. Install GCC or clang."
 }

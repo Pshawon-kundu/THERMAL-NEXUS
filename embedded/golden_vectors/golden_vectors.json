@@ -77,15 +77,15 @@
     },
     "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.9948744233726294,
-      "STABLE": 0.0020502306509482316,
-      "TRANSITION": 0.0030753459764223477
+      "EXCURSION_RISK": 0.999999889056517,
+      "STABLE": 4.5226312664713576e-08,
+      "TRANSITION": 6.57171703069418e-08
     },
     "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "EXCURSION_RISK_37_1",
@@ -165,15 +165,15 @@
     },
     "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.9948744233726294,
-      "STABLE": 0.0020502306509482316,
-      "TRANSITION": 0.0030753459764223477
+      "EXCURSION_RISK": 0.9999998532046588,
+      "STABLE": 6.311267349261642e-08,
+      "TRANSITION": 8.368266759599542e-08
     },
     "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "EXCURSION_RISK_37_2",
@@ -253,15 +253,15 @@
     },
     "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.9948744233726294,
-      "STABLE": 0.0020502306509482316,
-      "TRANSITION": 0.0030753459764223477
+      "EXCURSION_RISK": 0.9999997333702928,
+      "STABLE": 1.005752732248874e-07,
+      "TRANSITION": 1.6605443398483117e-07
     },
     "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "STABLE_37_48",
@@ -339,17 +339,17 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": -0.002561073934837
     },
-    "python_predicted_class": "STABLE",
+    "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.05405405405405406,
-      "STABLE": 0.9459459459459459,
-      "TRANSITION": 0.0
+      "EXCURSION_RISK": 0.4550834117783561,
+      "STABLE": 0.2581221959466197,
+      "TRANSITION": 0.2867943922750242
     },
-    "expected_policy_state": "STABLE",
-    "expected_sampling_interval": 60.0,
-    "expected_transmission_interval": 300.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "EXCURSION_RISK",
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "STABLE_37_49",
@@ -427,17 +427,17 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": -0.0024972894736842
     },
-    "python_predicted_class": "STABLE",
+    "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.05405405405405406,
-      "STABLE": 0.9459459459459459,
-      "TRANSITION": 0.0
+      "EXCURSION_RISK": 0.4127056802347384,
+      "STABLE": 0.27587270623899374,
+      "TRANSITION": 0.3114216135262678
     },
-    "expected_policy_state": "STABLE",
-    "expected_sampling_interval": 60.0,
-    "expected_transmission_interval": 300.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "EXCURSION_RISK",
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "STABLE_37_50",
@@ -515,17 +515,17 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": -0.0023870225563909
     },
-    "python_predicted_class": "STABLE",
+    "python_predicted_class": "EXCURSION_RISK",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.05405405405405406,
-      "STABLE": 0.9459459459459459,
-      "TRANSITION": 0.0
+      "EXCURSION_RISK": 0.3730669965959357,
+      "STABLE": 0.34280984059751696,
+      "TRANSITION": 0.2841231628065473
     },
-    "expected_policy_state": "STABLE",
-    "expected_sampling_interval": 60.0,
-    "expected_transmission_interval": 300.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "EXCURSION_RISK",
+    "expected_sampling_interval": 10.0,
+    "expected_transmission_interval": 600.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "TRANSITION_37_235",
@@ -605,15 +605,15 @@
     },
     "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.014141414141414142,
-      "STABLE": 0.01616161616161616,
-      "TRANSITION": 0.9696969696969697
+      "EXCURSION_RISK": 0.10137137988784282,
+      "STABLE": 0.12643956455339073,
+      "TRANSITION": 0.7721890555587665
     },
     "expected_policy_state": "TRANSITION",
-    "expected_sampling_interval": 15.0,
-    "expected_transmission_interval": 60.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "TRANSITION_37_236",
@@ -693,15 +693,15 @@
     },
     "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.014141414141414142,
-      "STABLE": 0.01616161616161616,
-      "TRANSITION": 0.9696969696969697
+      "EXCURSION_RISK": 0.1330796619713008,
+      "STABLE": 0.10089549239394899,
+      "TRANSITION": 0.7660248456347503
     },
     "expected_policy_state": "TRANSITION",
-    "expected_sampling_interval": 15.0,
-    "expected_transmission_interval": 60.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "TRANSITION_37_237",
@@ -781,15 +781,15 @@
     },
     "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.014141414141414142,
-      "STABLE": 0.01616161616161616,
-      "TRANSITION": 0.9696969696969697
+      "EXCURSION_RISK": 0.1456763159813383,
+      "STABLE": 0.03400584846409666,
+      "TRANSITION": 0.8203178355545651
     },
     "expected_policy_state": "TRANSITION",
-    "expected_sampling_interval": 15.0,
-    "expected_transmission_interval": 60.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "near_threshold_37_299",
@@ -867,17 +867,17 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": 0.0005728032581453
     },
-    "python_predicted_class": "EXCURSION_RISK",
+    "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.96,
-      "STABLE": 0.013333333333333334,
-      "TRANSITION": 0.02666666666666667
+      "EXCURSION_RISK": 0.30766503309981413,
+      "STABLE": 0.1328541122495399,
+      "TRANSITION": 0.559480854650646
     },
-    "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "TRANSITION",
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "near_threshold_37_407",
@@ -955,17 +955,17 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": 0.0006492005012531
     },
-    "python_predicted_class": "EXCURSION_RISK",
+    "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.96,
-      "STABLE": 0.013333333333333334,
-      "TRANSITION": 0.02666666666666667
+      "EXCURSION_RISK": 0.3035371007861398,
+      "STABLE": 0.11352484410409185,
+      "TRANSITION": 0.5829380551097683
     },
-    "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "TRANSITION",
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   },
   {
     "vector_id": "near_threshold_37_405",
@@ -1043,16 +1043,16 @@
       "maximum_gap_seconds_20": 60.0,
       "temperature_slope_ls_20": 0.0006668020050125
     },
-    "python_predicted_class": "EXCURSION_RISK",
+    "python_predicted_class": "TRANSITION",
     "python_class_probabilities": {
-      "EXCURSION_RISK": 0.96,
-      "STABLE": 0.013333333333333334,
-      "TRANSITION": 0.02666666666666667
+      "EXCURSION_RISK": 0.44098636021327864,
+      "STABLE": 0.039712493980726196,
+      "TRANSITION": 0.5193011458059951
     },
-    "expected_policy_state": "EXCURSION_RISK",
-    "expected_sampling_interval": 5.0,
-    "expected_transmission_interval": 5.0,
-    "model_version": "provisional_20260718_161144_decision_tree",
-    "feature_schema_checksum": "68c818c42779f5573fe76699a52f5857315198b8e19a270e6dec7157c5d40dee"
+    "expected_policy_state": "TRANSITION",
+    "expected_sampling_interval": 30.0,
+    "expected_transmission_interval": 120.0,
+    "model_version": "provisional_20260726_201550_logistic_regression",
+    "feature_schema_checksum": "7a0009adb08e9475268f14c22ab98a4e49353364efdce4d7cb82d91f3a08e592"
   }
 ]

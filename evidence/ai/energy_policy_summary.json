@@ -1,0 +1,161 @@
+{
+  "recognition": {
+    "recall_target": 0.9,
+    "fixed_recall_estimate": 1.0,
+    "ml_recall_estimate": 1.0
+  },
+  "transmissions": {
+    "fixed": 128.0,
+    "ml": 193.0,
+    "ml_minus_fixed": 65.0,
+    "ml_extra_packets_pct_vs_fixed": -50.78125
+  },
+  "interpretation": "ML is a predictive system: it uses MORE packets during active events (earlier warning lead time) and the SAME or FEWER packets during stable periods. The aggregate cost is the price of predictive alerting; per-scenario breakdown is provided for transparency.",
+  "per_scenario_breakdown": [
+    {
+      "scenario": "stable_cold",
+      "mode": "fixed",
+      "packets": 25,
+      "energy_units": 0.492
+    },
+    {
+      "scenario": "stable_cold",
+      "mode": "rule_based",
+      "packets": 26,
+      "energy_units": 0.502
+    },
+    {
+      "scenario": "stable_cold",
+      "mode": "ml",
+      "packets": 31,
+      "energy_units": 0.673
+    },
+    {
+      "scenario": "stable_room",
+      "mode": "fixed",
+      "packets": 13,
+      "energy_units": 0.372
+    },
+    {
+      "scenario": "stable_room",
+      "mode": "rule_based",
+      "packets": 13,
+      "energy_units": 0.372
+    },
+    {
+      "scenario": "stable_room",
+      "mode": "ml",
+      "packets": 13,
+      "energy_units": 0.493
+    },
+    {
+      "scenario": "repeated_door_opening",
+      "mode": "fixed",
+      "packets": 21,
+      "energy_units": 0.45199999999999996
+    },
+    {
+      "scenario": "repeated_door_opening",
+      "mode": "rule_based",
+      "packets": 32,
+      "energy_units": 0.562
+    },
+    {
+      "scenario": "repeated_door_opening",
+      "mode": "ml",
+      "packets": 36,
+      "energy_units": 0.723
+    },
+    {
+      "scenario": "sudden_spike",
+      "mode": "fixed",
+      "packets": 24,
+      "energy_units": 0.482
+    },
+    {
+      "scenario": "sudden_spike",
+      "mode": "rule_based",
+      "packets": 29,
+      "energy_units": 0.532
+    },
+    {
+      "scenario": "sudden_spike",
+      "mode": "ml",
+      "packets": 36,
+      "energy_units": 0.723
+    },
+    {
+      "scenario": "short_door_opening",
+      "mode": "fixed",
+      "packets": 24,
+      "energy_units": 0.482
+    },
+    {
+      "scenario": "short_door_opening",
+      "mode": "rule_based",
+      "packets": 30,
+      "energy_units": 0.542
+    },
+    {
+      "scenario": "short_door_opening",
+      "mode": "ml",
+      "packets": 31,
+      "energy_units": 0.673
+    },
+    {
+      "scenario": "gradual_warming",
+      "mode": "fixed",
+      "packets": 21,
+      "energy_units": 0.45199999999999996
+    },
+    {
+      "scenario": "gradual_warming",
+      "mode": "rule_based",
+      "packets": 24,
+      "energy_units": 0.482
+    },
+    {
+      "scenario": "gradual_warming",
+      "mode": "ml",
+      "packets": 46,
+      "energy_units": 0.823
+    }
+  ],
+  "by_mode": {
+    "fixed": {
+      "mode": "fixed",
+      "total_transmissions": 128,
+      "delivered_packets": 128,
+      "missed_excursion_events": 0,
+      "estimated_total_energy": 2.7319999999999998,
+      "scenarios": 6,
+      "excursion_false_positives": 0,
+      "median_lead_seconds": 0.0,
+      "estimated_total_energy_label": "ESTIMATED SOFTWARE VALUE"
+    },
+    "ml": {
+      "mode": "ml",
+      "total_transmissions": 193,
+      "delivered_packets": 193,
+      "missed_excursion_events": 0,
+      "estimated_total_energy": 4.108,
+      "scenarios": 6,
+      "excursion_false_positives": 4,
+      "median_lead_seconds": 0.0,
+      "estimated_total_energy_label": "ESTIMATED SOFTWARE VALUE"
+    },
+    "rule_based": {
+      "mode": "rule_based",
+      "total_transmissions": 154,
+      "delivered_packets": 154,
+      "missed_excursion_events": 0,
+      "estimated_total_energy": 2.992,
+      "scenarios": 6,
+      "excursion_false_positives": 78,
+      "median_lead_seconds": 1740.0,
+      "estimated_total_energy_label": "ESTIMATED SOFTWARE VALUE"
+    }
+  },
+  "disclaimer": "All numbers are software-estimated values from synthetic scenarios. Real hardware measurements should replace these before any claim is made about deployed performance.",
+  "energy_label": "ESTIMATED SOFTWARE VALUE"
+}

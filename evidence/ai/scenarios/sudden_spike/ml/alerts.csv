@@ -1,0 +1,3 @@
+node_id,sequence_number,alert,timestamp_seconds
+3,13.0,EXCURSION_RISK,2700.0
+3,,STALE_NODE:3,7801.0

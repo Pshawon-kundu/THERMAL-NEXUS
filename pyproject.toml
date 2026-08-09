@@ -47,4 +47,7 @@ pythonpath = ["."]
 markers = [
   "external_t15_integration: requires the ignored full external T15 source dataset",
   "generated_artifact_integration: requires ignored generated external T15 artifacts",
+  "integration: opt-in tests requiring external datasets (T15) or hardware",
+  "external_t15: external T15 dataset tests (skipped on clean clone)",
+  "hardware: hardware demonstrator tests (skipped without --runs-hardware)",
 ]

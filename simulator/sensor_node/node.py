@@ -65,6 +65,8 @@ class VirtualSensorNode:
         self.state_machine = AdaptiveStateMachine(policy_config)
         self.sequence_number = 0
         self.last_transmission_seconds: float | None = None
+        self.burst_remaining: int = 0
+        self.previous_state: str = "STABLE"
 
     def run(self, thermal_frame: pd.DataFrame) -> NodeSimulationResult:
         """Execute this node against one synthetic thermal run."""
@@ -114,12 +116,44 @@ class VirtualSensorNode:
                 and not fallback.startswith("inference failure"),
             )
         )
-        policy = policy_for_state(decision.applied_state, self.policy_config)
+        policy = policy_for_state(
+            decision.applied_state,
+            self.policy_config,
+            burst_remaining=self.burst_remaining,
+        )
+        # Reset the EXCURSION_RISK burst counter whenever the state changes
+        # into EXCURSION_RISK; this gives the node N immediate alerts on
+        # entry, then throttling kicks in.
+        if (
+            decision.applied_state == "EXCURSION_RISK"
+            and self.previous_state != "EXCURSION_RISK"
+        ):
+            self.burst_remaining = self.policy_config.excursion_alert_burst_count
+        elif decision.applied_state != self.previous_state:
+            self.burst_remaining = 0
+        # Cooldown overrides the interval: we never transmit more than once
+        # per cooldown window even if immediate_transmission is set.
+        cooldown_ok = self._cooldown_satisfied(
+            elapsed_seconds, policy.cooldown_seconds
+        )
+        immediate_within_burst = (
+            policy.immediate_transmission
+            and self.burst_remaining > 0
+            and cooldown_ok
+        )
         due = self._transmission_due(
             elapsed_seconds, policy.transmission_interval_seconds
         )
-        requested = policy.immediate_transmission or due
-        reason = "immediate" if policy.immediate_transmission else "interval due"
+        requested = (immediate_within_burst or due) and cooldown_ok
+        if policy.immediate_transmission and not immediate_within_burst and not due:
+            reason = "immediate (cooldown throttled)"
+        elif immediate_within_burst:
+            reason = "immediate (burst)"
+            self.burst_remaining -= 1
+        elif due:
+            reason = "interval due"
+        else:
+            reason = "not due"
         if requested:
             packet = self._packet(
                 timestamp_seconds=elapsed_seconds,
@@ -134,6 +168,7 @@ class VirtualSensorNode:
             self.storage.store_packet(packet)
             self.last_transmission_seconds = elapsed_seconds
             self.battery.record_transmission()
+        self.previous_state = decision.applied_state
         self.storage.record_decision(
             {
                 "timestamp": row["timestamp"],
@@ -186,6 +221,16 @@ class VirtualSensorNode:
         if self.last_transmission_seconds is None:
             return True
         return elapsed_seconds - self.last_transmission_seconds >= interval
+
+    def _cooldown_satisfied(self, elapsed_seconds: float, cooldown: float) -> bool:
+        """Return True if at least ``cooldown`` seconds have passed since the
+        last transmission (or there has been no transmission yet)."""
+
+        if cooldown <= 0:
+            return True
+        if self.last_transmission_seconds is None:
+            return True
+        return elapsed_seconds - self.last_transmission_seconds >= cooldown
 
     def _packet(
         self,

@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-20T07:43:22.109591+00:00",
-  "database": "host\\database\\thermal_nexus.db",
-  "imported": [],
-  "skipped": [
+  "generated_at": "2026-07-26T13:09:58.915443+00:00",
+  "database": "host/database/thermal_nexus.db",
+  "imported": [
     "gradual_warming-20273476-0d2c80e384ab:fixed",
     "gradual_warming-20273476-0d2c80e384ab:ml",
     "gradual_warming-20273476-0d2c80e384ab:rule_based"
   ],
+  "skipped": [],
   "errors": []
 }

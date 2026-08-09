@@ -1,0 +1,27 @@
+{
+  "run_id": "stable_room-20267779-06f5aabddf12",
+  "scenario": "stable_room",
+  "random_seed": 20267779,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/stable_room-20267779-06f5aabddf12.csv",
+  "plot_path": "ml/data/synthetic_max/stable_room-20267779-06f5aabddf12.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 22.0,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.08,
+    "output_dir": "ml/data/synthetic",
+    "type": "stable",
+    "drift_per_hour_c": 0.0
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}

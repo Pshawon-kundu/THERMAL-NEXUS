@@ -1,4 +1,13 @@
-"""Tests for the separate external T15 benchmark pipeline."""
+"""Tests for the separate external T15 benchmark pipeline.
+
+These tests are gated as ``external_t15`` and ``integration`` markers so they
+are skipped on a clean clone (where the raw ``NEW-DATA-*.T15.txt`` files are
+intentionally gitignored). Run them explicitly with::
+
+    pytest -m external_t15
+
+or unpack the raw T15 sources into ``ml/data/external/t15/raw/`` first.
+"""
 
 from __future__ import annotations
 
@@ -25,6 +34,8 @@ INTEGRATION_SKIP_REASON = (
     "Full external T15 generated artifacts are unavailable; run "
     "tools/verify_external_t15_phase.ps1 after preparing the ignored local dataset."
 )
+
+pytestmark = [pytest.mark.external_t15, pytest.mark.integration]  # type: ignore[list-item]  # noqa: E501
 
 
 @pytest.fixture()

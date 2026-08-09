@@ -1,79 +1,79 @@
 {
-  "row_count": 1354,
+  "row_count": 1367,
   "confusion_matrix": {
     "STABLE": {
-      "STABLE": 644,
-      "TRANSITION": 2,
-      "EXCURSION_RISK": 12
+      "STABLE": 608,
+      "TRANSITION": 53,
+      "EXCURSION_RISK": 10
     },
     "TRANSITION": {
-      "STABLE": 49,
-      "TRANSITION": 78,
-      "EXCURSION_RISK": 9
+      "STABLE": 45,
+      "TRANSITION": 91,
+      "EXCURSION_RISK": 0
     },
     "EXCURSION_RISK": {
-      "STABLE": 23,
-      "TRANSITION": 2,
-      "EXCURSION_RISK": 535
+      "STABLE": 49,
+      "TRANSITION": 35,
+      "EXCURSION_RISK": 476
     }
   },
   "per_class": {
     "STABLE": {
-      "precision": 0.8994413407821229,
-      "recall": 0.9787234042553191,
-      "f1": 0.9374090247452693
+      "precision": 0.8660968660968661,
+      "recall": 0.9061102831594635,
+      "f1": 0.8856518572469045
     },
     "TRANSITION": {
-      "precision": 0.9512195121951219,
-      "recall": 0.5735294117647058,
-      "f1": 0.7155963302752294
+      "precision": 0.5083798882681564,
+      "recall": 0.6691176470588235,
+      "f1": 0.5777777777777777
     },
     "EXCURSION_RISK": {
-      "precision": 0.9622302158273381,
-      "recall": 0.9553571428571429,
-      "f1": 0.9587813620071685
+      "precision": 0.9794238683127572,
+      "recall": 0.85,
+      "f1": 0.9101338432122371
     }
   },
-  "macro_f1": 0.8705955723425557,
-  "weighted_f1": 0.9239688345080007,
-  "balanced_accuracy": 0.8358699862923893,
+  "macro_f1": 0.7911878260789731,
+  "weighted_f1": 0.8650512993337993,
+  "balanced_accuracy": 0.8084093100727623,
   "prediction_distribution": {
-    "STABLE": 716,
-    "EXCURSION_RISK": 556,
-    "TRANSITION": 82
+    "STABLE": 702,
+    "EXCURSION_RISK": 486,
+    "TRANSITION": 179
   },
-  "number_of_unnecessary_state_changes": 29,
+  "number_of_unnecessary_state_changes": 66,
   "excursion_events": 12,
   "detected_excursion_events": 12,
   "missed_excursion_events": 0,
-  "false_alert_events": 4,
+  "false_alert_events": 3,
   "event_level_recall": 1.0,
-  "false_alarm_rate": 0.25,
+  "false_alarm_rate": 0.2,
   "missed_event_rate": 0.0,
   "warning_lead_times_seconds": [
     0.0,
     0.0,
-    60.0,
-    -360.0,
-    0.0,
-    -540.0,
-    0.0,
-    60.0,
-    60.0,
+    -960.0,
     -480.0,
     0.0,
-    -120.0
+    -480.0,
+    -480.0,
+    -480.0,
+    -480.0,
+    -480.0,
+    0.0,
+    -600.0
   ],
-  "mean_warning_lead_time_seconds": -110.0,
-  "median_warning_lead_time_seconds": 0.0,
-  "minimum_warning_lead_time_seconds": -540.0,
+  "mean_warning_lead_time_seconds": -370.0,
+  "median_warning_lead_time_seconds": -480.0,
+  "minimum_warning_lead_time_seconds": -960.0,
   "probability_calibration_summary": {
-    "mean_max_probability": 0.9167708335770806,
-    "median_max_probability": 0.9580528223718281,
-    "min_max_probability": 0.5
+    "mean_max_probability": 0.7583933537434532,
+    "median_max_probability": 0.7185423233547841,
+    "min_max_probability": 0.3359260486577256
   },
-  "mean_inference_latency_ms": 0.002122539061133466,
-  "p95_inference_latency_ms": 0.0023162890599337516,
-  "model_dir": "ml\\models\\selected\\provisional_20260718_161144_decision_tree",
+  "mean_inference_latency_ms": 0.000748616015044945,
+  "p95_inference_latency_ms": 0.0008497234368576301,
+  "model_dir": "ml/models/candidates/logistic_regression/20260731_200938",
   "test_evaluation_confirmed": true
 }

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 DDL = [
     """
@@ -108,7 +108,8 @@ DDL = [
         state TEXT,
         message TEXT,
         acknowledged INTEGER DEFAULT 0,
-        resolved INTEGER DEFAULT 0
+        resolved INTEGER DEFAULT 0,
+        source_event_id TEXT
     )
     """,
     """
@@ -136,7 +137,57 @@ DDL = [
         created_at TEXT NOT NULL
     )
     """,
-]
+    """
+    CREATE TABLE IF NOT EXISTS hardware_runs (
+        run_id TEXT PRIMARY KEY,
+        source TEXT NOT NULL,
+        firmware_version TEXT,
+        operator TEXT,
+        started_at TEXT NOT NULL,
+        ended_at TEXT,
+        notes TEXT
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS measurement_traces (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id TEXT NOT NULL
+            REFERENCES hardware_runs(run_id) ON DELETE CASCADE,
+        channel TEXT NOT NULL,
+        distance_m REAL,
+        rssi_dbm REAL,
+        per REAL,
+        throughput_kbps REAL,
+        sampled_at TEXT NOT NULL
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS bom_items (
+        part_number TEXT NOT NULL,
+        run_id TEXT NOT NULL
+            REFERENCES hardware_runs(run_id) ON DELETE CASCADE,
+        description TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        unit_cost_usd REAL NOT NULL,
+        total_cost_usd REAL NOT NULL,
+        weight_g REAL NOT NULL,
+        volume_cm3 REAL NOT NULL,
+        PRIMARY KEY (part_number, run_id)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS physical_measurements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id TEXT NOT NULL
+            REFERENCES hardware_runs(run_id) ON DELETE CASCADE,
+        sensor_id TEXT NOT NULL,
+        setpoint_c REAL NOT NULL,
+        measured_c REAL NOT NULL,
+        error_c REAL NOT NULL,
+        sampled_at TEXT NOT NULL
+    )
+    """,
+]  # noqa: E501
 
 INDEXES = [
     "CREATE INDEX IF NOT EXISTS idx_experiments_run_id ON experiments(run_id)",
@@ -157,5 +208,21 @@ INDEXES = [
     (
         "CREATE INDEX IF NOT EXISTS idx_alerts_exp_time "
         "ON alerts(experiment_id, timestamp)"
+    ),
+    (
+        "CREATE INDEX IF NOT EXISTS idx_measurement_traces_run "
+        "ON measurement_traces(run_id, distance_m)"
+    ),
+    (
+        "CREATE INDEX IF NOT EXISTS idx_physical_measurements_run "
+        "ON physical_measurements(run_id, setpoint_c)"
+    ),
+    (
+        "CREATE INDEX IF NOT EXISTS idx_bom_items_run "
+        "ON bom_items(run_id)"
+    ),
+    (
+        "CREATE INDEX IF NOT EXISTS idx_hardware_runs_source "
+        "ON hardware_runs(source, started_at)"
     ),
 ]

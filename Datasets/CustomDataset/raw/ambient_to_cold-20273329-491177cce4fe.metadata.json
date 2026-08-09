@@ -1,0 +1,28 @@
+{
+  "run_id": "ambient_to_cold-20273329-491177cce4fe",
+  "scenario": "ambient_to_cold",
+  "random_seed": 20273329,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/ambient_to_cold-20273329-491177cce4fe.csv",
+  "plot_path": "ml/data/synthetic_max/ambient_to_cold-20273329-491177cce4fe.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 22.0,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.08,
+    "output_dir": "ml/data/synthetic",
+    "type": "exponential_transition",
+    "target_temperature_c": 4.0,
+    "time_constant_seconds": 2100
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}

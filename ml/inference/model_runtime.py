@@ -106,8 +106,14 @@ class ModelRuntime:
         latest = self.selected_dir / "latest_selected.json"
         if latest.exists():
             raw = json.loads(latest.read_text(encoding="utf-8"))
-            path = Path(str(raw["artifact_dir"]))
-            return path if path.is_absolute() else Path.cwd() / path
+            raw_path = str(raw["artifact_dir"]).replace("\\", "/")
+            path = Path(raw_path)
+            if path.is_absolute():
+                return path
+            candidate = Path.cwd() / path
+            if candidate.exists():
+                return candidate
+            return self.selected_dir / path.name
         candidates = sorted(
             [path for path in self.selected_dir.iterdir() if path.is_dir()],
             key=lambda item: item.stat().st_mtime,

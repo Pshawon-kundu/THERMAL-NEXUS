@@ -1,23 +1,23 @@
 # Dataset Audit Report
 
 Status: `pass`
-Runs audited: 83
+Runs audited: 104
 
 ## Scenario Counts
 
-- ambient_to_cold: 6
-- cold_to_ambient: 6
-- gradual_warming: 11
-- long_door_opening: 6
-- missing_samples: 6
-- rapid_warming: 6
-- repeated_door_opening: 6
-- sensor_drift: 6
-- short_door_opening: 6
-- stable_cold: 6
-- stable_room: 6
-- sudden_spike: 6
-- temporary_sensor_fault: 6
+- ambient_to_cold: 8
+- cold_to_ambient: 8
+- gradual_warming: 8
+- long_door_opening: 8
+- missing_samples: 8
+- rapid_warming: 8
+- repeated_door_opening: 8
+- sensor_drift: 8
+- short_door_opening: 8
+- stable_cold: 8
+- stable_room: 8
+- sudden_spike: 8
+- temporary_sensor_fault: 8
 
 ## Issues
 

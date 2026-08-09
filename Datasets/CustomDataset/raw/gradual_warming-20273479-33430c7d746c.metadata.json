@@ -1,0 +1,28 @@
+{
+  "run_id": "gradual_warming-20273479-33430c7d746c",
+  "scenario": "gradual_warming",
+  "random_seed": 20273479,
+  "sample_count": 121,
+  "valid_sample_count": 121,
+  "duration_seconds": 7200.0,
+  "sample_interval_seconds": 60.0,
+  "lower_limit_c": 2.0,
+  "upper_limit_c": 8.0,
+  "csv_path": "ml/data/synthetic_max/gradual_warming-20273479-33430c7d746c.csv",
+  "plot_path": "ml/data/synthetic_max/gradual_warming-20273479-33430c7d746c.png",
+  "scenario_config": {
+    "random_seed": 20260718,
+    "sample_interval_seconds": 60,
+    "duration_seconds": 7200,
+    "lower_limit_c": 2.0,
+    "upper_limit_c": 8.0,
+    "initial_temperature_c": 3.5,
+    "ambient_temperature_c": 22.0,
+    "sensor_noise_std_c": 0.07,
+    "output_dir": "ml/data/synthetic",
+    "type": "gradual_warming",
+    "final_temperature_c": 11.0,
+    "response_time_seconds": 5400
+  },
+  "disclaimer": "Synthetic software-only data. Not a hardware measurement or competition result."
+}
