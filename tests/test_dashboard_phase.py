@@ -154,6 +154,44 @@ def test_dashboard_importability_and_configuration() -> None:
     assert callable(app.main)
 
 
+def test_overview_gauge_uses_single_value_and_explicit_ticks() -> None:
+    from host.dashboard.pages.overview import _node_health_figure
+
+    figure = _node_health_figure(98.6)
+    indicator = figure.data[0]
+    assert indicator.value == 98.6
+    assert list(indicator.gauge.axis.tickvals) == [0, 20, 40, 60, 80, 100]
+    assert list(indicator.gauge.axis.ticktext) == ["0", "20", "40", "60", "80", "100"]
+
+    low_figure = _node_health_figure(30.0)
+    assert low_figure.data[0].value == 30.0
+
+
+def test_overview_state_segments_merge_consecutive_equal_states() -> None:
+    from host.dashboard.pages.overview import _state_segments
+
+    timeline = pd.DataFrame(
+        {
+            "elapsed": [0, 1, 2, 3, 4, 5],
+            "state": [
+                "STABLE",
+                "STABLE",
+                "TRANSITION",
+                "TRANSITION",
+                "EXCURSION_RISK",
+                "EXCURSION_RISK",
+            ],
+        }
+    )
+    spans = _state_segments(timeline)
+    assert [span["state"] for span in spans] == [
+        "STABLE",
+        "TRANSITION",
+        "EXCURSION_RISK",
+    ]
+    assert len(spans) == 3
+
+
 def test_dashboard_router_dispatches_every_page_module() -> None:
     """Every page module registered in the router must match its declared arg_kind.
 
