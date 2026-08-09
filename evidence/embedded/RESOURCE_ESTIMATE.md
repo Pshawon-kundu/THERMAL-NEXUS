@@ -11,7 +11,7 @@ ESTIMATED SOFTWARE VALUE - NOT MEASURED STM32 MEMORY CONSUMPTION.
 - `output_buffer_bytes`: 12
 - `total_static_ram_bytes`: 160
 - `estimated_stack_usage_bytes`: 512
-- `total_generated_source_size_bytes`: 18259
-- `estimated_flash_size_bytes`: 18667
+- `total_generated_source_size_bytes`: 18842
+- `estimated_flash_size_bytes`: 19250
 - `operation_count_per_inference`: 102
 - `notes`: Estimate only; not measured STM32 memory consumption.

@@ -133,8 +133,8 @@ def run_parity() -> dict[str, object]:
         expected, classes = _expected_probabilities_per_vector()
         diffs: list[float] = []
         class_mismatches = 0
-        for i, (emitted, expect) in enumerate(zip(summary["vectors"], expected)):
-            for k, (a, b) in enumerate(zip(emitted["probs"], expect)):
+        for emitted, expect in zip(summary["vectors"], expected, strict=False):
+            for a, b in zip(emitted["probs"], expect, strict=False):
                 diffs.append(abs(a - b))
             if emitted["class"] != max(range(len(expect)), key=lambda j: expect[j]):
                 class_mismatches += 1

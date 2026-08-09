@@ -19,6 +19,7 @@ from simulator.sensor_node.policy import policy_for_state
 def generate_golden_vectors(
     config_path: Path = Path("config/embedded_export.yaml"),
     source_csv: Path = Path("ml/data/splits/validation.csv"),
+    output_dir: Path = Path("embedded/golden_vectors"),
 ) -> list[dict[str, Any]]:
     """Generate deterministic representative validation vectors."""
 
@@ -35,7 +36,7 @@ def generate_golden_vectors(
     near = frame.sort_values("distance_from_nearest_limit").head(count)
     for _, row in near.iterrows():
         vectors.append(_vector(row, "near_threshold", runtime))
-    output = Path("embedded/golden_vectors")
+    output = output_dir
     output.mkdir(parents=True, exist_ok=True)
     (output / "golden_vectors.json").write_text(
         json.dumps(vectors, indent=2), encoding="utf-8"

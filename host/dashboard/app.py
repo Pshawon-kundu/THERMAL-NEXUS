@@ -9,6 +9,7 @@ the page's ``arg_kind`` column (which service / config argument to pass).
 from __future__ import annotations
 
 from pathlib import Path
+from types import ModuleType
 
 import streamlit as st
 
@@ -28,7 +29,6 @@ from host.dashboard.pages import (
     replay,
     system_info,
 )
-
 
 # (label, page module, arg_kind).
 # ``arg_kind`` picks whether the page receives the data service or the raw config.
@@ -67,12 +67,15 @@ _PAGES: list[st.StreamlitPage] = []
 
 def _register_pages() -> None:
     """Build the Streamlit page list from the ``_TABS`` table."""
+    if _PAGES:
+        return
+
     for label, module_name, arg_kind in _TABS:
         page = _PAGE_MODULES[module_name]
 
         def _render(
-            _page=page,
-            _arg_kind=arg_kind,
+            _page: ModuleType = page,
+            _arg_kind: str = arg_kind,
         ) -> None:
             config = load_dashboard_config()
             apply_theme()

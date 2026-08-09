@@ -1,6 +1,6 @@
 {
   "selected_model": "logistic_regression",
-  "artifact_dir": "ml/models/selected/provisional_20260731_200938_logistic_regression",
+  "artifact_dir": "ml/models/selected/provisional_20260726_201550_logistic_regression",
   "selected_from_validation": true,
   "test_evaluated": true,
   "note": "logistic regression retained as embedded-deployable model; small_mlp beat it on validation but is not yet C99-exportable."

@@ -8,21 +8,18 @@ Streamlit dashboard. Designed to be called from ``app.py`` with a
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 from host.dashboard.queries.hardware import (
-    HardwareRunSummary,
     accuracy_samples_for_run,
     all_hardware_runs,
     bom_for_run,
     hardware_kpi,
     range_traces_for_run,
 )
-
 
 # Phase-2 IEEE HART challenge acceptance thresholds. These are the
 # soft targets we want the simulated run to land inside.
@@ -35,7 +32,7 @@ KPI_TARGETS = {
 }
 
 
-def _metric(label: str, value: str, target: str, ok: Optional[bool]) -> None:
+def _metric(label: str, value: str, target: str, ok: bool | None) -> None:
     """Render a single KPI card with a target line."""
 
     delta = "✅" if ok else ("⚠️" if ok is False else "—")

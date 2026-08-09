@@ -7,8 +7,8 @@ import shutil
 from pathlib import Path
 
 import pandas as pd
-import yaml
 import pytest
+import yaml
 
 from analysis.compare_experiments import ComparisonError, compare_experiments
 from analysis.kpi_engine import calculate_kpis
@@ -206,9 +206,13 @@ def test_dashboard_router_dispatches_every_page_module() -> None:
     for _label, module_name, arg_kind in app._TABS:
         params = list(inspect.signature(modules[module_name].render).parameters)
         if arg_kind == "service":
-            assert params == ["service"], f"{module_name}.render should take only 'service'"
+            assert params == ["service"], (
+                f"{module_name}.render should take only 'service'"
+            )
         elif arg_kind == "config":
-            assert params == ["config"], f"{module_name}.render should take only 'config'"
+            assert params == ["config"], (
+                f"{module_name}.render should take only 'config'"
+            )
         else:
             assert params == [], f"{module_name}.render should take no arguments"
 

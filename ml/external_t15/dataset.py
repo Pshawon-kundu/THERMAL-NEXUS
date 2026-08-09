@@ -32,9 +32,11 @@ from ml.external_t15.schema import (
 )
 
 
-def load_source(path: Path = SOURCE_DATASET) -> pd.DataFrame:
+def load_source(path: Path | None = None) -> pd.DataFrame:
     """Load and validate the processed external T15 source dataset."""
 
+    if path is None:
+        path = SOURCE_DATASET
     frame = pd.read_csv(path)
     validate_source_frame(frame)
     frame["timestamp"] = pd.to_datetime(frame["timestamp"])

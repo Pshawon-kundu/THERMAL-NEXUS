@@ -14,6 +14,7 @@ def render(config: dict[str, object]) -> None:
     st.markdown("### Hardware Phase")
     st.caption(
         "Simulated TMP117 + XBee-PRO 900HP + STM32U585 measurements. "
-        "Swap to real firmware via `python -m simulator.hardware.run_hardware_demo --source measured`."
+        "Swap to real firmware via "
+        "`python -m simulator.hardware.run_hardware_demo --source measured`."
     )
     render_summary(Path(config["database_path"]))

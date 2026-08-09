@@ -14,6 +14,7 @@ from ml.inference.model_runtime import ModelRuntime
 
 def estimate_resources(
     config_path: Path = Path("config/embedded_export.yaml"),
+    evidence_dir: Path = Path("evidence/embedded"),
 ) -> dict[str, object]:
     """Create software-only resource estimates."""
 
@@ -53,7 +54,7 @@ def estimate_resources(
         "operation_count_per_inference": operations,
         "notes": "Estimate only; not measured STM32 memory consumption.",
     }
-    out = Path("evidence/embedded")
+    out = evidence_dir
     out.mkdir(parents=True, exist_ok=True)
     (out / "resource_estimate.json").write_text(
         json.dumps(estimate, indent=2), encoding="utf-8"

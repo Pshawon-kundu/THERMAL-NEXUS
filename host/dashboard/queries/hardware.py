@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from host.database.connection import DEFAULT_DATABASE_PATH, connect
 
@@ -35,10 +34,10 @@ class HardwareRunSummary:
 
     run_id: str
     source: str
-    firmware_version: Optional[str]
-    operator: Optional[str]
+    firmware_version: str | None
+    operator: str | None
     started_at: str
-    ended_at: Optional[str]
+    ended_at: str | None
     trace_count: int
     accuracy_count: int
     bom_count: int
@@ -58,7 +57,9 @@ class HardwareKPICard:
     software_estimated: bool = True
 
 
-def latest_hardware_run(database_path: Path = DEFAULT_DATABASE_PATH) -> Optional[HardwareRunSummary]:
+def latest_hardware_run(
+    database_path: Path = DEFAULT_DATABASE_PATH,
+) -> HardwareRunSummary | None:
     """Return the most recent run summary, or ``None`` if no runs exist."""
 
     with connect(database_path) as con:
@@ -76,7 +77,7 @@ def latest_hardware_run(database_path: Path = DEFAULT_DATABASE_PATH) -> Optional
     return HardwareRunSummary(**dict(row))
 
 
-def hardware_kpi(database_path: Path = DEFAULT_DATABASE_PATH) -> Optional[HardwareKPI]:
+def hardware_kpi(database_path: Path = DEFAULT_DATABASE_PATH) -> HardwareKPI | None:
     """Return the KPI block for the most recent hardware run, or ``None``."""
 
     with connect(database_path) as con:
@@ -95,7 +96,9 @@ def hardware_kpi(database_path: Path = DEFAULT_DATABASE_PATH) -> Optional[Hardwa
     return HardwareKPI(**dict(row))
 
 
-def all_hardware_runs(database_path: Path = DEFAULT_DATABASE_PATH) -> list[HardwareRunSummary]:
+def all_hardware_runs(
+    database_path: Path = DEFAULT_DATABASE_PATH,
+) -> list[HardwareRunSummary]:
     """Return every run summary, newest first."""
 
     with connect(database_path) as con:

@@ -1,0 +1,2 @@
+source_file,rows,notes
+synthetic_fixture.csv,90,Small synthetic external T15 fixture for reproducible tests
