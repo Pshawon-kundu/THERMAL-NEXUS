@@ -12,7 +12,7 @@ mirrors the eventual MCU firmware.
 All energy, range, accuracy, packet, and KPI outputs are **simulated
 software-estimated** values unless explicitly replaced by real hardware
 measurements. The disclaimer banner in the dashboard reads
-`SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS`.
+`SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE`.
 
 ## Repository layout
 

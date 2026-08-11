@@ -11,12 +11,15 @@ import streamlit as st
 def render(config: dict[str, object]) -> None:
     """Render the live simulation launcher."""
     st.markdown("### Live Simulation")
-    st.caption("Runs the existing simulator through a safe fixed subprocess command.")
+    st.caption(
+        "Explicit synthetic/demo mode for offline development. This is not live "
+        "hardware data."
+    )
     scenario = st.selectbox(
         "Scenario", ["gradual_warming", "rapid_warming", "stable_cold"]
     )
     mode = st.selectbox("Mode", config["supported_modes"])
-    if st.button("Start simulation"):
+    if st.button("Load demo data", type="secondary"):
         command = [
             sys.executable,
             "-m",

@@ -46,9 +46,7 @@ class DashboardDataService:
             "policy_version": "runtime_policy_v1",
             "protocol_version": 1,
             "latest_experiment": latest,
-            "limitations_notice": (
-                "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS"
-            ),
+            "limitations_notice": "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE",
         }
 
     def experiments(self) -> list[dict[str, Any]]:

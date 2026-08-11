@@ -56,7 +56,7 @@ def compare_experiments(
     report = [
         "# Experiment Comparison Report",
         "",
-        "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS",
+        "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE",
         "",
         f"Experiments compared: {len(experiment_ids)}",
         f"Scenario: {next(iter(scenarios)) if scenarios else ''}",
