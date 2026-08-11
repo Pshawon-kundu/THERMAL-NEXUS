@@ -13,8 +13,7 @@ def render(config: dict[str, object]) -> None:
     """Render the hardware-phase KPI summary tab."""
     st.markdown("### Hardware Phase")
     st.caption(
-        "Simulated TMP117 + XBee-PRO 900HP + STM32U585 measurements. "
-        "Swap to real firmware via "
-        "`python -m simulator.hardware.run_hardware_demo --source measured`."
+        "Hardware-readiness evidence and measured-run review. Live hardware state is "
+        "reported by the global serial panel and banner."
     )
     render_summary(Path(config["database_path"]))

@@ -52,7 +52,7 @@ def experiment_metadata(
         "ended_at": end,
         "duration_seconds": duration,
         "status": "imported",
-        "notes": "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS",
+        "notes": "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE",
         "source_directory": str(mode_dir),
         "imported_at": datetime.now(UTC).isoformat(),
     }

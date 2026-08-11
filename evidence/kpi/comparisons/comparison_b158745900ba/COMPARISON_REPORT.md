@@ -1,6 +1,6 @@
 # Experiment Comparison Report
 
-SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS
+SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE
 
 Experiments compared: 3
 Scenario: gradual_warming

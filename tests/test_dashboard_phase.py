@@ -32,14 +32,14 @@ def test_database_initialization_foreign_keys_and_empty_dashboard(
 ) -> None:
     db = tmp_path / "thermal.db"
     schema_version = initialize_database(db)
-    assert schema_version == 2
+    assert schema_version == 3
     with connect(db) as connection:
         assert connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         row = connection.execute("SELECT MAX(version) FROM schema_version").fetchone()
-        assert row is not None and row[0] == 2
+        assert row is not None and row[0] == 3
     overview = DashboardDataService(db).system_overview()
     assert overview["experiment_count"] == 0
-    assert "SIMULATED SOFTWARE DATA" in overview["limitations_notice"]
+    assert overview["limitations_notice"] == "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE"
 
 
 def test_valid_import_duplicate_prevention_queries_and_rollback(tmp_path: Path) -> None:
@@ -154,6 +154,25 @@ def test_dashboard_importability_and_configuration() -> None:
     assert callable(app.main)
 
 
+def test_dashboard_navigation_groups_all_pages() -> None:
+    import host.dashboard.app as app
+
+    assert list(app._NAV_GROUPS) == [
+        "Overview",
+        "Run & Experiments",
+        "System",
+        "Insights",
+    ]
+    grouped_modules = [
+        module_name
+        for group in app._NAV_GROUPS.values()
+        for _label, module_name, _arg_kind, icon in group
+        if icon
+    ]
+    assert len(grouped_modules) == 11
+    assert set(grouped_modules) == {module_name for _, module_name, _ in app._TABS}
+
+
 def test_overview_gauge_uses_single_value_and_explicit_ticks() -> None:
     from host.dashboard.pages.overview import _node_health_figure
 
@@ -190,6 +209,98 @@ def test_overview_state_segments_merge_consecutive_equal_states() -> None:
         "EXCURSION_RISK",
     ]
     assert len(spans) == 3
+
+
+def test_overview_status_color_switches_on_zero_value() -> None:
+    from host.dashboard.pages.overview import _status_color
+
+    assert _status_color(0) == {
+        "badge_bg": "#E6F4EA",
+        "badge_fg": "#1B5E20",
+        "border": "#1B5E20",
+    }
+    assert _status_color(2) == {
+        "badge_bg": "#FBE7E7",
+        "badge_fg": "#8E1F1F",
+        "border": "#8E1F1F",
+    }
+
+
+def test_overview_active_zones_uses_only_reporting_nodes() -> None:
+    from host.dashboard.pages.overview import _active_zones, _humidity_caption
+
+    reader = pd.DataFrame(
+        {
+            "node_uid": ["NODE_A", "NODE_A", "NODE_B"],
+            "node_id": [1, 1, 2],
+            "sequence_number": [1, 2, 1],
+            "measured_temperature": [4.2, 4.4, 5.1],
+        }
+    )
+    zones = _active_zones({"reader": reader, "timeline": pd.DataFrame()})
+
+    assert list(zones["zone_key"]) == ["NODE_A", "NODE_B"]
+    assert list(zones["temperature"]) == [4.4, 5.1]
+    assert zones["humidity_available"].eq(False).all()
+    assert "Humidity sensor not installed" in _humidity_caption(zones.iloc[0].to_dict())
+
+
+def test_runtime_data_mode_live_replay_and_no_data(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from host.dashboard import runtime_status as status
+
+    connected = status.SerialSnapshot(
+        pyserial_available=True,
+        ports=("COM7",),
+        selected_port="COM7",
+        baud_rate=115200,
+        user_connected=True,
+        port_available=True,
+    )
+    disconnected = status.SerialSnapshot(
+        pyserial_available=True,
+        ports=(),
+        selected_port=None,
+        baud_rate=115200,
+        user_connected=False,
+        port_available=False,
+    )
+    fresh_live_packet = status.PacketSnapshot(
+        experiment_id="run-1:mqtt:NODE_01",
+        data_source_type="PROJECT_COLLECTED",
+        source_type="mqtt_project_collected",
+        received_at=1.0,
+        age_seconds=2.0,
+    )
+    replay_packet = status.PacketSnapshot(
+        experiment_id="saved-run",
+        data_source_type="SYNTHETIC",
+        source_type="simulation",
+        received_at=1.0,
+        age_seconds=999.0,
+    )
+    no_packet = status.PacketSnapshot(None, None, None, None, None)
+    config = {"database_path": "unused.db", "freshness_timeout_seconds": 10}
+
+    monkeypatch.setattr(status, "get_serial_snapshot", lambda _config: connected)
+    monkeypatch.setattr(
+        status, "get_latest_packet_snapshot", lambda _path: fresh_live_packet
+    )
+    assert status.get_runtime_snapshot(config).mode == "LIVE"
+    assert status.get_data_mode(connected, fresh_live_packet, 10) == "LIVE"
+    assert status.packets_arriving_within_timeout(fresh_live_packet, 10)
+
+    monkeypatch.setattr(status, "get_serial_snapshot", lambda _config: disconnected)
+    monkeypatch.setattr(
+        status, "get_latest_packet_snapshot", lambda _path: replay_packet
+    )
+    assert status.get_runtime_snapshot(config).mode == "REPLAY"
+    assert status.get_data_mode(disconnected, replay_packet, 10) == "REPLAY"
+
+    monkeypatch.setattr(status, "get_latest_packet_snapshot", lambda _path: no_packet)
+    assert status.get_runtime_snapshot(config).mode == "NO_DATA"
+    assert status.get_data_mode(disconnected, no_packet, 10) == "NO_DATA"
 
 
 def test_dashboard_router_dispatches_every_page_module() -> None:
@@ -244,13 +355,13 @@ def test_dashboard_router_dispatches_every_page_module() -> None:
     for _label, module_name, arg_kind in app._TABS:
         params = list(inspect.signature(modules[module_name].render).parameters)
         if arg_kind == "service":
-            assert params == ["service"], (
-                f"{module_name}.render should take only 'service'"
-            )
+            assert params == [
+                "service"
+            ], f"{module_name}.render should take only 'service'"
         elif arg_kind == "config":
-            assert params == ["config"], (
-                f"{module_name}.render should take only 'config'"
-            )
+            assert params == [
+                "config"
+            ], f"{module_name}.render should take only 'config'"
         else:
             assert params == [], f"{module_name}.render should take no arguments"
 

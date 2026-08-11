@@ -3,6 +3,8 @@ evidence_path: evidence/dashboard
 dashboard_title: Thermal Nexus Offline Dashboard
 team_name: Thermal Nexus
 refresh_interval_seconds: 5
+freshness_timeout_seconds: 10
+baud_rate: 115200
 default_replay_speed: 1
 maximum_displayed_rows: 5000
 simulation_timeout_seconds: 180
@@ -10,4 +12,3 @@ supported_modes:
   - fixed
   - rule_based
   - ml
-disclaimer_text: SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS

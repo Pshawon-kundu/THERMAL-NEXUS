@@ -46,7 +46,7 @@ def _markdown(metadata: dict[str, object], frame: pd.DataFrame) -> str:
     rows = [
         "# KPI Report",
         "",
-        "SIMULATED SOFTWARE DATA - NOT PHYSICAL HARDWARE RESULTS",
+        "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE",
         "",
         f"Generated: {datetime.now(UTC).isoformat()}",
         f"Experiment: `{metadata['experiment_id']}`",

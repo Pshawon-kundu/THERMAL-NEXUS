@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 DDL = [
     """
@@ -20,10 +20,12 @@ DDL = [
         operating_mode TEXT NOT NULL,
         run_id TEXT,
         node_id INTEGER,
+        node_uid TEXT,
         model_name TEXT,
         model_version TEXT,
         policy_version TEXT,
         protocol_version INTEGER,
+        data_source_type TEXT,
         simulation_seed INTEGER,
         started_at TEXT,
         ended_at TEXT,
@@ -42,9 +44,11 @@ DDL = [
             REFERENCES experiments(experiment_id) ON DELETE CASCADE,
         timestamp TEXT,
         sequence_index INTEGER,
+        sequence_number INTEGER,
         measured_temperature REAL,
         true_temperature REAL,
         sensor_valid INTEGER,
+        node_uid TEXT,
         predicted_state TEXT,
         predicted_state_code INTEGER,
         risk_probability REAL,
@@ -54,9 +58,11 @@ DDL = [
         transmission_requested INTEGER,
         transmission_reason TEXT,
         model_latency_ms REAL,
+        model_valid INTEGER,
         fallback_status TEXT,
         battery_percentage REAL,
-        estimated_energy_joules REAL
+        estimated_energy_joules REAL,
+        data_source_type TEXT
     )
     """,
     """
@@ -73,7 +79,8 @@ DDL = [
         drop_reason TEXT,
         corrupted INTEGER,
         duplicated INTEGER,
-        out_of_order INTEGER
+        out_of_order INTEGER,
+        rssi_dbm REAL
     )
     """,
     """
@@ -84,16 +91,20 @@ DDL = [
         timestamp REAL,
         received_at REAL,
         node_id INTEGER,
+        node_uid TEXT,
         sequence_number INTEGER,
         measured_temperature REAL,
         predicted_state TEXT,
         risk_probability REAL,
         battery_percentage REAL,
+        battery_voltage REAL,
+        rssi_dbm REAL,
         sensor_valid INTEGER,
         fault_flags INTEGER,
         packet_latency_ms REAL,
         accepted INTEGER,
-        rejection_reason TEXT
+        rejection_reason TEXT,
+        data_source_type TEXT
     )
     """,
     """
@@ -105,11 +116,13 @@ DDL = [
         alert_type TEXT,
         severity TEXT,
         node_id INTEGER,
+        node_uid TEXT,
         state TEXT,
         message TEXT,
         acknowledged INTEGER DEFAULT 0,
         resolved INTEGER DEFAULT 0,
-        source_event_id TEXT
+        source_event_id TEXT,
+        data_source_type TEXT
     )
     """,
     """
@@ -217,10 +230,7 @@ INDEXES = [
         "CREATE INDEX IF NOT EXISTS idx_physical_measurements_run "
         "ON physical_measurements(run_id, setpoint_c)"
     ),
-    (
-        "CREATE INDEX IF NOT EXISTS idx_bom_items_run "
-        "ON bom_items(run_id)"
-    ),
+    ("CREATE INDEX IF NOT EXISTS idx_bom_items_run " "ON bom_items(run_id)"),
     (
         "CREATE INDEX IF NOT EXISTS idx_hardware_runs_source "
         "ON hardware_runs(source, started_at)"

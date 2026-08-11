@@ -48,3 +48,4 @@ Datasets/Long-range freeze-preventive vaccine carriers in Nepal thermal data/
 Datasets/sample_temperature-ELM_v1.0_optimizationComp_data.csv
 Datasets/*.pdf
 .DS_Store
+streamlit-dashboard*.log
