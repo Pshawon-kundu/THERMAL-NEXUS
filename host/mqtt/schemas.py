@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 
 from host.ingestion.mappers import STATE_CODES
@@ -212,7 +212,7 @@ def _base(data: dict[str, object], expected_type: str) -> BaseMessage:
     return BaseMessage(
         protocol_version=protocol_version,
         message_type=expected_type,
-        timestamp=_required_timestamp(data, "timestamp"),
+        timestamp=_message_timestamp(data),
         run_id=_required_string(data, "run_id"),
         node_id=_required_string(data, "node_id"),
         sequence_number=_required_int(data, "sequence_number", minimum=0),
@@ -328,6 +328,13 @@ def _required_timestamp(data: dict[str, object], field: str) -> datetime:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as exc:
         raise MqttValidationError(f"{field} must be valid ISO 8601") from exc
+
+
+def _message_timestamp(data: dict[str, object]) -> datetime:
+    if "timestamp" in data and data["timestamp"] is not None:
+        return _required_timestamp(data, "timestamp")
+    timestamp_ms = _required_int(data, "timestamp_ms", minimum=0)
+    return datetime.fromtimestamp(timestamp_ms / 1000.0, tz=UTC)
 
 
 def _reject_json_constant(value: str) -> Literal[None]:

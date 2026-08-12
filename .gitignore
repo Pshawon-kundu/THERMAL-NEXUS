@@ -49,3 +49,7 @@ Datasets/sample_temperature-ELM_v1.0_optimizationComp_data.csv
 Datasets/*.pdf
 .DS_Store
 streamlit-dashboard*.log
+.pio/
+platformio_override.ini
+secrets.ini
+secrets.h

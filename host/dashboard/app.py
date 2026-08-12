@@ -8,20 +8,20 @@ the page's ``arg_kind`` column (which service / config argument to pass).
 
 from __future__ import annotations
 
-from pathlib import Path
 import sys
+from pathlib import Path
 from types import ModuleType
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import streamlit as st
+import streamlit as st  # noqa: E402
 
-from host.dashboard.components import apply_theme, render_header
-from host.dashboard.config import load_dashboard_config
-from host.dashboard.data_service import DashboardDataService
-from host.dashboard.pages import (
+from host.dashboard.components import apply_theme, render_header  # noqa: E402
+from host.dashboard.config import load_dashboard_config  # noqa: E402
+from host.dashboard.data_service import DashboardDataService  # noqa: E402
+from host.dashboard.pages import (  # noqa: E402
     alerts,
     experiments,
     hardware,
@@ -34,7 +34,7 @@ from host.dashboard.pages import (
     replay,
     system_info,
 )
-from host.dashboard.runtime_status import render_serial_sidebar
+from host.dashboard.runtime_status import render_serial_sidebar  # noqa: E402
 
 PageSpec = tuple[str, str, str, str]
 

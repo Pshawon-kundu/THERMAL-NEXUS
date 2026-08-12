@@ -17,6 +17,12 @@ $env:PYTHONPATH = $RepoRoot
 Write-Host "Starting Thermal Nexus MQTT ingestion..."
 $HostName = if ($env:MQTT_HOST) { $env:MQTT_HOST } else { "127.0.0.1" }
 $Port = if ($env:MQTT_PORT) { $env:MQTT_PORT } else { "1883" }
+$DatabasePath = (Resolve-Path -Path $Database -ErrorAction SilentlyContinue)
+if ($DatabasePath) {
+    $Database = $DatabasePath.Path
+} else {
+    $Database = [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $Database))
+}
 Write-Host "Broker: ${HostName}:${Port}"
 Write-Host "Database: $Database"
 
