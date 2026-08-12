@@ -19,6 +19,7 @@ from host.mqtt.storage import MqttSqliteStore
 from host.mqtt.topics import parse_topic, subscription_filters
 
 LOGGER = logging.getLogger(__name__)
+MQTT_SUCCESS = 0
 
 
 class MqttIngestionService:
@@ -32,40 +33,84 @@ class MqttIngestionService:
         store: MqttSqliteStore | None = None,
     ) -> None:
         self.config = config or load_mqtt_config()
+        self.database_path = database_path.resolve()
         self.store = store or MqttSqliteStore(database_path)
         self.client = client or self._make_client()
+        self._stopping = False
         self._configure_client()
 
     def start_forever(self) -> None:
-        """Connect and run until interrupted, using bounded reconnect backoff."""
+        """Connect once, run the network loop, and reconnect only after failures."""
 
         delay = self.config.reconnect_min_delay_seconds
+        LOGGER.info("[DB] ingestion database=%s", self.database_path)
+        self._connect_with_retry(delay)
+        delay = self.config.reconnect_min_delay_seconds
+
         while True:
             try:
+                result = self.client.loop(timeout=1.0)
+                if result in (None, MQTT_SUCCESS):
+                    delay = self.config.reconnect_min_delay_seconds
+                    continue
+                LOGGER.warning("[MQTT] Disconnected reason=%s", result)
+                delay = self._reconnect_after_delay(delay)
+            except KeyboardInterrupt:
+                self.stop()
+                return
+            except OSError as exc:
+                LOGGER.warning("[MQTT] Disconnected reason=%s", exc)
+                delay = self._reconnect_after_delay(delay)
+
+    def stop(self) -> None:
+        """Disconnect the MQTT client cleanly."""
+
+        self._stopping = True
+        self.client.disconnect()
+
+    def _connect_with_retry(self, delay: float) -> None:
+        while True:
+            try:
+                LOGGER.info(
+                    "[MQTT] Connecting to %s:%s", self.config.host, self.config.port
+                )
                 self.client.connect(
                     self.config.host,
                     self.config.port,
                     self.config.keepalive_seconds,
                 )
-                self.client.loop_forever(retry_first_connection=True)
-                delay = self.config.reconnect_min_delay_seconds
+                return
             except KeyboardInterrupt:
                 self.stop()
-                return
+                raise
             except OSError as exc:
-                LOGGER.warning("MQTT broker unavailable: %s", exc)
+                LOGGER.warning("[MQTT] Connection failed reason=%s", exc)
+                LOGGER.info("[MQTT] Reconnecting in %.1fs", delay)
                 time.sleep(delay)
                 delay = min(delay * 2.0, self.config.reconnect_max_delay_seconds)
 
-    def stop(self) -> None:
-        """Disconnect the MQTT client cleanly."""
-
-        self.client.disconnect()
+    def _reconnect_after_delay(self, delay: float) -> float:
+        LOGGER.info("[MQTT] Reconnecting in %.1fs", delay)
+        time.sleep(delay)
+        try:
+            if hasattr(self.client, "reconnect"):
+                self.client.reconnect()
+            else:
+                self.client.connect(
+                    self.config.host,
+                    self.config.port,
+                    self.config.keepalive_seconds,
+                )
+            return self.config.reconnect_min_delay_seconds
+        except OSError as exc:
+            LOGGER.warning("[MQTT] Reconnect failed reason=%s", exc)
+            return min(delay * 2.0, self.config.reconnect_max_delay_seconds)
 
     def _configure_client(self) -> None:
         if self.config.username:
             self.client.username_pw_set(self.config.username, self.config.password)
         self.client.on_connect = self._on_connect
+        self.client.on_disconnect = self._on_disconnect
         self.client.on_message = self._on_message
         self.client.reconnect_delay_set(
             min_delay=int(self.config.reconnect_min_delay_seconds),
@@ -76,11 +121,18 @@ class MqttIngestionService:
         self, client: object, _userdata: object, _flags: object, rc: int
     ) -> None:
         if rc != 0:
-            LOGGER.warning("MQTT connection returned rc=%s", rc)
+            LOGGER.warning("[MQTT] Connection failed reason=%s", rc)
             return
+        LOGGER.info("[MQTT] Connected")
         for topic_filter, qos in subscription_filters(self.config):
             client.subscribe(topic_filter, qos=qos)
-        LOGGER.info("Subscribed to Thermal Nexus MQTT topics")
+        LOGGER.info("[MQTT] Subscribed to Thermal Nexus MQTT topics")
+
+    def _on_disconnect(self, _client: object, _userdata: object, *args: object) -> None:
+        reason = args[-1] if args else "unknown"
+        if self._stopping:
+            return
+        LOGGER.warning("[MQTT] Disconnected reason=%s", reason)
 
     def _on_message(self, _client: object, _userdata: object, msg: object) -> None:
         topic = str(getattr(msg, "topic", ""))
@@ -94,11 +146,37 @@ class MqttIngestionService:
             if parsed.node_id != message.node_id:
                 raise MqttValidationError("node_id mismatch between topic and payload")
             if isinstance(message, TelemetryMessage):
-                self.store.store_telemetry(message)
+                result = self.store.store_telemetry(message)
+                LOGGER.info(
+                    "[MQTT] received node=%s seq=%s",
+                    message.node_id,
+                    message.sequence_number,
+                )
+                status = "duplicate" if result.duplicate else "inserted"
+                LOGGER.info(
+                    "[DB] %s telemetry node=%s seq=%s",
+                    status,
+                    message.node_id,
+                    message.sequence_number,
+                )
             elif isinstance(message, DecisionMessage):
-                self.store.store_decision(message)
+                result = self.store.store_decision(message)
+                status = "duplicate" if result.duplicate else "inserted"
+                LOGGER.info(
+                    "[DB] %s decision node=%s seq=%s",
+                    status,
+                    message.node_id,
+                    message.sequence_number,
+                )
             elif isinstance(message, AlertMessage):
-                self.store.store_alert(message)
+                result = self.store.store_alert(message)
+                status = "duplicate" if result.duplicate else "inserted"
+                LOGGER.info(
+                    "[DB] %s alert node=%s seq=%s",
+                    status,
+                    message.node_id,
+                    message.sequence_number,
+                )
         except Exception as exc:
             LOGGER.warning("Rejected MQTT message on %s: %s", topic, exc)
 

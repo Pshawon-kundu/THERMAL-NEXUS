@@ -70,6 +70,10 @@ def render(service: DashboardDataService) -> None:
     st.caption("Offline experiment evidence, replay, KPI, and embedded readiness.")
     _render_status_sentence(data, latest_context)
 
+    _section_label("ESP32 MQTT LIVE MONITOR")
+    _render_esp32_live_monitor(service)
+
+    st.markdown("<div class='tn-section-gap'></div>", unsafe_allow_html=True)
     _section_label("SESSION")
     _render_hero_kpis(data, latest_context)
 
@@ -111,9 +115,7 @@ def _section_label(label: str) -> None:
     )
 
 
-def _render_status_sentence(
-    overview: dict[str, Any], context: dict[str, Any]
-) -> None:
+def _render_status_sentence(overview: dict[str, Any], context: dict[str, Any]) -> None:
     alerts = _latest_alert_count(context)
     delivery = context["packet_health"]["delivery_ratio"]
     source = _source_label(context["experiment"])
@@ -131,9 +133,83 @@ def _render_status_sentence(
     )
 
 
-def _render_hero_kpis(
-    overview: dict[str, Any], context: dict[str, Any]
-) -> None:
+def _render_esp32_live_monitor(service: DashboardDataService) -> None:
+    monitor = service.live_node_monitor("ESP32_DEV_01")
+    latest = monitor["latest"] or {}
+    history = pd.DataFrame(monitor["history"])
+    state = str(monitor["connection"])
+    state_colors = {
+        "ONLINE": ("#1B5E20", "#E6F4EA"),
+        "STALE": ("#8A5A00", "#FCF1DC"),
+        "OFFLINE": ("#8E1F1F", "#FBE7E7"),
+    }
+    fg, bg = state_colors.get(state, ("#64748b", "#E5E7EB"))
+    temperature = _optional_float(latest.get("measured_temperature"))
+    sequence = latest.get("sequence_number")
+    source = str(latest.get("data_source_type") or "-")
+    last_packet = _format_last_packet(monitor["last_packet_timestamp"])
+    age_text = _format_age(monitor["age_seconds"])
+
+    with st.container(border=True):
+        st.markdown(
+            f"""
+            <div class="tn-live-node-head">
+              <div>
+                <div class="tn-card-kicker">Node</div>
+                <div class="tn-live-node-title">ESP32_DEV_01</div>
+              </div>
+              <div class="tn-live-node-pill" style="color:{fg};background:{bg};">
+                {escape(state)}
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        cols = st.columns(5)
+        cols[0].metric("Current temperature", _format_celsius(temperature))
+        cols[1].metric("Data source", source)
+        cols[2].metric("Last packet", last_packet)
+        cols[3].metric("Age", age_text)
+        cols[4].metric("Sequence", "-" if sequence is None else str(sequence))
+        if history.empty:
+            st.info("No ESP32 MQTT telemetry has been inserted into SQLite yet.")
+            return
+        chart = history.copy()
+        chart["received_time"] = pd.to_datetime(
+            chart.get("timestamp"),
+            unit="s",
+            errors="coerce",
+        )
+        chart["temperature_c"] = pd.to_numeric(
+            chart.get("measured_temperature"), errors="coerce"
+        )
+        chart = chart.dropna(subset=["received_time", "temperature_c"])
+        if chart.empty:
+            st.info("ESP32 records exist, but no valid temperature history is present.")
+            return
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=chart["received_time"],
+                y=chart["temperature_c"],
+                mode="lines+markers",
+                name="ESP32 temperature",
+                line={"color": "#0F6B72", "width": 2.2},
+                marker={"size": 5},
+                hovertemplate="%{x}<br>%{y:.2f} C<extra></extra>",
+            )
+        )
+        fig.update_layout(
+            template="plotly_white",
+            height=260,
+            margin={"l": 20, "r": 20, "t": 10, "b": 30},
+            xaxis_title=f"Last {monitor['history_minutes']} minutes",
+            yaxis_title="Temperature (C)",
+        )
+        st.plotly_chart(fig, width="stretch")
+
+
+def _render_hero_kpis(overview: dict[str, Any], context: dict[str, Any]) -> None:
     duration = _session_duration(context)
     delivery = context["packet_health"]["delivery_ratio"]
     alerts = _latest_alert_count(context)
@@ -507,9 +583,7 @@ def _render_chamber_photo_mini() -> None:
     )
 
 
-def _render_system_snapshot(
-    context: dict[str, Any], overview: dict[str, Any]
-) -> None:
+def _render_system_snapshot(context: dict[str, Any], overview: dict[str, Any]) -> None:
     timeline = context["timeline"]
     reader = context["reader"]
     experiment = context["experiment"] or {}
@@ -518,9 +592,7 @@ def _render_system_snapshot(
     sensor_valid = "Unknown"
     if latest_timeline is not None:
         sensor_valid = (
-            "Valid"
-            if int(latest_timeline.get("sensor_valid") or 0)
-            else "Invalid"
+            "Valid" if int(latest_timeline.get("sensor_valid") or 0) else "Invalid"
         )
     node = "-"
     if latest_reader is not None:
@@ -529,9 +601,7 @@ def _render_system_snapshot(
     if latest_reader is not None:
         last_update = str(latest_reader.get("timestamp") or "-")
     model = str(
-        experiment.get("model_name")
-        or overview.get("model_version")
-        or "not reported"
+        experiment.get("model_name") or overview.get("model_version") or "not reported"
     )
     chip_markup = "".join(
         _stat_chip(label, value, caption, icon)
@@ -814,9 +884,7 @@ def _render_heat_map_panel(zones: pd.DataFrame) -> None:
     if len(positioned) < len(zones):
         st.caption("Zone positions are not configured; using a simple row layout.")
         zones = zones.copy()
-        zones["position"] = [
-            (float(index), 0.0, 0.0) for index in range(len(zones))
-        ]
+        zones["position"] = [(float(index), 0.0, 0.0) for index in range(len(zones))]
         positioned = zones
 
     coords = pd.DataFrame(
@@ -947,9 +1015,26 @@ def _format_celsius(value: object) -> str:
     return _format_optional_number(value, "C", decimals=1)
 
 
-def _format_optional_number(
-    value: object, unit: str, *, decimals: int = 1
-) -> str:
+def _format_age(value: object) -> str:
+    numeric = _optional_float(value)
+    if numeric is None:
+        return "-"
+    if numeric < 60:
+        return f"{numeric:.0f}s"
+    return f"{numeric / 60:.1f}m"
+
+
+def _format_last_packet(value: object) -> str:
+    numeric = _optional_float(value)
+    if numeric is None:
+        return "-"
+    try:
+        return pd.to_datetime(float(numeric), unit="s").strftime("%H:%M:%S")
+    except (TypeError, ValueError, OverflowError):
+        return str(value)
+
+
+def _format_optional_number(value: object, unit: str, *, decimals: int = 1) -> str:
     number = _optional_float(value)
     if number is None:
         return "-"

@@ -131,6 +131,25 @@
 .tn-section-gap {
     height: 14px;
 }
+.tn-live-node-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+.tn-live-node-title {
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+.tn-live-node-pill {
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 7px 12px;
+}
 .tn-section-label-bar {
     background: #f3f8f6;
     border: 0;

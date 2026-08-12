@@ -27,6 +27,86 @@ from host.ingestion.validators import ImportValidationError
 from host.replay.engine import create_session
 
 
+def _insert_esp32_reader_record(
+    database_path: Path,
+    *,
+    timestamp: float,
+    sequence_number: int,
+    temperature: float = 5.5,
+    data_source_type: str = "SYNTHETIC",
+    node_uid: str = "ESP32_DEV_01",
+    run_id: str = "ESP32_TEST_RUN",
+) -> None:
+    initialize_database(database_path)
+    experiment_id = f"{run_id}:mqtt:{node_uid}"
+    with connect(database_path) as connection:
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO experiments (
+                experiment_id, created_at, source_type, scenario, operating_mode,
+                run_id, node_id, node_uid, model_name, model_version,
+                policy_version, protocol_version, data_source_type,
+                simulation_seed, started_at, ended_at, duration_seconds,
+                status, notes, source_directory, imported_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                experiment_id,
+                "2026-08-12T00:00:00+00:00",
+                f"mqtt_{data_source_type.lower()}",
+                None,
+                "mqtt",
+                run_id,
+                3201,
+                node_uid,
+                "",
+                "",
+                "runtime_policy_v1",
+                1,
+                data_source_type,
+                None,
+                "2026-08-12T00:00:00+00:00",
+                None,
+                None,
+                "mqtt_ingested",
+                f"MQTT {data_source_type} local ingestion",
+                f"mqtt://{run_id}/{node_uid}",
+                "2026-08-12T00:00:00+00:00",
+            ),
+        )
+        connection.execute(
+            """
+            INSERT INTO reader_records (
+                experiment_id, timestamp, received_at, node_id, node_uid,
+                sequence_number, measured_temperature, predicted_state,
+                risk_probability, battery_percentage, battery_voltage, rssi_dbm,
+                sensor_valid, fault_flags, packet_latency_ms, accepted,
+                rejection_reason, data_source_type
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)
+            """,
+            (
+                experiment_id,
+                timestamp,
+                timestamp + 0.25,
+                3201,
+                node_uid,
+                sequence_number,
+                temperature,
+                None,
+                None,
+                None,
+                None,
+                -61,
+                1,
+                0,
+                None,
+                None,
+                data_source_type,
+            ),
+        )
+        connection.commit()
+
+
 def test_database_initialization_foreign_keys_and_empty_dashboard(
     tmp_path: Path,
 ) -> None:
@@ -152,6 +232,92 @@ def test_dashboard_importability_and_configuration() -> None:
     import host.dashboard.app as app
 
     assert callable(app.main)
+
+
+def test_live_node_monitor_no_records(tmp_path: Path) -> None:
+    database_path = tmp_path / "thermal.db"
+    initialize_database(database_path)
+
+    monitor = DashboardDataService(database_path).live_node_monitor(
+        now_timestamp=1000.0
+    )
+
+    assert monitor["node_uid"] == "ESP32_DEV_01"
+    assert monitor["connection"] == "OFFLINE"
+    assert monitor["latest"] is None
+    assert monitor["history"] == []
+    assert monitor["age_seconds"] is None
+    assert monitor["database_path"] == database_path.resolve()
+
+
+def test_live_node_monitor_latest_esp32_record_online_and_source_preserved(
+    tmp_path: Path,
+) -> None:
+    database_path = tmp_path / "thermal.db"
+    _insert_esp32_reader_record(
+        database_path,
+        timestamp=995.0,
+        sequence_number=20,
+        temperature=5.5,
+        data_source_type="SYNTHETIC",
+    )
+
+    monitor = DashboardDataService(database_path).live_node_monitor(
+        now_timestamp=1000.0
+    )
+    latest = monitor["latest"]
+
+    assert monitor["connection"] == "ONLINE"
+    assert monitor["age_seconds"] == 5.0
+    assert monitor["last_packet_timestamp"] == 995.0
+    assert latest["node_uid"] == "ESP32_DEV_01"
+    assert latest["sequence_number"] == 20
+    assert latest["measured_temperature"] == 5.5
+    assert latest["data_source_type"] == "SYNTHETIC"
+
+
+def test_live_node_monitor_multiple_records_chooses_newest_and_orders_history(
+    tmp_path: Path,
+) -> None:
+    database_path = tmp_path / "thermal.db"
+    _insert_esp32_reader_record(database_path, timestamp=970.0, sequence_number=1)
+    _insert_esp32_reader_record(database_path, timestamp=990.0, sequence_number=2)
+    _insert_esp32_reader_record(database_path, timestamp=980.0, sequence_number=3)
+
+    monitor = DashboardDataService(database_path).live_node_monitor(
+        now_timestamp=1000.0
+    )
+
+    assert monitor["latest"]["sequence_number"] == 2
+    assert [row["timestamp"] for row in monitor["history"]] == [970.0, 980.0, 990.0]
+    assert [row["sequence_number"] for row in monitor["history"]] == [1, 3, 2]
+
+
+def test_live_node_monitor_stale_and_offline_thresholds(tmp_path: Path) -> None:
+    stale_database_path = tmp_path / "stale.db"
+    _insert_esp32_reader_record(
+        stale_database_path, timestamp=985.0, sequence_number=10
+    )
+
+    stale_monitor = DashboardDataService(stale_database_path).live_node_monitor(
+        now_timestamp=1000.0,
+        online_seconds=10,
+        offline_seconds=60,
+    )
+
+    offline_database_path = tmp_path / "offline.db"
+    _insert_esp32_reader_record(
+        offline_database_path, timestamp=900.0, sequence_number=10
+    )
+
+    offline_monitor = DashboardDataService(offline_database_path).live_node_monitor(
+        now_timestamp=1000.0,
+        online_seconds=10,
+        offline_seconds=60,
+    )
+
+    assert stale_monitor["connection"] == "STALE"
+    assert offline_monitor["connection"] == "OFFLINE"
 
 
 def test_dashboard_navigation_groups_all_pages() -> None:
