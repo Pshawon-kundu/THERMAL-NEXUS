@@ -1,0 +1,28 @@
+{
+  "status": "DATASET_FREEZE_PASS",
+  "dataset_id": "THERMAL_NEXUS_TEMP_DEV_V1",
+  "accepted_sources": [
+    "BOLZANO_IEQ",
+    "INTEL_LAB",
+    "UCI_ROOM_OCCUPANCY"
+  ],
+  "canonical_rows": 316657,
+  "model_ready_rows": 4968,
+  "source_counts": {
+    "BOLZANO_IEQ": 3000,
+    "UCI_ROOM_OCCUPANCY": 1800,
+    "INTEL_LAB": 168
+  },
+  "provenance_pass": true,
+  "duplicate_audit": "processed/duplicate_audit.json",
+  "leakage_audit": "processed/leakage_audit.json",
+  "split_pass": true,
+  "run_overlap": 0,
+  "group_overlap": 0,
+  "reproducibility": true,
+  "raw_checksums": "registry/raw_file_checksums.csv",
+  "generated_checksums": "registry/generated_file_checksums.csv",
+  "frozen_split_manifest": "registry/frozen_split_manifest.csv",
+  "T15_excluded": true,
+  "PROJECT_COLLECTED_COUNT": 0
+}

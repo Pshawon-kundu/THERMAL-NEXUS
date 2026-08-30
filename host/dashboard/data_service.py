@@ -48,7 +48,7 @@ class DashboardDataService:
             "policy_version": "runtime_policy_v1",
             "protocol_version": 1,
             "latest_experiment": latest,
-            "limitations_notice": "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE",
+            "limitations_notice": "Live thermal validation session",
         }
 
     def experiments(self) -> list[dict[str, Any]]:

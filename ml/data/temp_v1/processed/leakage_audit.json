@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "forbidden_predictor_columns_present": [],
+  "predictor_columns": [
+    "inside_temp_c",
+    "rolling_mean_15m",
+    "rolling_mean_30m",
+    "rolling_std_30m",
+    "temp_delta_5m",
+    "temp_lag_10m",
+    "temp_lag_20m",
+    "temp_lag_30m",
+    "temp_lag_5m",
+    "temp_slope_15m",
+    "temp_slope_30m"
+  ],
+  "lags_past_only": true,
+  "rolling_features_time_leq_t": true,
+  "slopes_time_leq_t": true,
+  "targets_future_only": true,
+  "targets_never_cross_run": true,
+  "nan_or_infinity_in_model_ready": false
+}

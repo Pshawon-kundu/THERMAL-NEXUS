@@ -1,0 +1,6 @@
+pool,source,run_count,rows
+training_pool,INTEL_LAB,0,0
+training_pool,UCI_ROOM_OCCUPANCY,8,1752
+training_pool,BOLZANO_IEQ,6,1463
+validation_pool,BOLZANO_IEQ,5,719
+locked_real_test_pool,PROJECT_COLLECTED,0,0

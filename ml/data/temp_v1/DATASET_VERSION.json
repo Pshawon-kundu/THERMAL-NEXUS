@@ -1,0 +1,51 @@
+{
+  "dataset_id": "THERMAL_NEXUS_TEMP_DEV_V1",
+  "version": "1.0",
+  "status": "FROZEN_DEVELOPMENT_DATASET",
+  "canonical_rows": 316657,
+  "model_ready_rows": 4968,
+  "source_composition": {
+    "BOLZANO_IEQ": 3000,
+    "UCI_ROOM_OCCUPANCY": 1800,
+    "INTEL_LAB": 168
+  },
+  "eligibility_temperature_min_c": 16,
+  "eligibility_temperature_max_c": 32,
+  "observed_model_ready_min_c": 16.6,
+  "observed_model_ready_max_c": 28.145,
+  "canonical_interval_minutes": 5,
+  "forecast_horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "split_policy": "frozen group-aware run split",
+  "train_rows": 3468,
+  "validation_rows": 750,
+  "test_rows": 750,
+  "TEST_SET_USED": true,
+  "PROJECT_COLLECTED_COUNT": 0,
+  "raw_checksum_manifest": "registry/raw_file_checksums.csv",
+  "generated_checksum_manifest": "registry/generated_file_checksums.csv",
+  "frozen_split_manifest": "registry/frozen_split_manifest.csv",
+  "git_commit": "34fe8e0af1aba1dc2ec244ae880c816a39c0c1d2",
+  "temperature_distribution": {
+    "count": 4968,
+    "min": 16.6,
+    "max": 28.145,
+    "mean": 21.449708821771683,
+    "median": 20.0,
+    "std": 3.3030052946756236
+  },
+  "thermal_dynamics": {
+    "stable": 3606,
+    "warming": 555,
+    "cooling": 807
+  },
+  "limitations": [
+    "external development benchmark",
+    "not project-collected",
+    "not full 16-32 C coverage",
+    "not cold-chain, vaccine, organ, biological, or final field validation"
+  ]
+}

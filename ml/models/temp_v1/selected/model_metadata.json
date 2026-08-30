@@ -1,0 +1,8 @@
+{
+  "status": "DEVELOPMENT_ONLY",
+  "architecture": "one model per horizon",
+  "selected_model": "ridge",
+  "test_set_used": true,
+  "reload_predictions_match": true,
+  "test_selection_used": false
+}

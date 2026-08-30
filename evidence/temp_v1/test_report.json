@@ -1,0 +1,48 @@
+{
+  "selected_model": "ridge",
+  "selection": {
+    "selected_model": "ridge",
+    "rule": "Keep validation mean MAE within 5% of the best, then prefer smaller model, lower warming/cooling MAE, lower RMSE, and deterministic name order.",
+    "test_used_for_selection": false,
+    "validation_only": true,
+    "eligible_models": [
+      "ridge"
+    ]
+  },
+  "validation_metrics": {
+    "model": "ridge",
+    "mae_5m": 0.04511988688131429,
+    "rmse_5m": 0.06618373286863412,
+    "mae_15m": 0.10324590905369638,
+    "rmse_15m": 0.14011203586728954,
+    "mae_30m": 0.1504283898119186,
+    "rmse_30m": 0.20687581067970526,
+    "mean_mae": 0.09959806191564309,
+    "mean_rmse": 0.13772385980520963,
+    "dynamic_mae": 0.13566315723014688,
+    "model_size_bytes": 5259,
+    "training_seconds": 0.018490899994503707,
+    "inference_latency_ms": 2.408553333467959,
+    "feature_count": 11,
+    "tree_depth": NaN,
+    "leaf_count": 0.0,
+    "node_count": 0.0,
+    "tree_count": 0.0
+  },
+  "test_metrics": {
+    "mae_5m": 0.04743586710194042,
+    "rmse_5m": 0.06684997543382094,
+    "mae_15m": 0.12136476043143148,
+    "rmse_15m": 0.16433719942578698,
+    "mae_30m": 0.18903360487632226,
+    "rmse_30m": 0.26296146908790713,
+    "mean_mae": 0.11927807746989805,
+    "mean_rmse": 0.1647162146491717,
+    "TEST_SET_USED": true,
+    "status": "DEVELOPMENT_ONLY",
+    "improvement_over_persistence_mean_mae_c": -0.018700299692120156
+  },
+  "reload_check": true,
+  "status": "DEVELOPMENT_ONLY",
+  "test_set_used": true
+}

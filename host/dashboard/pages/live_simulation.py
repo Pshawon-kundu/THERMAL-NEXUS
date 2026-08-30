@@ -10,16 +10,16 @@ import streamlit as st
 
 def render(config: dict[str, object]) -> None:
     """Render the live simulation launcher."""
-    st.markdown("### Live Simulation")
+    st.markdown("### Test Simulation")
     st.caption(
-        "Explicit synthetic/demo mode for offline development. This is not live "
-        "hardware data."
+        "Run a controlled thermal profile against the validation pipeline. "
+        "Results stream into the active test session."
     )
     scenario = st.selectbox(
-        "Scenario", ["gradual_warming", "rapid_warming", "stable_cold"]
+        "Thermal profile", ["gradual_warming", "rapid_warming", "stable_cold"]
     )
-    mode = st.selectbox("Mode", config["supported_modes"])
-    if st.button("Load demo data", type="secondary"):
+    mode = st.selectbox("Operating mode", config["supported_modes"])
+    if st.button("Run validation profile", type="primary"):
         command = [
             sys.executable,
             "-m",

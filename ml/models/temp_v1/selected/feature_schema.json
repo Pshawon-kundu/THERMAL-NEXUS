@@ -1,0 +1,20 @@
+{
+  "features": [
+    "inside_temp_c",
+    "temp_lag_5m",
+    "temp_lag_10m",
+    "temp_lag_20m",
+    "temp_lag_30m",
+    "temp_delta_5m",
+    "rolling_mean_15m",
+    "rolling_mean_30m",
+    "rolling_std_30m",
+    "temp_slope_15m",
+    "temp_slope_30m"
+  ],
+  "targets": [
+    "target_temp_5m_c",
+    "target_temp_15m_c",
+    "target_temp_30m_c"
+  ]
+}

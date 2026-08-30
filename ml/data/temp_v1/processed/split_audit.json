@@ -1,0 +1,52 @@
+{
+  "row_counts": {
+    "train": 3468,
+    "validation": 750,
+    "test": 750
+  },
+  "run_counts": {
+    "train": 58,
+    "validation": 6,
+    "test": 3
+  },
+  "split_group_counts": {
+    "train": 4,
+    "validation": 1,
+    "test": 1
+  },
+  "run_overlap": {
+    "train": {
+      "validation": false,
+      "test": false
+    },
+    "validation": {
+      "train": false,
+      "test": false
+    },
+    "test": {
+      "train": false,
+      "validation": false
+    }
+  },
+  "split_group_overlap": {
+    "train": {
+      "validation": false,
+      "test": false
+    },
+    "validation": {
+      "train": false,
+      "test": false
+    },
+    "test": {
+      "train": false,
+      "validation": false
+    }
+  },
+  "grouping_decision": {
+    "INTEL_LAB": "one synchronized 2004 experiment group",
+    "UCI_ROOM_OCCUPANCY": "one 2017 recording session group; S1-S4 are not split across sets",
+    "BOLZANO_IEQ": "one group per source year to prevent adjacent segment leakage",
+    "SYNTHETIC": "one group per run"
+  },
+  "independent_group_limitations": "Eight validation/test groups are impossible under the highest-level session grouping: Intel contributes one experiment, UCI one session, and Bolzano four source-year groups."
+}

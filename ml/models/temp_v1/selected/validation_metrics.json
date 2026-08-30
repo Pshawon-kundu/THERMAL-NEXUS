@@ -1,0 +1,20 @@
+{
+  "model": "ridge",
+  "mae_5m": 0.04511988688131429,
+  "rmse_5m": 0.06618373286863412,
+  "mae_15m": 0.10324590905369638,
+  "rmse_15m": 0.14011203586728954,
+  "mae_30m": 0.1504283898119186,
+  "rmse_30m": 0.20687581067970526,
+  "mean_mae": 0.09959806191564309,
+  "mean_rmse": 0.13772385980520963,
+  "dynamic_mae": 0.13566315723014688,
+  "model_size_bytes": 5259,
+  "training_seconds": 0.018490899994503707,
+  "inference_latency_ms": 2.408553333467959,
+  "feature_count": 11,
+  "tree_depth": NaN,
+  "leaf_count": 0.0,
+  "node_count": 0.0,
+  "tree_count": 0.0
+}

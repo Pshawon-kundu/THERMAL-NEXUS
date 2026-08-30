@@ -1,0 +1,8 @@
+{
+  "status": "ML_CANDIDATE_REJECTED_BASELINE_BETTER",
+  "selected_model": null,
+  "weighted": false,
+  "baseline_mean_mae": 0.07844228094575803,
+  "eligible_models": [],
+  "test_used_for_selection": false
+}
