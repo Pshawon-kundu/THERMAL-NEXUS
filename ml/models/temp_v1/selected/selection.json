@@ -1,0 +1,9 @@
+{
+  "selected_model": "ridge",
+  "rule": "Keep validation mean MAE within 5% of the best, then prefer smaller model, lower warming/cooling MAE, lower RMSE, and deterministic name order.",
+  "test_used_for_selection": false,
+  "validation_only": true,
+  "eligible_models": [
+    "ridge"
+  ]
+}

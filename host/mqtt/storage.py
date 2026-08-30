@@ -12,6 +12,8 @@ from host.database.migrations import initialize_database
 from host.ingestion.mappers import STATE_CODES
 from host.mqtt.schemas import AlertMessage, DecisionMessage, TelemetryMessage
 
+ML_COLLECTION_MODE = "cargo_aware_v2_collection"
+
 
 @dataclass(frozen=True)
 class StoreResult:
@@ -34,7 +36,46 @@ class MqttSqliteStore:
         """Store telemetry as a reader record plus RF metadata."""
 
         with connect(self.database_path) as connection:
-            experiment_id = self._ensure_experiment(connection, message)
+            active = self._active_experiment_for_node(connection, message.node_id)
+            if active is not None:
+                if active["run_id"] != message.run_id:
+                    return StoreResult(
+                        False,
+                        False,
+                        active["experiment_id"],
+                        (
+                            "active experiment run_id mismatch: "
+                            f"payload={message.run_id} active={active['run_id']}"
+                        ),
+                    )
+                if active["data_source_type"] != message.data_source_type:
+                    return StoreResult(
+                        False,
+                        False,
+                        active["experiment_id"],
+                        (
+                            "active experiment provenance mismatch: "
+                            f"payload={message.data_source_type} "
+                            f"active={active['data_source_type']}"
+                        ),
+                    )
+                experiment_id = active["experiment_id"]
+            else:
+                active_run = self._active_experiment_for_run(
+                    connection, message.run_id
+                )
+                if active_run is not None:
+                    return StoreResult(
+                        False,
+                        False,
+                        active_run["experiment_id"],
+                        (
+                            "active experiment node mismatch: "
+                            f"payload={message.node_id} "
+                            f"active={active_run['node_uid']}"
+                        ),
+                    )
+                experiment_id = self._ensure_experiment(connection, message)
             if self._reader_sequence_exists(connection, experiment_id, message):
                 self._insert_radio_event(
                     connection,
@@ -250,6 +291,38 @@ class MqttSqliteStore:
         if row is None or row["max_sequence"] is None:
             return 0
         return int(message.sequence_number) - int(row["max_sequence"]) - 1
+
+    def _active_experiment_for_node(
+        self, connection: sqlite3.Connection, node_id: str
+    ) -> sqlite3.Row | None:
+        return connection.execute(
+            """
+            SELECT experiment_id, run_id, node_uid, data_source_type
+            FROM experiments
+            WHERE status = 'ACTIVE'
+              AND operating_mode = ?
+              AND (node_uid = ? OR CAST(node_id AS TEXT) = ?)
+            ORDER BY created_at DESC
+            LIMIT 1
+            """,
+            (ML_COLLECTION_MODE, node_id, node_id),
+        ).fetchone()
+
+    def _active_experiment_for_run(
+        self, connection: sqlite3.Connection, run_id: str
+    ) -> sqlite3.Row | None:
+        return connection.execute(
+            """
+            SELECT experiment_id, run_id, node_uid, data_source_type
+            FROM experiments
+            WHERE status = 'ACTIVE'
+              AND operating_mode = ?
+              AND run_id = ?
+            ORDER BY created_at DESC
+            LIMIT 1
+            """,
+            (ML_COLLECTION_MODE, run_id),
+        ).fetchone()
 
     def _insert_reader_record(
         self,

@@ -1,0 +1,30 @@
+{
+  "exact_duplicate_canonical_rows": 0,
+  "exact_duplicate_model_ready_rows": 0,
+  "duplicate_timestamp_within_run": 0,
+  "duplicate_timestamp_temperature_within_run": 0,
+  "duplicate_feature_vectors": 352,
+  "duplicate_rows_between_splits": {
+    "train_vs_validation": 0,
+    "train_vs_test": 0,
+    "validation_vs_test": 0
+  },
+  "cross_source": {
+    "BOLZANO_IEQ": {
+      "rows": 311607,
+      "suspicious_identical_segments": 0,
+      "method": "no removal; compared source/sensor timestamp-normalized sequences"
+    },
+    "INTEL_LAB": {
+      "rows": 830,
+      "suspicious_identical_segments": 0,
+      "method": "no removal; compared source/sensor timestamp-normalized sequences"
+    },
+    "UCI_ROOM_OCCUPANCY": {
+      "rows": 4220,
+      "suspicious_identical_segments": 0,
+      "method": "no removal; compared source/sensor timestamp-normalized sequences"
+    }
+  },
+  "repeated_temperature_values_not_treated_as_duplicates": true
+}

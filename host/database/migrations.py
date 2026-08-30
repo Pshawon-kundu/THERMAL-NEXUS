@@ -35,6 +35,10 @@ V2_TO_V3_STATEMENTS: list[str] = [
     "ALTER TABLE alerts ADD COLUMN data_source_type TEXT",
 ]
 
+V3_TO_V4_STATEMENTS: list[str] = [
+    "ALTER TABLE reader_records ADD COLUMN current_ma REAL",
+]
+
 
 def _apply_statements(connection: sqlite3.Connection, statements: list[str]) -> None:
     """Execute a list of SQL statements, skipping duplicates gracefully."""
@@ -103,6 +107,18 @@ def _upgrade_v2_to_v3(connection: sqlite3.Connection) -> None:
     )
 
 
+def _upgrade_v3_to_v4(connection: sqlite3.Connection) -> None:
+    """Add measured battery-current column to reader records."""
+
+    _apply_statements(connection, V3_TO_V4_STATEMENTS)
+    _apply_statements(connection, DDL)
+    _apply_statements(connection, INDEXES)
+    connection.execute(
+        "UPDATE schema_version SET version = ?, applied_at = ? WHERE version = 3",
+        (SCHEMA_VERSION, datetime.now(UTC).isoformat()),
+    )
+
+
 def initialize_database(database_path: Path = DEFAULT_DATABASE_PATH) -> int:
     """Create or migrate the local SQLite database, returning the current version."""
 
@@ -117,11 +133,19 @@ def initialize_database(database_path: Path = DEFAULT_DATABASE_PATH) -> int:
         if current == 2 and current < SCHEMA_VERSION:
             _upgrade_v2_to_v3(connection)
             current = SCHEMA_VERSION
+        if current == 3 and current < SCHEMA_VERSION:
+            _upgrade_v3_to_v4(connection)
+            current = SCHEMA_VERSION
         if current == SCHEMA_VERSION:
             pass  # already up to date; nothing to do
+        elif current > SCHEMA_VERSION:
+            # A database created by a newer build already contains every table
+            # and column this build reads, so proceed rather than hard-failing a
+            # running session (e.g. a hot-reloaded dashboard).
+            pass
         else:  # pragma: no cover - defensive
             message = (
-                f"Database schema is newer ({current}) than this build supports "
+                f"Database schema is older ({current}) than this build supports "
                 f"({SCHEMA_VERSION})."
             )
             raise RuntimeError(message)

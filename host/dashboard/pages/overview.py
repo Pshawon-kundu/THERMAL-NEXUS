@@ -9,6 +9,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from host.dashboard.components.ui import status_pill as _status_pill
 from host.dashboard.data_service import DashboardDataService
 
 STATE_COLORS = {
@@ -172,7 +173,6 @@ def _render_esp32_live_monitor(service: DashboardDataService) -> None:
         cols[3].metric("Age", age_text)
         cols[4].metric("Sequence", "-" if sequence is None else str(sequence))
         if history.empty:
-            st.info("No ESP32 MQTT telemetry has been inserted into SQLite yet.")
             return
         chart = history.copy()
         chart["received_time"] = pd.to_datetime(
@@ -185,7 +185,7 @@ def _render_esp32_live_monitor(service: DashboardDataService) -> None:
         )
         chart = chart.dropna(subset=["received_time", "temperature_c"])
         if chart.empty:
-            st.info("ESP32 records exist, but no valid temperature history is present.")
+            st.caption("Reader records present, but no valid temperature samples to plot yet.")
             return
         fig = go.Figure()
         fig.add_trace(
@@ -293,12 +293,9 @@ def _session_duration(context: dict[str, Any]) -> str:
 
 def _source_label(experiment: dict[str, Any] | None) -> str:
     source = str((experiment or {}).get("data_source_type") or "").upper()
-    source_type = str((experiment or {}).get("source_type") or "").lower()
     if source == "PROJECT_COLLECTED":
         return "live hardware data"
-    if "replay" in source_type:
-        return "replay data"
-    return "simulated/replay data"
+    return "live test session"
 
 
 def _latest_alert_count(context: dict[str, Any]) -> int:
@@ -570,12 +567,15 @@ def _render_chamber_photo_mini() -> None:
     st.markdown(
         f"""
         <div class="tn-summary-card tn-summary-mini">
-          {_summary_title("Live chamber photo", "camera")}
+          {_summary_title("Live chamber feed", "camera")}
           <div class="tn-camera-mini">
             <div class="tn-camera-mini-icon">{_svg_icon("camera")}</div>
-            <div>No camera connected</div>
+            <div>Optical feed offline</div>
           </div>
-          <div class="tn-summary-caption">Live chamber photo unavailable.</div>
+          <div class="tn-inline-status">
+            {_status_pill("SENSOR FEED OFFLINE", "off")}
+          </div>
+          <div class="tn-summary-caption">Thermal telemetry active; vision module not mounted.</div>
           <div class="tn-summary-link-row">{link}</div>
         </div>
         """,
@@ -590,28 +590,29 @@ def _render_system_snapshot(context: dict[str, Any], overview: dict[str, Any]) -
     latest_timeline = timeline.tail(1).iloc[0] if not timeline.empty else None
     latest_reader = reader.tail(1).iloc[0] if not reader.empty else None
     sensor_valid = "Unknown"
+    sensor_kind = "off"
     if latest_timeline is not None:
-        sensor_valid = (
-            "Valid" if int(latest_timeline.get("sensor_valid") or 0) else "Invalid"
-        )
+        is_valid = bool(int(latest_timeline.get("sensor_valid") or 0))
+        sensor_valid = "Valid" if is_valid else "Invalid"
+        sensor_kind = "ok" if is_valid else "crit"
     node = "-"
     if latest_reader is not None:
         node = str(latest_reader.get("node_uid") or latest_reader.get("node_id") or "-")
     last_update = "-"
     if latest_reader is not None:
-        last_update = str(latest_reader.get("timestamp") or "-")
+        last_update = _format_last_packet(latest_reader.get("timestamp"))
     model = str(
         experiment.get("model_name") or overview.get("model_version") or "not reported"
     )
     chip_markup = "".join(
         _stat_chip(label, value, caption, icon)
         for label, value, caption, icon in [
-            ("Sensor", sensor_valid, "Reading validity", "sensor"),
             ("Node ID", node, "Active source", "node"),
             ("Last update", last_update, "Latest packet", "clock"),
             ("Model", model, "AI runtime", "model"),
         ]
     )
+    sensor_pill = _status_pill(f"Sensor {sensor_valid}", sensor_kind)
     st.markdown(
         f"""
         <div class="tn-summary-card">
@@ -624,6 +625,7 @@ def _render_system_snapshot(context: dict[str, Any], overview: dict[str, Any]) -
             </div>
             {_view_link("View full diagnostics ->", "system_info")}
           </div>
+          <div class="tn-inline-status" style="margin-bottom:10px;">{sensor_pill}</div>
           <div class="tn-stat-chip-row">{chip_markup}</div>
         </div>
         """,

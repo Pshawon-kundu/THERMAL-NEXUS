@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 DDL = [
     """
@@ -102,6 +102,7 @@ DDL = [
         sensor_valid INTEGER,
         fault_flags INTEGER,
         packet_latency_ms REAL,
+        current_ma REAL,
         accepted INTEGER,
         rejection_reason TEXT,
         data_source_type TEXT

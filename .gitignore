@@ -25,6 +25,14 @@ ml/data/external/t15/processed/
 ml/data/external/t15/rebuilt/
 ml/data/external/t15/model_ready/*.csv
 ml/data/external/t15/model_ready/models/
+ml/data/cargo_aware_v2/raw/**/*.csv
+ml/data/cargo_aware_v2/processed/**
+ml/data/cargo_aware_v2/model_ready/**
+ml/data/cargo_aware_v2/splits/**
+ml/data/cargo_aware_v2/registry/**
+ml/models/cargo_aware_v2/candidates/**
+ml/models/cargo_aware_v2/selected/**
+evidence/cargo_aware_v2/**
 _external_t15_stage/
 thermal_nexus_external_t15/
 thermal_nexus_external_t15_package.zip

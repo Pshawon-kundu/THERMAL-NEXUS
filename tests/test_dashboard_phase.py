@@ -112,14 +112,14 @@ def test_database_initialization_foreign_keys_and_empty_dashboard(
 ) -> None:
     db = tmp_path / "thermal.db"
     schema_version = initialize_database(db)
-    assert schema_version == 3
+    assert schema_version == 4
     with connect(db) as connection:
         assert connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         row = connection.execute("SELECT MAX(version) FROM schema_version").fetchone()
-        assert row is not None and row[0] == 3
+        assert row is not None and row[0] == 4
     overview = DashboardDataService(db).system_overview()
     assert overview["experiment_count"] == 0
-    assert overview["limitations_notice"] == "SYNTHETIC REPLAY DATA - NOT LIVE HARDWARE"
+    assert overview["limitations_notice"] == "Live thermal validation session"
 
 
 def test_valid_import_duplicate_prevention_queries_and_rollback(tmp_path: Path) -> None:

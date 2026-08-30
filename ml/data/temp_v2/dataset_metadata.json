@@ -1,0 +1,43 @@
+{
+  "version": "TEMP_V2",
+  "status": "DEVELOPMENT_ONLY",
+  "target_formulation": "future temperature change; predicted temperature = current temperature + predicted change",
+  "features": [
+    "inside_temp_c",
+    "delta_5m",
+    "delta_10m",
+    "delta_15m",
+    "delta_30m",
+    "temp_lag_5m",
+    "temp_lag_10m",
+    "temp_lag_20m",
+    "temp_lag_30m",
+    "rolling_mean_15m",
+    "rolling_mean_30m",
+    "rolling_std_30m",
+    "slope_10m",
+    "slope_15m",
+    "slope_30m",
+    "slope_change"
+  ],
+  "horizons_minutes": [
+    5,
+    15,
+    30
+  ],
+  "training_groups": [
+    "BOLZANO_IEQ_SOURCE_YEAR_2025",
+    "BOLZANO_IEQ_SOURCE_YEAR_2026",
+    "UCI_ROOM_OCCUPANCY_SESSION_2017"
+  ],
+  "validation_groups": [
+    "BOLZANO_IEQ_SOURCE_YEAR_2023"
+  ],
+  "source_composition": {
+    "BOLZANO_IEQ": 1463,
+    "UCI_ROOM_OCCUPANCY": 1752
+  },
+  "v1_test_reused_for_final": false,
+  "real_test_available": false,
+  "limitation": "V2 development validation uses the former V1 validation group; the V1 test group is excluded and remains a legacy diagnostic only."
+}

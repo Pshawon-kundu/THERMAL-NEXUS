@@ -1,0 +1,10 @@
+source_dataset,split,rows,runs,split_groups
+INTEL_LAB,train,168,43,1
+INTEL_LAB,validation,0,0,0
+INTEL_LAB,test,0,0,0
+UCI_ROOM_OCCUPANCY,train,1800,8,1
+UCI_ROOM_OCCUPANCY,validation,0,0,0
+UCI_ROOM_OCCUPANCY,test,0,0,0
+BOLZANO_IEQ,train,1500,7,2
+BOLZANO_IEQ,validation,750,6,1
+BOLZANO_IEQ,test,750,3,1
