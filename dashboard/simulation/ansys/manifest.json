@@ -1,0 +1,47 @@
+{
+  "name": "thermal_nexus_phase2_enclosure_transient",
+  "software": "Ansys Icepak",
+  "software_version_target": "2024 R2",
+  "competition": "IEEE HART HardwAIre Challenge 2026",
+  "team_id": "thermal-nexus",
+  "status": "license_application_pending",
+  "license_application_url": "https://www.ansys.com/en-in/academic/free-students-software",
+  "geometry_files": [
+    "thermal_nexus_geometry.step",
+    "thermal_nexus_project.wbpz"
+  ],
+  "results": [
+    "results/sensor_temperature.csv",
+    "results/mesh_sensitivity.csv",
+    "results/figures/sensor_transient.png"
+  ],
+  "boundary_conditions": {
+    "ambient_initial_c": 4.0,
+    "ambient_final_c": 25.0,
+    "step_time_seconds": 0,
+    "duration_seconds": 600,
+    "convection_coefficient_w_per_m2_k": 5.0,
+    "ambient_source_description": "Step-change from 4 C to 25 C"
+  },
+  "mesh": {
+    "target_cells": 250000,
+    "sensitivity_studied": true,
+    "sensitivity_refinement_factor": 0.25,
+    "sensitivity_temperature_change_pct": 1.0
+  },
+  "expected_outputs": {
+    "sensor_temperature_csv_columns": [
+      "time_seconds",
+      "sensor_temperature_c",
+      "ambient_temperature_c",
+      "sensor_minus_ambient_c"
+    ],
+    "settling_time_seconds": null,
+    "overshoot_c": null
+  },
+  "deliverable_check": {
+    "ready_for_submission": false,
+    "blocking_reason": "Ansys license not yet issued; equivalent simulation present in simulation/radio_link/."
+  },
+  "disclaimer": "Geometry and mesh are reproduced from the IP65 enclosure drawing in the Bill of Materials. Boundary conditions are conservative assumptions, not measured data. Replace with measured values from the Phase-2 hardware demonstrator when available."
+}

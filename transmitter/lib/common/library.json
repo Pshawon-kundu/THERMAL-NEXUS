@@ -1,0 +1,10 @@
+{
+  "name": "lora-common",
+  "version": "1.0.0",
+  "description": "Shared LoRa telemetry packet format and link-quality heuristic shared by transmitter and receiver.",
+  "keywords": "lora, telemetry, gps, rssi, snr",
+  "authors": [],
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}

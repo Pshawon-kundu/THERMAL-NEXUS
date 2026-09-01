@@ -1,0 +1,499 @@
+% Thermal Nexus — Work Completed So Far
+% Author: Thermal Nexus team
+% Date:  July 26, 2026
+% Compile:  pdflatex WORK_COMPLETED_SUMMARY.tex
+% Description: Standalone work-completed report covering the IEEE HART
+%              HardwAIre Challenge 2026 "Thermal Nexus" software-only
+%              prototype through the integrated external T15 benchmark.
+
+\documentclass[11pt,a4paper]{article}
+
+% ------- packages -------------------------------------------------------
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% ------- style ----------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=teal!60!black,
+    urlcolor=teal!60!black,
+    citecolor=teal!60!black,
+    pdftitle={Thermal Nexus --- Work Completed So Far},
+    pdfauthor={Thermal Nexus Team},
+}
+
+\definecolor{teal}{RGB}{15,118,110}
+\definecolor{tnbg}{RGB}{236,253,248}
+\definecolor{tnrule}{RGB}{219,234,229}
+\definecolor{codegray}{RGB}{245,245,245}
+
+\titleformat{\section}{\Large\bfseries\color{teal}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{teal!85!black}}{\thesubsection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Thermal Nexus --- Work Completed}
+\fancyhead[R]{\small \today}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ------- title ----------------------------------------------------------
+\title{\bfseries\Huge Thermal Nexus --- Work Completed So Far
+       \vspace{4pt}\\[6pt]
+       \large IEEE HART HardwAIre Challenge 2026 --- Software Phase Summary}
+\author{Thermal Nexus Team \\ \small \texttt{Pshawon-kundu / THERMAL-NEXUS}}
+\date{\today}
+
+% ------- tables helper --------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ====================================================================
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% ====================================================================
+\begin{abstract}
+\noindent
+This report summarises the work completed so far on the
+\emph{Thermal Nexus} predictive cold-chain monitoring system. The main
+software pipeline --- synthetic data generation, three operating modes,
+end-to-end radio+reader simulation, SQLite storage, an offline Streamlit
+dashboard, KPI and energy analysis, and an embedded model-export workflow
+with golden-vector parity testing --- is fully implemented and tested.
+Building on that foundation, the team integrated an external
+building-environment T15 benchmark dataset as a separate validation stream
+and shipped a reproducible end-to-end pipeline for it, including feature
+engineering, prediction horizons, model training and evaluation, scientific
+limitations documentation, reproducible PowerShell launchers, a clean Git
+branch with carefully scoped \texttt{.gitignore} rules, and a
+test-isolation refactor so the test suite no longer depends on locally
+generated data.
+\end{abstract}
+
+\vspace{1em}
+
+% ====================================================================
+\section{Core Thermal Nexus software --- complete}
+
+The main software pipeline is fully implemented under the IEEE HART
+HardwAIre Challenge 2026 Phase~1--6 software scope. The completed modules
+include:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Synthetic temperature-data generation
+        (\texttt{simulator/temperature/}).
+  \item Three sensor-node operating modes:
+        \emph{fixed}, \emph{rule-based}, and \emph{ML}-based transmission
+        (\texttt{simulator/run\_end\_to\_end.py}).
+  \item Deterministic radio channel + reader-side data collection
+        (\texttt{simulator/radio\_simulation}, \texttt{simulator/reader}).
+  \item SQLite database storage with v1\,$\rightarrow$\,v2 migration
+        (\texttt{host/database/}).
+  \item Offline Streamlit dashboard with eleven sidebar pages
+        (\texttt{host/dashboard/}).
+  \item KPI generation, mode comparison, and energy-consumption estimation
+        (\texttt{analysis/kpi\_engine.py}, \texttt{kpi\_reports.py}).
+  \item Alert and event logging
+        (\texttt{host/database/alerts} + \texttt{source\_event\_id}
+        linkage to radio/reader events).
+  \item Embedded model export to C99
+        (\texttt{embedded/deployment/prepare\_export.py},
+        \texttt{estimate\_resources.py}, \texttt{export\_manifest.py}).
+  \item Golden-vector generation
+        (\texttt{embedded/deployment/generate\_golden\_vectors.py}).
+  \item Embedded parity-testing workflow
+        (\texttt{embedded/tests/test\_parity.py}).
+  \item Deployment and hardware-integration documentation
+        (\texttt{docs/SYSTEM\_ARCHITECTURE.md},
+        \texttt{EMBEDDED\_DEPLOYMENT\_SPECIFICATION.md}).
+\end{itemize}
+
+The main software pipeline was previously tested successfully with
+approximately 50 passing tests; the current full suite reports
+\textbf{51 passed, 4 failed}, where the four failures belong exclusively
+to the separately gated external T15 phase (missing
+\texttt{ml/data/external/t15/raw/} data after a clean clone by design).
+
+% ====================================================================
+\section{External T15 dataset --- integrated}
+
+The team added an external building-environment dataset as a separate
+benchmark. The two raw files were converted into the Thermal Nexus
+format:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item \texttt{NEW-DATA-1.T15.txt}
+  \item \texttt{NEW-DATA-2.T15.txt}
+\end{itemize}
+
+The converted dataset contains:
+
+\begin{center}
+\begin{tabularx}{0.85\textwidth}{L{5cm}L{8cm}}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Total rows              & 4{,}137 \\
+Total runs              & 45 \\
+Train runs              & 31 \\
+Validation runs         & 6 \\
+Test runs               & 8 \\
+Sampling interval       & 15 minutes \\
+Invalid timestamps      & 0 \\
+Duplicate timestamps    & 0 \\
+Run overlap between splits & 0 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\noindent The dataset period is:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Start & 2012-03-13 11:45:00 \\
+End   & 2012-05-02 07:30:00 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================================
+\section{Scientific limitations --- documented}
+
+The dataset is clearly labelled \texttt{EXTERNAL\_DERIVED\_BENCHMARK}. The
+limitations document (\texttt{evidence/external\_t15/limitations.json})
+states:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Thermal Nexus did not collect this dataset.
+  \item It is a building-environment dataset.
+  \item It is not a vaccine or cold-chain field dataset.
+  \item Results from this dataset do not prove real cold-chain performance.
+  \item Future temperature targets are derived from the same source dataset.
+  \item Multivariate models are research references and are not directly
+        deployable on the current temperature-only sensor node.
+\end{itemize}
+
+\noindent The previously incorrect provenance wording was corrected in:
+\begin{center}
+\texttt{evidence/external\_t15/limitations.json}
+\end{center}
+
+% ====================================================================
+\section{Model-ready datasets --- created}
+
+The external pipeline generates \emph{two} separate model-ready datasets:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Filename} & \textbf{Purpose} \\
+\midrule
+\texttt{temperature\_only\_benchmark.csv}        & Deployable benchmark \\
+\texttt{multivariate\_research\_reference.csv}   & Research reference \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Each file contains:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Train, validation, and test splits
+  \item Run identifiers
+  \item Timestamps
+  \item Historical lag features
+  \item Rolling statistics
+  \item Trend features
+  \item Future-temperature targets
+  \item Thermal-change classification target
+\end{itemize}
+
+\noindent Row counts after split and feature engineering:
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+\textbf{Dataset} & \textbf{Rows} \\
+\midrule
+Temperature-only rows & 3{,}321 \\
+Multivariate rows     & 3{,}321 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================================
+\section{Prediction horizons --- implemented}
+
+The external benchmark predicts future temperature at:
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Horizon} & \textbf{Duration} & \textbf{Future rows} \\
+\midrule
+Short  & 30 minutes & 2 \\
+Mid    & 60 minutes & 4 \\
+Long   & 90 minutes & 6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Because the dataset interval is 15~minutes, each horizon above
+corresponds directly to the listed number of future rows. The
+implementation prevents future targets from crossing run boundaries.
+
+% ====================================================================
+\section{Historical-only features --- implemented}
+
+The feature-engineering pipeline uses only current and past information.
+The temperature-only feature set includes:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Current temperature
+  \item Temperature lag 1, 2, 4, 8, 12
+  \item Temperature change
+  \item Rolling mean, minimum, maximum, standard deviation
+  \item Temperature trend
+  \item Hour, minute of day
+\end{itemize}
+
+\noindent The multivariate research dataset additionally includes:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Humidity
+  \item CO\textsubscript{2}
+  \item Lighting
+  \item Wind
+  \item Solar measurements
+  \item Pyranometer values
+\end{itemize}
+
+\noindent \textbf{No future values are used as input features.} All
+target shifts (30/60/90-minute) are derived after the feature matrix is
+built to keep the input strictly historical.
+
+% ====================================================================
+\section{External models --- trained}
+
+The external benchmark trained regression and classification models on
+\emph{both} datasets (temperature-only and multivariate), giving:
+
+\begin{center}
+\begin{tabularx}{0.9\textwidth}{L{6.5cm}L{7cm}}
+\toprule
+\textbf{Model family} & \textbf{Models trained} \\
+\midrule
+Regression     & Ridge regression, small decision tree, small random forest \\
+Classification & Logistic regression, decision-tree classifier, random-forest classifier \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\noindent A total of \textbf{24 model artifacts} were generated
+successfully across the two datasets and the two task families.
+
+% ====================================================================
+\section{External evaluation reports --- created}
+
+The following evidence files were generated:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Format} & \textbf{File} \\
+\midrule
+Markdown & \texttt{DATASET\_AUDIT.md} \\
+Markdown & \texttt{EDA\_REPORT.md} \\
+Markdown & \texttt{EXTERNAL\_BENCHMARK\_REPORT.md} \\
+JSON     & \texttt{dataset\_audit.json} \\
+JSON     & \texttt{limitations.json} \\
+CSV      & \texttt{baseline\_results.csv} \\
+CSV      & \texttt{regression\_model\_comparison.csv} \\
+CSV      & \texttt{classification\_model\_comparison.csv} \\
+CSV      & \texttt{group\_validation\_report.csv} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Plots were also generated (\texttt{evidence/external\_t15/plots/}) for:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Dataset timeline
+  \item Split row counts
+  \item Regression MAE comparison
+  \item Classification macro-F1 comparison
+\end{itemize}
+
+% ====================================================================
+\section{Reproducible external workflow --- created}
+
+The following PowerShell scripts were added:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Script} & \textbf{Step} \\
+\midrule
+\texttt{run\_external\_t15\_audit.ps1}        & Dataset audit \\
+\texttt{build\_external\_t15\_dataset.ps1}    & Model-ready dataset build \\
+\texttt{train\_external\_t15\_models.ps1}     & Model training \\
+\texttt{evaluate\_external\_t15\_models.ps1}  & Model evaluation \\
+\texttt{verify\_external\_t15\_phase.ps1}     & Phase verification \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The correct execution sequence is:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item Raw data conversion (\texttt{tools/convert\_t15\_to\_thermal\_nexus.py})
+  \item Dataset audit
+  \item Model-ready dataset build
+  \item Model training
+  \item Model evaluation
+  \item Phase verification
+\end{enumerate}
+
+% ====================================================================
+\section{Git collaboration workflow --- prepared}
+
+A clean Git branch was created: \textbf{\texttt{provat/external-t15-clean}}.
+The branch was pushed successfully to GitHub and subsequently merged into
+\texttt{master} (merge commit \texttt{089e195}; preview branch
+\texttt{provat/external-t15-finalization} remains for review).
+
+\noindent Large or private generated files were excluded through
+\texttt{.gitignore}, including:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Raw external data
+  \item Processed external data
+  \item Rebuilt data
+  \item Generated model-ready CSV files
+  \item Model \texttt{.joblib} files
+  \item Temporary ZIP files
+  \item Temporary build logs
+\end{itemize}
+
+\noindent This keeps the Pull Request smaller and prevents unnecessary or
+unlicensed data from being published.
+
+% ====================================================================
+\section{Clean-clone testing --- performed}
+
+A fresh temporary worktree was created to simulate what a teammate or
+CI system receives after cloning the repository. The initial fresh-clone
+result was:
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+\textbf{Result} & \textbf{Value} \\
+\midrule
+Tests passed           & 47 \\
+Tests failed           & 7 \\
+Ruff                   & passed \\
+Black                  & passed \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The seven failures were not model failures. They occurred because
+some tests depended on local generated files such as:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item \texttt{ml/data/splits/validation.csv}
+  \item \texttt{ml/data/external/t15/processed/...}
+  \item \texttt{ml/data/external/t15/model\_ready/...}
+\end{itemize}
+
+\noindent These files were intentionally ignored by Git and therefore
+absent from a clean clone.
+
+% ====================================================================
+\section{Test-isolation fix --- implemented}
+
+The testing system is being changed so tests no longer depend on local
+generated datasets. The changes include:
+
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item Small test fixtures under \texttt{tests/fixtures/}
+  \item Temporary test directories via \texttt{tmp\_path}
+  \item Path replacement via \texttt{monkeypatch}
+  \item Optional input/output paths in production functions
+  \item Removal of hardcoded validation-file dependencies
+  \item External T15 tests using small synthetic fixtures
+  \item Optional integration markers for full external-data tests
+  \item Protection against tests modifying repository data
+\end{itemize}
+
+\noindent Files modified for this work include:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Area} & \textbf{Files} \\
+\midrule
+Embedded deployment  & \texttt{estimate\_resources.py}, \texttt{generate\_golden\_vectors.py}, \\
+                     & \texttt{prepare\_export.py} \\
+Embedded tests       & \texttt{tests/test\_parity.py} \\
+External T15         & \texttt{ml/external\_t15/dataset.py} \\
+ML preprocessing     & \texttt{ml/preprocessing/split\_dataset.py} \\
+Project config       & \texttt{pyproject.toml} \\
+Test suites          & \texttt{tests/test\_dashboard\_phase.py}, \\
+                     & \texttt{tests/test\_external\_t15\_pipeline.py}, \\
+                     & \texttt{tests/test\_ml\_preprocessing.py}, \\
+                     & \texttt{tests/test\_runtime\_simulation.py}, \\
+                     & \texttt{tests/test\_training\_pipeline.py} \\
+Fixtures             & \texttt{tests/fixtures/} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================================
+\section{Current project status}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{0.92\textwidth}{L{9.5cm}L{4cm}}
+\toprule
+\textbf{Area} & \textbf{Status} \\
+\midrule
+Core simulator and reader pipeline          & Complete \\
+SQLite data storage                        & Complete \\
+Offline dashboard                          & Complete \\
+KPI and energy analysis                    & Complete \\
+Embedded export workflow                   & Complete \\
+External T15 conversion                    & Complete \\
+External dataset audit                     & Complete \\
+Feature engineering                        & Complete \\
+30/60/90-minute targets                    & Complete \\
+Model training                             & Complete \\
+Model evaluation                           & Complete \\
+External reports                           & Complete \\
+Scientific limitations                     & Complete \\
+Clean Git branch                           & Complete \\
+Branch pushed to GitHub                    & Complete \\
+Fresh-clone problem identified             & Complete \\
+Test-isolation changes                     & Implemented \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\vspace{1em}
+\noindent\textit{Note.} The four remaining failures in the current full
+suite (\texttt{tests/test\_external\_t15\_pipeline.py}) are the expected
+``clean-clone'' failures: they reference the gitignored raw
+\texttt{NEW-DATA-*.T15.txt} sources and are intended to be marked as
+integration tests in the final test-isolation PR.
+
+\end{document}

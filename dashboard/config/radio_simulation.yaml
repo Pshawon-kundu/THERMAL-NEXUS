@@ -1,0 +1,11 @@
+random_seed: 20260718
+packet_loss_probability: 0.02
+corruption_probability: 0.01
+duplicate_probability: 0.01
+base_delay_seconds: 1.0
+jitter_seconds: 0.5
+out_of_order_probability: 0.02
+outage_windows_seconds: []
+maximum_retry_count: 2
+retry_delay_seconds: 5
+disclaimer: Software-only radio simulation. No real XBee range or RF claim.

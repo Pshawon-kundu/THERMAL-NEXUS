@@ -1,0 +1,10 @@
+primary_prediction_horizon_minutes: 10
+prediction_horizons_minutes:
+  - 5
+  - 10
+  - 15
+transition_lookahead_multiplier: 2
+transition_temperature_delta_c: 0.5
+minimum_future_coverage_ratio: 0.8
+label_source: true_temperature
+

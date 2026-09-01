@@ -1,0 +1,9 @@
+# Runtime Operating Mode Report
+
+All values are software simulation results. Energy values are ESTIMATED SOFTWARE VALUE, not measured Wh.
+
+| mode | total_sensor_samples | total_transmissions | delivered_packets | lost_packets | corrupted_packets | retry_count | first_warning_time_seconds | warning_lead_time_seconds | missed_excursion_events | false_alert_events | time_spent_in_each_state | number_of_state_transitions | reader_records | alerts | estimated_sensing_energy | estimated_inference_energy | estimated_transmission_energy | estimated_total_energy | energy_label |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| fixed | 121 | 21 | 21 | 1 | 0 | 1 | 4920.0 | 0.0 | 0 | 0 | {'STABLE': 82, 'EXCURSION_RISK': 39} | 1 | 21 | 5 | 0.242 | 0.0 | 0.21 | 0.45199999999999996 | ESTIMATED SOFTWARE VALUE |
+| rule_based | 121 | 24 | 24 | 1 | 0 | 1 | 480.0 | 4440.0 | 0 | 0 | {'EXCURSION_RISK': 62, 'STABLE': 42, 'TRANSITION': 13, 'MODEL_FAULT': 4} | 28 | 24 | 4 | 0.242 | 0.0 | 0.24 | 0.482 | ESTIMATED SOFTWARE VALUE |
+| ml | 121 | 46 | 46 | 3 | 0 | 4 | 4920.0 | 0.0 | 0 | 0 | {'TRANSITION': 78, 'EXCURSION_RISK': 39, 'MODEL_FAULT': 4} | 2 | 46 | 4 | 0.242 | 0.121 | 0.46 | 0.823 | ESTIMATED SOFTWARE VALUE |

@@ -1,0 +1,14 @@
+{
+  "row_count": 12584,
+  "model_ready_row_count": 12584,
+  "feature_valid_count": 11833,
+  "feature_invalid_count": 751,
+  "invalid_row_reasons": {
+    "insufficient history": 413,
+    "current sensor sample invalid": 338
+  },
+  "leakage_check": {
+    "future_columns_in_model_ready_features": [],
+    "status": "pass"
+  }
+}

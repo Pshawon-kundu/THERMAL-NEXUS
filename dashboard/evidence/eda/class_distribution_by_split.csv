@@ -1,0 +1,10 @@
+split,thermal_state,row_count
+train,STABLE,2713
+train,EXCURSION_RISK,2400
+train,TRANSITION,752
+validation,STABLE,674
+validation,EXCURSION_RISK,600
+validation,TRANSITION,188
+test,STABLE,658
+test,EXCURSION_RISK,560
+test,TRANSITION,136

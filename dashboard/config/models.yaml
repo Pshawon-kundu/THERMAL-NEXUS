@@ -1,0 +1,102 @@
+random_seed: 20260718
+target_column: thermal_state
+target_code_column: thermal_state_code
+class_order:
+  - STABLE
+  - TRANSITION
+  - EXCURSION_RISK
+
+features:
+  selected:
+    - current_temperature
+    - previous_temperature
+    - temperature_difference
+    - temperature_slope
+    - temperature_acceleration
+    - distance_from_upper_limit
+    - distance_from_lower_limit
+    - distance_from_nearest_limit
+    - sensor_currently_valid
+    - time_since_previous_valid_sample
+    - rolling_mean_5
+    - rolling_standard_deviation_5
+    - rolling_minimum_5
+    - rolling_maximum_5
+    - rolling_range_5
+    - valid_ratio_5
+    - maximum_gap_seconds_5
+    - temperature_slope_ls_5
+    - rolling_mean_10
+    - rolling_standard_deviation_10
+    - rolling_minimum_10
+    - rolling_maximum_10
+    - rolling_range_10
+    - valid_ratio_10
+    - maximum_gap_seconds_10
+    - temperature_slope_ls_10
+    - rolling_mean_20
+    - rolling_standard_deviation_20
+    - rolling_minimum_20
+    - rolling_maximum_20
+    - rolling_range_20
+    - valid_ratio_20
+    - maximum_gap_seconds_20
+    - temperature_slope_ls_20
+
+preprocessing:
+  scaler_strategy: standard
+  fail_on_nan: true
+  fail_on_infinity: true
+
+cross_validation:
+  n_splits: 3
+  strategy: stratified_group_k_fold
+
+selection:
+  minimum_excursion_recall: 0.60
+  maximum_missed_event_rate: 0.40
+  metric_weights:
+    excursion_recall: 4.0
+    missed_event_rate: -4.0
+    median_warning_lead_time_seconds: 0.0005
+    macro_f1: 2.0
+    transition_recall: 1.5
+    false_alarm_rate: -1.0
+    artifact_size_mb: -0.05
+    mean_latency_ms: -0.02
+
+artifacts:
+  candidates_dir: ml/models/candidates
+  selected_dir: ml/models/selected
+  evidence_dir: evidence/models
+
+models:
+  logistic_regression:
+    class_weight: [null, balanced]
+    C: [0.3, 1.0]
+    solver: lbfgs
+    max_iter: 300
+    scaler_required: true
+  decision_tree:
+    class_weight: [null, balanced]
+    max_depth: [3, 5]
+    min_samples_leaf: [10]
+    min_samples_split: [20]
+    ccp_alpha: [0.0, 0.001]
+    scaler_required: false
+  random_forest_reference:
+    class_weight: [null, balanced]
+    n_estimators: [25]
+    max_depth: [4, 6]
+    min_samples_leaf: [10]
+    max_features: [sqrt]
+    scaler_required: false
+    deployment_label: REFERENCE_MODEL_NOT_YET_APPROVED_FOR_EMBEDDED_DEPLOYMENT
+  small_mlp:
+    hidden_layer_sizes:
+      - [12]
+      - [16, 8]
+    alpha: [0.0001, 0.001]
+    early_stopping: true
+    max_iter: 300
+    scaler_required: true

@@ -1,0 +1,16 @@
+selected_model_path: ml/models/selected
+output_path: embedded/generated
+numeric_tolerance: 0.000001
+probability_tolerance: 0.000001
+target_numeric_type: float
+allowed_model_types:
+  - LogisticRegression
+  - DecisionTreeClassifier
+  - MLPClassifier
+golden_vector_count_per_class: 3
+compiler_command: ""
+compiler_flags:
+  - -std=c99
+resource_estimate_assumptions:
+  float_bytes: 4
+  int_bytes: 4

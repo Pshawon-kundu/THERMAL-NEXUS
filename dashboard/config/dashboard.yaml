@@ -1,0 +1,23 @@
+database_path: host/database/thermal_nexus.db
+evidence_path: evidence/dashboard
+dashboard_title: Thermal Nexus Offline Dashboard
+team_name: Thermal Nexus
+refresh_interval_seconds: 5
+freshness_timeout_seconds: 10
+baud_rate: 115200
+serial_port: COM10
+live_refresh_seconds: 1
+freshness:
+  stm_online_seconds: 3
+  stm_stale_seconds: 10
+  gps_online_seconds: 5
+  gps_stale_seconds: 15
+  telemetry_online_seconds: 3
+  telemetry_stale_seconds: 10
+default_replay_speed: 1
+maximum_displayed_rows: 5000
+simulation_timeout_seconds: 180
+supported_modes:
+  - fixed
+  - rule_based
+  - ml

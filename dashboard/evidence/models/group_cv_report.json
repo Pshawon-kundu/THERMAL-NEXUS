@@ -1,0 +1,44 @@
+{
+  "strategy": "StratifiedGroupKFold",
+  "fallback_used": false,
+  "zero_run_overlap": true,
+  "all_training_runs_seen_in_validation": true,
+  "folds": [
+    {
+      "fold": 0,
+      "train_run_count": 52,
+      "validation_run_count": 26,
+      "overlap_count": 0,
+      "overlap_runs": [],
+      "validation_class_counts": {
+        "STABLE": 1331,
+        "EXCURSION_RISK": 1120,
+        "TRANSITION": 272
+      }
+    },
+    {
+      "fold": 1,
+      "train_run_count": 52,
+      "validation_run_count": 26,
+      "overlap_count": 0,
+      "overlap_runs": [],
+      "validation_class_counts": {
+        "STABLE": 1333,
+        "EXCURSION_RISK": 1120,
+        "TRANSITION": 272
+      }
+    },
+    {
+      "fold": 2,
+      "train_run_count": 52,
+      "validation_run_count": 26,
+      "overlap_count": 0,
+      "overlap_runs": [],
+      "validation_class_counts": {
+        "STABLE": 1333,
+        "EXCURSION_RISK": 1120,
+        "TRANSITION": 272
+      }
+    }
+  ]
+}

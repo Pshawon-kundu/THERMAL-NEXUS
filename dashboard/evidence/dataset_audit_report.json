@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "input_dir": "ml/data/synthetic_max",
+  "runs_audited": 104,
+  "recognized_scenarios": [
+    "ambient_to_cold",
+    "cold_to_ambient",
+    "gradual_warming",
+    "long_door_opening",
+    "missing_samples",
+    "rapid_warming",
+    "repeated_door_opening",
+    "sensor_drift",
+    "short_door_opening",
+    "stable_cold",
+    "stable_room",
+    "sudden_spike",
+    "temporary_sensor_fault"
+  ],
+  "issues": []
+}

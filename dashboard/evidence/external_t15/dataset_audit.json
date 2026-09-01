@@ -1,0 +1,40 @@
+{
+  "dataset_label": "EXTERNAL_DERIVED_BENCHMARK",
+  "row_count": 4137,
+  "run_count": 45,
+  "split_run_counts": {
+    "train": 31,
+    "validation": 6,
+    "test": 8
+  },
+  "invalid_timestamps": 0,
+  "duplicate_timestamps": 0,
+  "sample_interval_seconds": 900,
+  "missing_interval_count_inside_runs": 2,
+  "zero_run_overlap_between_splits": true,
+  "manifest_rows": 45,
+  "source_audit_combined": {},
+  "temperature_ranges_c": {
+    "temperature_dining_c": {
+      "min": 11.352,
+      "max": 28.924,
+      "mean": 20.493529949238578
+    },
+    "temperature_room_c": {
+      "min": 11.076,
+      "max": 28.548,
+      "mean": 20.146049915397633
+    },
+    "temperature_exterior_c": {
+      "min": 9.22333,
+      "max": 29.908,
+      "mean": 18.01933111916848
+    }
+  },
+  "limitations": [
+    "External building-environment dataset, not Thermal Nexus-collected data.",
+    "Not a cold-chain/vaccine dataset and not evidence of final cold-chain performance.",
+    "Targets are future measured temperatures derived from the same source series.",
+    "Models and preprocessing are stored outside ml/models/selected."
+  ]
+}

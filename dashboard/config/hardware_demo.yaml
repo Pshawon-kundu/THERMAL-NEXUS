@@ -1,0 +1,40 @@
+# Hardware-phase demo configuration.
+# All figures are datasheet-driven defaults for the simulated run; override
+# per-call from the CLI when measured data is available (Phase 7).
+tmp117:
+  noise_rms_c: 0.005          # TMP117 typical noise (°C)
+  absolute_accuracy_c: 0.1    # TMP117 typical accuracy across 0..50 °C
+  resolution_c: 0.01          # TMP117 resolution (°C)
+  i2c_latency_ms: 1.5
+  min_operating_c: -55.0
+  max_operating_c: 150.0
+
+xbee:
+  base_rssi_at_1m_dbm: -30.0  # 1 m reference RSSI for XBee-PRO 900HP
+  path_loss_exponent: 2.8     # typical indoor refrigerated aisle
+  shadowing_sigma_db: 4.0     # lognormal shadowing standard deviation
+  rx_sensitivity_dbm: -100.0  # XBee-PRO 900HP ~ -110 dBm @ 10 kbps; pad 10 dB
+  packet_size_bytes: 32
+  bitrate_kbps: 10.0
+
+stm32:
+  battery_capacity_wh: 3.7    # 1000 mAh @ 3.7 V LiPo
+  active_current_ma: 4.0      # Cortex-M33 @ 4 MHz
+  sleep_current_ua: 1.1       # Stop 2 mode
+  tx_current_ma: 240.0        # XBee-PRO 900HP @ +24 dBm
+  voltage_v: 3.0
+  regulator_efficiency: 0.85
+
+range_test:
+  channel: rf_900mhz
+  distances_m: [1.0, 5.0, 15.0, 30.0, 60.0, 120.0, 250.0]
+
+accuracy_test:
+  setpoints_c: [-20.0, -10.0, 0.0, 4.0, 10.0, 20.0, 25.0, 37.0, 50.0]
+
+# Per-event duty cycle (seconds). Sum should equal the polling interval
+# (10 s default).
+energy:
+  active_seconds: 0.020
+  sleep_seconds: 9.980
+  tx_seconds: 0.050

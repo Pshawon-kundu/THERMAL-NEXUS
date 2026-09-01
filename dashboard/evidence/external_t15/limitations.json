@@ -1,0 +1,14 @@
+{
+  "dataset_label": "EXTERNAL_DERIVED_BENCHMARK",
+  "limitations": [
+    "External building-environment dataset, not Thermal Nexus-collected data.",
+    "Not a cold-chain/vaccine dataset and not evidence of final cold-chain performance.",
+    "Targets are future measured temperatures derived from the same source series.",
+    "Models and preprocessing are stored outside ml/models/selected."
+  ],
+  "prohibited_claims": [
+    "Thermal Nexus collected this external dataset",
+    "External T15 results prove cold-chain field performance",
+    "Future measured derived targets are independent ground truth"
+  ]
+}

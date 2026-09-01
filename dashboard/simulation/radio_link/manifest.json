@@ -1,0 +1,23 @@
+{
+  "name": "thermal_nexus_phase2_radio_link_simulation",
+  "kind": "equivalent_engineering_simulation",
+  "label": "EQUIVALENT ENGINEERING SIMULATION (software-estimated)",
+  "model": "XBee-PRO 900HP, log-distance + lognormal shadowing, sigmoid PER",
+  "config": {
+    "base_rssi_at_1m_dbm": -30.0,
+    "path_loss_exponent": 2.8,
+    "shadowing_sigma_db": 4.0,
+    "rx_sensitivity_dbm": -100.0,
+    "packet_size_bytes": 32,
+    "bitrate_kbps": 10.0
+  },
+  "files": [
+    "results/path_loss_sweep.csv",
+    "results/per_vs_distance.csv",
+    "results/link_budget.json",
+    "results/link_budget_figure.png"
+  ],
+  "seed": 42,
+  "samples_per_point": 200,
+  "ready_for_submission": true
+}

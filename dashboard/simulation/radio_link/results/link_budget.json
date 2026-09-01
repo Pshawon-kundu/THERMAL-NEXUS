@@ -1,0 +1,13 @@
+{
+  "tx_power_dbm": 24.0,
+  "tx_antenna_gain_dbi": 0.0,
+  "rx_antenna_gain_dbi": 0.0,
+  "rx_sensitivity_dbm": -100.0,
+  "free_space_path_loss_at_60m_db": 49.78823501074202,
+  "free_space_path_loss_at_250m_db": 67.14232024281705,
+  "max_range_lt_50pct_per_m": 250.0,
+  "samples_per_point": 200,
+  "seed": 42,
+  "software_estimated": true,
+  "label": "EQUIVALENT ENGINEERING SIMULATION (software-estimated)"
+}

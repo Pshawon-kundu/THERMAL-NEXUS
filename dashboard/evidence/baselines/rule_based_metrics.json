@@ -1,0 +1,247 @@
+{
+  "train": {
+    "row_count": 5865,
+    "confusion_matrix": {
+      "STABLE": {
+        "STABLE": 1678,
+        "TRANSITION": 334,
+        "EXCURSION_RISK": 179
+      },
+      "TRANSITION": {
+        "STABLE": 285,
+        "TRANSITION": 151,
+        "EXCURSION_RISK": 66
+      },
+      "EXCURSION_RISK": {
+        "STABLE": 750,
+        "TRANSITION": 267,
+        "EXCURSION_RISK": 2155
+      }
+    },
+    "per_class": {
+      "STABLE": {
+        "precision": 0.7658603377453218,
+        "recall": 0.6185035016586804,
+        "f1": 0.6843393148450244
+      },
+      "TRANSITION": {
+        "precision": 0.300796812749004,
+        "recall": 0.20079787234042554,
+        "f1": 0.240829346092504
+      },
+      "EXCURSION_RISK": {
+        "precision": 0.6793820933165196,
+        "recall": 0.8979166666666667,
+        "f1": 0.7735104091888012
+      }
+    },
+    "macro_f1": 0.5662263567087765,
+    "weighted_f1": 0.6639626959060934,
+    "balanced_accuracy": 0.5724060135552576,
+    "prediction_count_by_class": {
+      "STABLE": 2191,
+      "TRANSITION": 502,
+      "EXCURSION_RISK": 3172
+    },
+    "number_of_state_changes": 998,
+    "false_alarm_rate": 0.8923395445134575,
+    "missed_event_rate": 0.0,
+    "number_of_detected_excursions": 52,
+    "number_of_missed_excursions": 0,
+    "number_of_alerts": 483,
+    "warning_lead_times_seconds": [
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -360.0,
+      -360.0,
+      -360.0,
+      -360.0,
+      -120.0,
+      -60.0,
+      -180.0,
+      -300.0,
+      -60.0,
+      -60.0,
+      -60.0,
+      -60.0,
+      -240.0,
+      -240.0,
+      -300.0,
+      -300.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -180.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -180.0,
+      60.0,
+      -120.0,
+      -120.0,
+      -420.0,
+      60.0,
+      0.0,
+      -60.0,
+      300.0,
+      -480.0,
+      -480.0,
+      -360.0,
+      0.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -240.0
+    ],
+    "median_warning_lead_time_seconds": -120.0,
+    "mean_warning_lead_time_seconds": -156.92307692307693,
+    "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
+  },
+  "validation": {
+    "row_count": 1462,
+    "confusion_matrix": {
+      "STABLE": {
+        "STABLE": 417,
+        "TRANSITION": 88,
+        "EXCURSION_RISK": 48
+      },
+      "TRANSITION": {
+        "STABLE": 69,
+        "TRANSITION": 40,
+        "EXCURSION_RISK": 18
+      },
+      "EXCURSION_RISK": {
+        "STABLE": 188,
+        "TRANSITION": 60,
+        "EXCURSION_RISK": 534
+      }
+    },
+    "per_class": {
+      "STABLE": {
+        "precision": 0.7540687160940326,
+        "recall": 0.6186943620178041,
+        "f1": 0.6797066014669927
+      },
+      "TRANSITION": {
+        "precision": 0.31496062992125984,
+        "recall": 0.2127659574468085,
+        "f1": 0.253968253968254
+      },
+      "EXCURSION_RISK": {
+        "precision": 0.6828644501278772,
+        "recall": 0.89,
+        "f1": 0.772793053545586
+      }
+    },
+    "macro_f1": 0.5688226363269443,
+    "weighted_f1": 0.663162868168356,
+    "balanced_accuracy": 0.5738201064882041,
+    "prediction_count_by_class": {
+      "STABLE": 553,
+      "TRANSITION": 127,
+      "EXCURSION_RISK": 782
+    },
+    "number_of_state_changes": 244,
+    "false_alarm_rate": 0.8879310344827587,
+    "missed_event_rate": 0.0,
+    "number_of_detected_excursions": 13,
+    "number_of_missed_excursions": 0,
+    "number_of_alerts": 116,
+    "warning_lead_times_seconds": [
+      -120.0,
+      -120.0,
+      -120.0,
+      -60.0,
+      -300.0,
+      -240.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -180.0,
+      -480.0,
+      -120.0,
+      -180.0
+    ],
+    "median_warning_lead_time_seconds": -120.0,
+    "mean_warning_lead_time_seconds": -175.3846153846154,
+    "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
+  },
+  "test": {
+    "row_count": 1354,
+    "confusion_matrix": {
+      "STABLE": {
+        "STABLE": 400,
+        "TRANSITION": 60,
+        "EXCURSION_RISK": 39
+      },
+      "TRANSITION": {
+        "STABLE": 67,
+        "TRANSITION": 29,
+        "EXCURSION_RISK": 18
+      },
+      "EXCURSION_RISK": {
+        "STABLE": 191,
+        "TRANSITION": 47,
+        "EXCURSION_RISK": 503
+      }
+    },
+    "per_class": {
+      "STABLE": {
+        "precision": 0.8016032064128257,
+        "recall": 0.60790273556231,
+        "f1": 0.6914433880726015
+      },
+      "TRANSITION": {
+        "precision": 0.2543859649122807,
+        "recall": 0.21323529411764705,
+        "f1": 0.232
+      },
+      "EXCURSION_RISK": {
+        "precision": 0.6788124156545209,
+        "recall": 0.8982142857142857,
+        "f1": 0.7732513451191391
+      }
+    },
+    "macro_f1": 0.5655649110639135,
+    "weighted_f1": 0.6791303564390617,
+    "balanced_accuracy": 0.5731174384647476,
+    "prediction_count_by_class": {
+      "STABLE": 499,
+      "TRANSITION": 114,
+      "EXCURSION_RISK": 741
+    },
+    "number_of_state_changes": 231,
+    "false_alarm_rate": 0.8956521739130435,
+    "missed_event_rate": 0.0,
+    "number_of_detected_excursions": 12,
+    "number_of_missed_excursions": 0,
+    "number_of_alerts": 115,
+    "warning_lead_times_seconds": [
+      -120.0,
+      -120.0,
+      -360.0,
+      -60.0,
+      -240.0,
+      -120.0,
+      -120.0,
+      -120.0,
+      -180.0,
+      -480.0,
+      -120.0,
+      -120.0
+    ],
+    "median_warning_lead_time_seconds": -120.0,
+    "mean_warning_lead_time_seconds": -180.0,
+    "warning_lead_time_convention": "event_start_timestamp - first overlapping alert timestamp; reactive alerts may have zero or negative lead time"
+  }
+}
