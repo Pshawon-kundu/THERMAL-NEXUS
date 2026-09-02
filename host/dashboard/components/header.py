@@ -27,12 +27,20 @@ def _render_hero(config: dict[str, object]) -> None:
     st.markdown(
         f"""
         <div class="tn-hero">
-          <div class="tn-team">{config.get("team_name", "Thermal Nexus")}</div>
-          <h1 class="tn-title">Thermal Nexus Validation Console</h1>
-          <div class="tn-subtitle">
-            Real-time thermal cold-chain monitoring across distributed ESP32
-            sensor nodes — live test execution, KPI evidence, and embedded
-            readiness review.
+          <div class="tn-hero-brand">
+            <div class="tn-logo-mark" aria-hidden="true">
+              <span class="tn-logo-wave tn-logo-wave-one"></span>
+              <span class="tn-logo-wave tn-logo-wave-two"></span>
+              <span class="tn-logo-wave tn-logo-wave-three"></span>
+            </div>
+            <div class="tn-hero-copy">
+              <h1 class="tn-title">Thermal Nexus Validation Console</h1>
+              <div class="tn-subtitle">
+                Real-time thermal cold-chain monitoring across distributed ESP32
+                sensor nodes - live test execution, KPI evidence, and embedded
+                readiness review.
+              </div>
+            </div>
           </div>
         </div>
         """,

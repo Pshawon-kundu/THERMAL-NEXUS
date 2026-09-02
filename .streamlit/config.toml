@@ -1,7 +1,44 @@
 [theme]
 base = "light"
-primaryColor = "#0F6B72"
-backgroundColor = "#F5F7F7"
+primaryColor = "#047857"
+backgroundColor = "#F6FAF8"
 secondaryBackgroundColor = "#FFFFFF"
-textColor = "#1F2A37"
-font = "sans serif"
+textColor = "#10211F"
+linkColor = "#047857"
+codeTextColor = "#0F3F3A"
+codeBackgroundColor = "#EAF7F1"
+borderColor = "#CFE3DB"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "8px"
+buttonRadius = "8px"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["34px", "26px", "21px", "18px", "15px", "13px"]
+headingFontWeights = [800, 750, 700, 650, 650, 650]
+linkUnderline = false
+chartCategoricalColors = ["#047857", "#10B981", "#65A30D", "#D97706", "#DC2626", "#2563EB", "#64748B"]
+chartSequentialColors = ["#F0FDF4", "#DCFCE7", "#BBF7D0", "#86EFAC", "#4ADE80", "#22C55E", "#16A34A", "#15803D", "#166534", "#14532D"]
+greenColor = "#047857"
+greenBackgroundColor = "#DDF8EA"
+greenTextColor = "#065F46"
+orangeColor = "#D97706"
+orangeBackgroundColor = "#FEF3C7"
+orangeTextColor = "#92400E"
+redColor = "#DC2626"
+redBackgroundColor = "#FEE2E2"
+redTextColor = "#991B1B"
+grayColor = "#64748B"
+dataframeBorderColor = "#CFE3DB"
+dataframeHeaderBackgroundColor = "#ECFDF5"
+
+[theme.sidebar]
+backgroundColor = "#F0F8F4"
+secondaryBackgroundColor = "#FFFFFF"
+codeBackgroundColor = "#E2F5EC"
+textColor = "#173B35"
+borderColor = "#CFE3DB"
+primaryColor = "#047857"
