@@ -5,7 +5,7 @@ team_name: Thermal Nexus
 refresh_interval_seconds: 5
 freshness_timeout_seconds: 10
 baud_rate: 115200
-serial_port: COM10
+serial_port: COM4
 live_refresh_seconds: 1
 freshness:
   stm_online_seconds: 3

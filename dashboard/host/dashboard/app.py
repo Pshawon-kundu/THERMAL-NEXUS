@@ -32,6 +32,7 @@ from host.dashboard.pages import (  # noqa: E402
     hardware,
     kpi_reports,
     live_simulation,
+    location,
     mode_comparison,
     model_readiness,
     overview,
@@ -40,25 +41,32 @@ from host.dashboard.pages import (  # noqa: E402
     raw_data,
     replay,
     sensors,
+    system,
     system_info,
+    thermal,
     thermal_chamber,
 )
 from host.dashboard.runtime_status import render_serial_sidebar  # noqa: E402
 
 PageSpec = tuple[str, str, str, str]
 
+#: Primary live-hardware navigation: exactly four pages.
+PRIMARY_LIVE_PAGES: tuple[str, ...] = ("overview", "thermal", "location", "system")
+
 # (label, page module, arg_kind, icon).
 # ``arg_kind`` picks whether the page receives the data service or the raw config.
+# Primary live pages use file entries (``entry:<module>``) for stable deep-link
+# URLs; legacy pages use function closures. Superseded live pages
+# (thermal_chamber/gps_map/sensors/radio_link/raw_data) stay importable for
+# compatibility but are hidden from navigation.
 _NAV_GROUPS: dict[str, list[PageSpec]] = {
     "Live Hardware": [
-        ("Overview", "overview", "service", ":material/home:"),
-        ("Thermal Chamber", "thermal_chamber", "service", ":material/local_fire_department:"),
-        ("Sensors", "sensors", "service", ":material/thermostat:"),
-        ("GPS & Map", "gps_map", "service", ":material/location_on:"),
-        ("Radio & Link", "radio_link", "service", ":material/settings_input_antenna:"),
-        ("Raw Data", "raw_data", "service", ":material/table_view:"),
+        ("Overview", "entry:overview", "service", ":material/home:"),
+        ("Thermal", "entry:thermal", "service", ":material/local_fire_department:"),
+        ("Location", "entry:location", "service", ":material/location_on:"),
+        ("System", "entry:system", "service", ":material/settings_input_antenna:"),
     ],
-    "Legacy / Simulation": [
+    "Research & Simulation": [
         ("Experiments", "experiments", "service", ":material/science:"),
         ("Live Simulation", "live_simulation", "config", ":material/play_arrow:"),
         ("Replay", "replay", "service", ":material/replay:"),
@@ -80,6 +88,9 @@ _TABS: list[tuple[str, str, str]] = [
 
 _PAGE_MODULES = {
     "overview": overview,
+    "thermal": thermal,
+    "location": location,
+    "system": system,
     "thermal_chamber": thermal_chamber,
     "sensors": sensors,
     "gps_map": gps_map,
@@ -107,9 +118,22 @@ def _register_pages() -> None:
     if _PAGES:
         return
 
+    entries_dir = Path(__file__).resolve().parent / "entries"
     for group, specs in _NAV_GROUPS.items():
         _PAGES[group] = []
         for label, module_name, arg_kind, icon in specs:
+            if module_name.startswith("entry:"):
+                # File-based page: stable deep-link URL, zero-arg execution.
+                entry_path = entries_dir / f"{module_name[len('entry:'):]}.py"
+                _PAGES[group].append(
+                    st.Page(
+                        str(entry_path),
+                        title=label,
+                        icon=icon,
+                        url_path=module_name[len("entry:"):],
+                    )
+                )
+                continue
             page = _PAGE_MODULES[module_name]
 
             def _render(
@@ -127,19 +151,62 @@ def _register_pages() -> None:
                 else:
                     _page.render()
 
+            _render.__name__ = f"_render_{module_name}"
             _PAGES[group].append(
                 st.Page(_render, title=label, icon=icon, url_path=module_name)
             )
 
 
+_PRIMARY_TITLES = {"overview": "Overview", "thermal": "Thermal",
+                   "location": "Location", "system": "System"}
+
+
+def _primary_entries() -> list[tuple[str, st.StreamlitPage]]:
+    """(label, page) for the four primary live pages, in nav order.
+
+    Matched by title: the default page (Overview) always reports
+    ``url_path == ""``, so URL matching would silently drop it.
+    """
+    _register_pages()
+    by_title = {page.title: page for page in _PAGES["Live Hardware"]}
+    return [(_PRIMARY_TITLES[name], by_title[_PRIMARY_TITLES[name]])
+            for name in PRIMARY_LIVE_PAGES if _PRIMARY_TITLES[name] in by_title]
+
+
+def _research_entries() -> list[tuple[str, st.StreamlitPage]]:
+    """(label, page) for legacy pages, in nav order."""
+    _register_pages()
+    out: list[tuple[str, st.StreamlitPage]] = []
+    for label, module_name, _arg_kind, _icon in _NAV_GROUPS["Research & Simulation"]:
+        for page in _PAGES["Research & Simulation"]:
+            if page.title == label:
+                out.append((label, page))
+                break
+    return out
+
+
 def main() -> None:
-    """Render the offline dashboard."""
+    """Render the dashboard with a custom compact sidebar.
+
+    Routing stays on ``st.navigation`` (deep links preserved) but its
+    built-in sidebar is hidden; the sidebar below shows only the four
+    primary live pages plus a collapsed Research & Simulation expander.
+    """
     config = load_dashboard_config()
     st.set_page_config(page_title=config["dashboard_title"], layout="wide")
     apply_theme()
     render_serial_sidebar(config)
     _register_pages()
-    selected = st.navigation(_PAGES)
+    selected = st.navigation(_PAGES, position="hidden")
+
+    st.sidebar.markdown("**Live Hardware**")
+    for label, page in _primary_entries():
+        prefix = "▸ " if selected.title == page.title else ""
+        st.sidebar.page_link(page, label=f"{prefix}{label}", icon=page.icon)
+    with st.sidebar.expander("Research & Simulation", expanded=False):
+        for label, page in _research_entries():
+            st.page_link(page, label=label, icon=page.icon)
+
     selected.run()
 
 

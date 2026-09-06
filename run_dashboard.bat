@@ -52,6 +52,14 @@ echo [HART] ERROR: could not launch serial ingestion.
 echo [HART]        See %RUNTIME%\logs\serial.err.log
 :serial_ready
 
+rem ---------- 1b. telemetry API - read-only localhost:8502 for flicker-free UI polling ----------
+powershell -NoProfile -ExecutionPolicy Bypass -File "%HELPER%" -Action start-api -PythonPath "%VENVPY%" -DashboardPath "%DASH%" -PidDir "%PIDDIR%"
+if errorlevel 1 (
+  echo [HART] WARNING: could not launch telemetry API - live regions will show stale data.
+) else (
+  echo [HART] Telemetry API running on localhost:8502.
+)
+
 rem ---------- 2. streamlit - single instance on localhost:8501 ----------
 powershell -NoProfile -ExecutionPolicy Bypass -File "%HELPER%" -Action check-streamlit
 if errorlevel 1 goto :check_port

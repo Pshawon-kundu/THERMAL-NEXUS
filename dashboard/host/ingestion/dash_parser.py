@@ -2,7 +2,8 @@
 
 The receiver ESP32 emits dedicated machine-readable lines alongside its normal
 human-readable console logs. Only lines starting with ``DASH,`` are consumed;
-all other COM10 output (human logs, boot banners, raw RF prints) is ignored.
+all other receiver serial output (human logs, boot banners, raw RF prints)
+is ignored.
 
 Formats (see receiver firmware ``dashGpsLine`` / ``dashStmLine`` /
 ``dashDuplicateEvent`` / ``dashMalformedEvent``):
@@ -117,9 +118,39 @@ class DashEvent:
     raw_line: str
 
 
+#: Receiver log lines embed the machine-readable record after a human-readable
+#: prefix on the SAME serial line, e.g.
+#: ``[RX] seq=5 RSSI=-51 SNR=9.75 Q=91DASH,TELEMETRY,5,...``.
+#: The ingestion layer must recover the record instead of dropping it.
+_KNOWN_DASH_KINDS = ("GPS", "STM", "TELEMETRY", "EVENT")
+
+
+def extract_dash_record(line: str) -> str | None:
+    """Return the ``DASH,...`` substring of a raw serial line, if any.
+
+    Handles both clean lines (starting with ``DASH,``) and receiver lines
+    where a human-readable log prefix shares the line (no newline between
+    the ``[RX]`` log and the DASH record). Returns ``None`` when the line
+    carries no recognizable DASH record.
+    """
+    text = str(line).strip()
+    if not text:
+        return None
+    search_from = 0
+    while True:
+        index = text.find("DASH,", search_from)
+        if index < 0:
+            return None
+        rest = text[index + len("DASH,"):]
+        kind = rest.split(",", 1)[0].strip().upper()
+        if kind in _KNOWN_DASH_KINDS:
+            return text[index:]
+        search_from = index + len("DASH,")
+
+
 def is_dash_line(line: str) -> bool:
-    """Return True only for lines that begin with the ``DASH,`` prefix."""
-    return str(line).lstrip().startswith("DASH,")
+    """Return True for lines carrying a ``DASH,`` record (prefix or embedded)."""
+    return extract_dash_record(line) is not None
 
 
 def parse_dash_line(line: str) -> DashGps | DashStm | DashTelemetry | DashEvent | None:
@@ -135,9 +166,14 @@ def parse_dash_line(line: str) -> DashGps | DashStm | DashTelemetry | DashEvent 
     """
     if not line:
         return None
-    text = line.strip()
-    if not text or not is_dash_line(text):
+    record_text = extract_dash_record(line)
+    if record_text is None:
+        # A line that claims the DASH prefix but carries no known record
+        # kind is malformed input (must raise, never silently pass).
+        if str(line).lstrip().startswith("DASH,"):
+            raise DashParseError(f"Unknown DASH record: {str(line).strip()!r}")
         return None
+    text = record_text
 
     parts = text.split(",")
     if len(parts) < 3 or parts[0] != DASH_PREFIX:

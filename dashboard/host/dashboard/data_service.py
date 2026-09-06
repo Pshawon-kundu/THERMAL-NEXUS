@@ -2,9 +2,25 @@
 
 from __future__ import annotations
 
+import logging
+import os
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+
+LOGGER = logging.getLogger("thermal-nexus.render")
+_TRACE = os.getenv("TN_RENDER_TRACE") == "1"
+if _TRACE and not LOGGER.handlers:
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
+    LOGGER.addHandler(_handler)
+    LOGGER.setLevel(logging.INFO)
+
+
+def _trace(tag: str) -> None:
+    if _TRACE:
+        LOGGER.info("[RENDER] %s t=%.3f", tag, time.time())
 
 from host.database.connection import DEFAULT_DATABASE_PATH, connect
 from host.database.migrations import initialize_database
@@ -144,9 +160,10 @@ class DashboardDataService:
     ) -> dict[str, Any]:
         """Return the current live-hardware picture from SQLite.
 
-        COM10 (serial_status) is the connection state. Unified telemetry
-        stream health is derived from the freshness of the newest
-        PROJECT_COLLECTED row. Legacy GPS/STM tables are also checked.
+        serial_status is the connection state. Unified telemetry
+        (telemetry_readings) is the canonical source; legacy GPS/STM tables
+        are also checked. Freshness uses one shared model:
+        LIVE (<=3s) / STALE (<=10s) / OFFLINE (>10s).
         """
         now = (
             now_timestamp
@@ -170,12 +187,21 @@ class DashboardDataService:
             telemetry_age, telemetry_online_seconds, telemetry_stale_seconds
         )
 
+        from host.dashboard.telemetry_model import (
+            canonical_snapshot as _canonical_snapshot,
+            classify_freshness as _classify_freshness,
+        )
+
+        freshness = _classify_freshness(telemetry_age)
+        snapshot = _canonical_snapshot(latest_telemetry)
         return {
             "serial": serial,
             "serial_connected": bool(serial and serial.get("connected")),
             "latest_stm": latest_stm,
             "latest_gps": latest_gps,
             "latest_telemetry": latest_telemetry,
+            "snapshot": snapshot,
+            "freshness": freshness,
             "stm_age_seconds": stm_age,
             "gps_age_seconds": gps_age,
             "telemetry_age_seconds": telemetry_age,
@@ -199,6 +225,7 @@ class DashboardDataService:
         return self.repository.stm_history(limit=limit)
 
     def telemetry_history(self, limit: int = 200) -> list[dict[str, Any]]:
+        _trace(f"telemetry_history limit={limit}")
         return self.repository.telemetry_history(limit=limit)
 
     def receiver_events(self, limit: int = 100, event_type: str | None = None):

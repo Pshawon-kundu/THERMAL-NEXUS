@@ -7,12 +7,13 @@
 #   check-streamlit  exit 0 if a streamlit process is already listening on :8501.
 #   start-serial     launch serial_service from the given dashboard venv, write pid.
 #   start-streamlit  launch streamlit on localhost:8501, write pid.
+#   start-api        launch the read-only telemetry API on localhost:8502, write pid.
 #   stop-all         stop ONLY python processes from THIS dashboard venv that run
-#                    streamlit or serial_service; clean pid files.
+#                    streamlit, serial_service or the telemetry API; clean pid files.
 
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("check-serial", "check-streamlit", "port-busy", "start-serial", "start-streamlit", "stop-all")]
+    [ValidateSet("check-serial", "check-streamlit", "port-busy", "start-serial", "start-streamlit", "start-api", "stop-all")]
     [string]$Action,
     [string]$PythonPath = "",
     [string]$DashboardPath = "",
@@ -27,7 +28,7 @@ function Get-HartOwnedProcs {
     Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
         Where-Object {
             ($_.ExecutablePath -ieq $venvPython) -and
-            ($_.CommandLine -match "streamlit" -or $_.CommandLine -match "serial_service")
+            ($_.CommandLine -match "streamlit" -or $_.CommandLine -match "serial_service" -or $_.CommandLine -match "host.api.server")
         }
 }
 
@@ -88,6 +89,22 @@ switch ($Action) {
         }
         exit 1
     }
+    "start-api" {
+        $argsList = @('-m', 'host.api.server', '--port', '8502')
+        $logDir = Join-Path (Split-Path $PidDir -Parent) 'logs'
+        New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+        $p = Start-Process -FilePath $PythonPath -ArgumentList $argsList `
+            -WorkingDirectory $DashboardPath -WindowStyle Minimized -PassThru `
+            -RedirectStandardOutput (Join-Path $logDir 'api.log') `
+            -RedirectStandardError (Join-Path $logDir 'api.err.log')
+        if ($p) {
+            New-Item -ItemType Directory -Force -Path $PidDir | Out-Null
+            Set-Content -Path (Join-Path $PidDir "api.pid") -Value $p.Id -Encoding ascii
+            Write-Host "[HART] telemetry API started (pid=$($p.Id))"
+            exit 0
+        }
+        exit 1
+    }
     "stop-all" {
         $procs = @(Get-HartOwnedProcs)
         foreach ($proc in $procs) {
@@ -101,7 +118,7 @@ switch ($Action) {
         # started from this venv (orphaned children) - match by command line only.
         $orphans = Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
             Where-Object {
-                $_.CommandLine -match "host\.ingestion\.serial_service|streamlit run" -and
+                $_.CommandLine -match "host\.ingestion\.serial_service|streamlit run|host\.api\.server" -and
                 $_.ExecutablePath -imatch "PythonSoftwareFoundation"
             }
         foreach ($orc in $orphans) {
@@ -109,6 +126,7 @@ switch ($Action) {
         }
         Remove-Item (Join-Path $PidDir "serial.pid") -ErrorAction SilentlyContinue
         Remove-Item (Join-Path $PidDir "streamlit.pid") -ErrorAction SilentlyContinue
+        Remove-Item (Join-Path $PidDir "api.pid") -ErrorAction SilentlyContinue
         if ($procs.Count -gt 0) {
             Write-Host "[HART] Stopped $($procs.Count) HART service process tree(s)."
         } else {

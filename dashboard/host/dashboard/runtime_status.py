@@ -125,15 +125,19 @@ def resolve_serial_port(
 ) -> str | None:
     """Pick the port the sidebar should show.
 
-    Preference: saved preference > env var > config default, then COM10 when
-    available, otherwise the first listed port. Never returns a port that is
-    not in ``ports``; returns ``None`` when there are no ports at all.
+    Preference: env HART_SERIAL_PORT > saved preference > config default,
+    then COM4 when available, otherwise the first listed port. Never returns
+    a port that is not in ``ports``; returns ``None`` when no ports exist.
     """
-    for candidate in (saved, env_port, configured):
+    if env_port is None:
+        import os as _os
+
+        env_port = _os.getenv("HART_SERIAL_PORT") or env_port
+    for candidate in (env_port, saved, configured):
         if candidate and candidate in ports:
             return candidate
     for port in ports:
-        if str(port).upper() == "COM10":
+        if str(port).upper() == "COM4":
             return port
     return ports[0] if ports else None
 
@@ -161,17 +165,42 @@ def _store_serial_port() -> None:
 
 
 def render_serial_sidebar(config: dict[str, Any]) -> None:
-    """Render serial controls and the ingestion-service status in the sidebar.
+    """Render the compact sidebar receiver summary.
 
-    The dashboard NEVER opens a COM port. This panel only enumerates ports
-    (for the selector) and reads the ``serial_status`` row written by
-    ``host/ingestion/serial_service.py`` (for status). The selectbox widget
-    key (``serial_port_widget``) and the persisted preference state
-    (``serial_selected_port``) are deliberately separate so no rerun ever
-    mutates a widget key after the widget was instantiated.
+    The dashboard NEVER opens a COM port. When the ingestion service is
+    active this is a one-line summary (``Receiver: COM4 ● Connected``);
+    full port selection lives in an expander. The selectbox widget key
+    (``serial_port_widget``) and the persisted preference state
+    (``serial_selected_port``) stay separate so no rerun ever mutates a
+    widget key after instantiation.
     """
     serial = get_serial_snapshot(config)
-    with st.sidebar.container(border=True):
+    connected = serial.service_connected
+    port = serial.service_port or serial.selected_port or "COM4"
+    dot = "#1FA34A" if connected else "#D64545"
+    state = "Connected" if connected else "Stopped"
+    st.sidebar.markdown(
+        f"<div style='background:#FFFFFF;border:1px solid #DDE4E8;border-radius:8px;"
+        f"padding:8px 10px;font-size:13px;margin-bottom:6px;'>"
+        f"<span style='color:#637381;'>Receiver:</span> "
+        f"<strong>{port}</strong> "
+        f"<span style='display:inline-block;width:8px;height:8px;border-radius:50%;"
+        f"background:{dot};'></span> "
+        f"<span style='color:#42505C;'>{state}</span></div>",
+        unsafe_allow_html=True,
+    )
+    with st.sidebar.expander("Serial configuration", expanded=False):
+        _render_serial_config(serial)
+    return
+
+
+def _render_serial_config(serial: SerialSnapshot) -> None:
+    """Advanced serial controls (selector, baud, service detail).
+
+    NOTE: called inside the sidebar expander block — use plain ``st.*``
+    calls (never ``st.sidebar.*``) so widgets stay inside the expander.
+    """
+    with st.container(border=True):
         st.markdown("**Serial connection**")
         if not serial.pyserial_available:
             st.error(
@@ -373,18 +402,21 @@ def get_serial_snapshot(config: dict[str, Any]) -> SerialSnapshot:
 def get_latest_packet_snapshot(database_path: Path) -> PacketSnapshot:
     """Read latest packet metadata from the shared SQLite database.
 
-    Prefers live-hardware rows (gps_readings / stm_samples tagged
-    PROJECT_COLLECTED); falls back to the legacy reader_records view.
+    Prefers the canonical telemetry_readings rows, then legacy live-hardware
+    rows (gps_readings / stm_samples tagged PROJECT_COLLECTED); falls back
+    to the legacy reader_records view.
     """
 
     try:
         with connect(database_path) as connection:
-            # Live-hardware tables first.
+            # Canonical unified telemetry first.
             row = connection.execute(
                 """
                 SELECT received_at, data_source_type, 'live_serial' AS source_type,
                        NULL AS experiment_id
                 FROM (
+                    SELECT received_at, data_source_type FROM telemetry_readings
+                    UNION ALL
                     SELECT received_at, data_source_type FROM gps_readings
                     UNION ALL
                     SELECT received_at, data_source_type FROM stm_samples
