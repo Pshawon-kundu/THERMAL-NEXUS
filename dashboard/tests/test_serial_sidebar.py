@@ -38,7 +38,7 @@ def test_resolve_serial_port_preferences() -> None:
     from host.dashboard.runtime_status import resolve_serial_port
 
     assert resolve_serial_port(("COM4", "COM10"), "COM4", None, None) == "COM4"
-    assert resolve_serial_port(("COM4", "COM10"), None, None, None) == "COM10"
+    assert resolve_serial_port(("COM4", "COM10"), None, None, None) == "COM4"
     assert resolve_serial_port(("COM4", "COM7"), None, None, None) == "COM4"
     assert resolve_serial_port(("COM4", "COM7"), "COM10", None, None) == "COM4"
     assert resolve_serial_port(("COM7",), None, None, "COM7") == "COM7"

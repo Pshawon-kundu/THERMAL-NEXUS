@@ -338,7 +338,7 @@ def test_dashboard_navigation_groups_all_pages() -> None:
 
     assert list(app._NAV_GROUPS) == [
         "Live Hardware",
-        "Legacy / Simulation",
+        "Research & Simulation",
     ]
     grouped_modules = [
         module_name
@@ -346,7 +346,7 @@ def test_dashboard_navigation_groups_all_pages() -> None:
         for _label, module_name, _arg_kind, icon in group
         if icon
     ]
-    assert len(grouped_modules) == 16
+    assert len(grouped_modules) == 14
     assert set(grouped_modules) == {module_name for _, module_name, _ in app._TABS}
 
 
@@ -540,8 +540,13 @@ def test_dashboard_router_dispatches_every_page_module() -> None:
         thermal_chamber,
     )
 
+    from host.dashboard.pages import location, system, thermal
+
     modules = {
         "overview": overview,
+        "thermal": thermal,
+        "location": location,
+        "system": system,
         "thermal_chamber": thermal_chamber,
         "sensors": sensors,
         "gps_map": gps_map,
@@ -559,16 +564,51 @@ def test_dashboard_router_dispatches_every_page_module() -> None:
         "system_info": system_info,
     }
 
+    # Primary live-hardware navigation is exactly four pages.
+    primary = [
+        module_name[len("entry:"):]
+        for group, specs in app._NAV_GROUPS.items()
+        for _label, module_name, _arg_kind, _icon in specs
+        if group == "Live Hardware"
+    ]
+    assert primary == list(app.PRIMARY_LIVE_PAGES), f"primary nav drift: {primary}"
+    assert set(primary) == {"overview", "thermal", "location", "system"}
+
+    # Superseded live pages stay importable but hidden from navigation.
+    for hidden in ("thermal_chamber", "gps_map", "sensors", "radio_link", "raw_data"):
+        assert hidden in modules
+        assert hidden not in {
+            name[len("entry:"):] if name.startswith("entry:") else name
+            for _, name, _ in app._TABS
+        }, f"{hidden} must not be in primary navigation"
+
     # Every page module is wired into the router.
-    routed = {module_name for _, module_name, _ in app._TABS}
-    assert set(modules) == routed, (
-        f"Router/pages drift: missing={set(modules) - routed}, "
-        f"extra={routed - set(modules)}"
+    # File-based entries (``entry:<module>``) resolve to their page module.
+    def _resolve(name: str) -> str:
+        return name[len("entry:"):] if name.startswith("entry:") else name
+
+    routed = {_resolve(module_name) for _, module_name, _ in app._TABS}
+    expected_routed = set(modules) - {"thermal", "location", "system",
+                                      "thermal_chamber", "gps_map", "sensors",
+                                      "radio_link", "raw_data"}
+    assert expected_routed <= routed, (
+        f"Router/pages drift: missing={expected_routed - routed}"
     )
+
+    # Every file-based entry points at a real entry script.
+    from pathlib import Path as _Path
+
+    _entries_dir = _Path(app.__file__).resolve().parent / "entries"
+    for _, module_name, _ in app._TABS:
+        if module_name.startswith("entry:"):
+            entry_file = _entries_dir / f"{_resolve(module_name)}.py"
+            assert entry_file.exists(), f"missing entry script: {entry_file}"
 
     # Every module's render signature matches its declared arg_kind.
     for _label, module_name, arg_kind in app._TABS:
-        params = list(inspect.signature(modules[module_name].render).parameters)
+        resolved = _resolve(module_name)
+        assert resolved in modules, f"router references unknown module: {module_name}"
+        params = list(inspect.signature(modules[resolved].render).parameters)
         if arg_kind == "service":
             assert params == [
                 "service"

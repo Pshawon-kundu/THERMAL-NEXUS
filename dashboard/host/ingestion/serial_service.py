@@ -1,16 +1,18 @@
 """Continuous serial ingestion service for the receiver's ``DASH,`` output.
 
 The dashboard NEVER owns the COM port. This dedicated service process reads
-COM10 @ 115200 continuously, ignores everything that does not start with
+the receiver port (default COM4 @ 115200, override with HART_SERIAL_PORT or
+--port) continuously, ignores everything that does not start with
 ``DASH,`` (human console logs, boot banners, raw RF prints), parses the
 machine-readable records and writes them to SQLite immediately. ESP32 reset /
 boot / crash banners are recognized and recorded as receiver diagnostic
 events (they are never treated as telemetry).
 
-Run (defaults are COM10 @ 115200):
+Run (defaults are COM4 @ 115200):
 
     python -m host.ingestion.serial_service
-    python -m host.ingestion.serial_service --port COM10 --baud 115200
+    python -m host.ingestion.serial_service --port COM4 --baud 115200
+    HART_SERIAL_PORT=COM4 python -m host.ingestion.serial_service
 
 Test/replay mode (feeds recorded lines from a file instead of a COM port):
 
@@ -23,7 +25,7 @@ Behavior:
     * timeout-based reads; a quiet RF link NEVER triggers a reconnect - the
       port stays open until a real SerialException / device removal / shutdown
     * clean Ctrl+C shutdown
-    * only ONE process should own COM10 at a time
+    * only ONE process should own the receiver port at a time
 """
 
 from __future__ import annotations
@@ -246,10 +248,21 @@ def run_replay_file(store: DashStore, *, path: Path, rate: float, exit_after: in
     LOGGER.info("Replay finished: %d lines processed", count)
 
 
+def default_serial_port() -> str:
+    """Resolve the receiver port: HART_SERIAL_PORT > legacy env > COM4."""
+    import os as _os
+
+    return (
+        _os.getenv("HART_SERIAL_PORT")
+        or _os.getenv("THERMAL_NEXUS_SERIAL_PORT")
+        or "COM4"
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the serial ingestion service."""
     parser = argparse.ArgumentParser(description="Thermal Nexus DASH serial ingestion.")
-    parser.add_argument("--port", default="COM10", help="Serial port (default COM10)")
+    parser.add_argument("--port", default=None, help="Serial port (default COM4 / HART_SERIAL_PORT)")
     parser.add_argument("--baud", type=int, default=115200)
     parser.add_argument("--database", type=Path, default=DEFAULT_DATABASE_PATH)
     parser.add_argument(
@@ -278,6 +291,8 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
 
+    port = args.port or default_serial_port()
+    args.port = port
     store = DashStore(args.database)
     try:
         if args.replay_file is not None:
