@@ -30,20 +30,30 @@
     background: rgba(245, 247, 248, 0.94);
     border-bottom: 1px solid #DDE4E8;
 }
-/* Hide Streamlit's native top chrome (toolbar / Deploy / hamburger).
-   The THERMAL NEXUS app header is the top visible content. Only the native
-   shell is removed; the custom sidebar (stSidebar) is untouched. */
-[data-testid="stHeader"],
-[data-testid="stToolbar"],
-[data-testid="stDecoration"] {
-    display: none !important;
+/* Collapse the native Streamlit header to zero height while keeping it in
+   the DOM so the sidebar toggle (rendered inside stHeader in 1.61+) stays
+   accessible.  We do NOT use display:none on stHeader because that also
+   removes the sidebar expand/collapse chevron. */
+[data-testid="stHeader"] {
     height: 0 !important;
     min-height: 0 !important;
-    visibility: hidden !important;
+    overflow: visible !important;   /* let the toggle bleed out */
+    border: none !important;
+    background: transparent !important;
 }
+/* Hide only the unwanted toolbar children — Deploy, three-dot menu, toolbar
+   decoration — but leave any sidebar-toggle button intact.
+   NOTE: stToolbar contains both the Deploy/Menu items AND the sidebar expand
+   button, so we do NOT hide stToolbar itself. */
+[data-testid="stToolbarActions"],
+[data-testid="stAppDeployButton"],
+[data-testid="stDecoration"],
 #MainMenu {
     display: none !important;
     visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
 }
 /* Reclaim the native-header vertical space so the app header starts near
    the top (~16px). Only the main content column is shifted up; the sidebar
@@ -72,6 +82,41 @@
 [data-testid="stMain"] h3 { font-size: 16px; margin-bottom: var(--space-2); }
 [data-testid="stSidebar"] {
     width: 248px;
+}
+/* Always show sidebar collapse/expand toggle buttons.  Streamlit hides them
+   behind a hover effect which users find confusing; keep them always visible. */
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarExpandButton"],
+[data-testid="stExpandSidebarButton"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+/* The expand button has zero dimensions when sidebar is collapsed; give it
+   a minimum clickable area so users can re-expand. */
+[data-testid="stExpandSidebarButton"] {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    z-index: 999999 !important;
+}
+/* The expand button's ancestors inside the toolbar are hidden by Streamlit;
+   force them visible so the button is actually rendered and clickable. */
+[data-testid="stExpandSidebarButton"],
+[data-testid="stExpandSidebarButton"] > *,
+[data-testid="stExpandSidebarButton"] > * > *,
+[data-testid="stExpandSidebarButton"] > * > * > * {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+    width: auto !important;
+    height: auto !important;
+}
+/* Hide the built-in page navigation section inside the sidebar so our custom
+   st.sidebar.page_link() navigation is the only one visible. The toggle button
+   lives in the sidebar header above this section and remains visible. */
+[data-testid="stSidebarNav"] {
+    display: none !important;
 }
 [data-testid="stSidebarNav"] a[aria-current="page"] {
     background-color: #E2F1F0 !important;

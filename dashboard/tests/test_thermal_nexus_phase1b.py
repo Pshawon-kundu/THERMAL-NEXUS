@@ -305,16 +305,18 @@ def test_com3_assumption_absent() -> None:
 # --- Gate 1C visual fixes: top chrome, SI clipping, cold-blue/hot-red ---
 
 
-def _rgb_channels(rgb: str) -> tuple[int, int, int]:
-    """Extract (r, g, b) ints from a 'rgb(r,g,b)' color string."""
-    inner = rgb[rgb.index("(") + 1 : rgb.index(")")]
-    return tuple(int(ch) for ch in inner.split(","))
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    """Extract (r, g, b) ints from a '#RRGGBB' hex color string."""
+    h = hex_color.lstrip("#")
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
 
 
 def test_thermal_colorscale_is_cold_blue_hot_red() -> None:
     from host.dashboard.chamber_viz import THERMAL_COLORSCALE, chamber_figure
 
-    assert THERMAL_COLORSCALE == "RdYlBu_r"  # cold blue -> hot red
+    # Must be an explicit array (not a named string) for Plotly.js parity.
+    assert isinstance(THERMAL_COLORSCALE, list)
+    assert len(THERMAL_COLORSCALE) >= 6  # at least 6 stops
     ntc = {f"NTC{i}": 25.0 + 0.1 * i for i in range(1, 9)}
     si = {"SI7021 #1": 24.5, "SI7021 #2": 25.0}
     fig = chamber_figure(ntc, si)
@@ -330,8 +332,8 @@ def test_thermal_colorscale_is_cold_blue_hot_red() -> None:
             scales.append(list(trace.marker.colorscale))
     assert scales, "no thermal-scaled traces"
     first = scales[0]
-    cold_rgb = _rgb_channels(first[0][1])
-    hot_rgb = _rgb_channels(first[-1][1])
+    cold_rgb = _hex_to_rgb(first[0][1])
+    hot_rgb = _hex_to_rgb(first[-1][1])
     assert cold_rgb[2] > cold_rgb[0]  # cold end is blue-dominant
     assert hot_rgb[0] > hot_rgb[2]  # hot end is red-dominant
     for sc in scales:
@@ -368,6 +370,12 @@ def test_invalid_minus99_excluded_from_color_range() -> None:
     assert lo >= 25.0
     assert hi <= 27.0
     assert (hi - lo) >= 1.0  # minimum display span preserved
+    # -99 is excluded by clean_temperature upstream; stable_color_range
+    # itself just takes min/max of whatever it receives.
+    lo2, hi2 = stable_color_range([-99.0, 25.3, 25.6])
+    assert lo2 == -99.0  # function trusts its input
+    assert hi2 >= 25.0
+    assert (hi2 - lo2) >= 1.0
 
 
 def test_thermal_side_panel_has_all_ten_sensors() -> None:
@@ -412,6 +420,92 @@ def test_native_streamlit_toolbar_hidden_and_app_header_kept() -> None:
     assert load_dashboard_config()  # theme + config still load
 
 
+def test_thermal_colorscale_explicit_cold_blue() -> None:
+    """First color in the canonical scale must be a deep blue family color."""
+    from host.dashboard.chamber_viz import THERMAL_COLORSCALE
+
+    first_stop = THERMAL_COLORSCALE[0]
+    r, g, b = _hex_to_rgb(first_stop[1])
+    assert b > r and b > g, f"Expected blue-dominant cold end, got #{first_stop[1]}"
+
+
+def test_thermal_colorscale_explicit_hot_red() -> None:
+    """Final color in the canonical scale must be a deep red family color."""
+    from host.dashboard.chamber_viz import THERMAL_COLORSCALE
+
+    last_stop = THERMAL_COLORSCALE[-1]
+    r, g, b = _hex_to_rgb(last_stop[1])
+    assert r > b and r > g, f"Expected red-dominant hot end, got #{last_stop[1]}"
+
+
+def test_thermal_colorscale_contains_cyan_transition() -> None:
+    """Scale must pass through a cyan / light-blue zone (~0.3–0.45)."""
+    from host.dashboard.chamber_viz import THERMAL_COLORSCALE
+
+    mid_cold = [s for s in THERMAL_COLORSCALE if 0.25 <= s[0] <= 0.50]
+    assert mid_cold, "No stops in the cyan/light-blue transition region"
+    for frac, color in mid_cold:
+        r, g, b = _hex_to_rgb(color)
+        # At least one cyan-region stop should be blue-dominant or green-blue.
+        assert b > r or g > r, f"Stop at {frac} should be cool-colored, got #{color}"
+
+
+def test_thermal_colorscale_contains_yellow_midpoint() -> None:
+    """Scale must pass through a yellow / orange zone (~0.5–0.7)."""
+    from host.dashboard.chamber_viz import THERMAL_COLORSCALE
+
+    mid_hot = [s for s in THERMAL_COLORSCALE if 0.50 <= s[0] <= 0.75]
+    assert mid_hot, "No stops in the yellow/orange midpoint region"
+    for frac, color in mid_hot:
+        r, g, b = _hex_to_rgb(color)
+        # Yellow/orange: red and green are both relatively high.
+        assert r > 100 or g > 100, f"Stop at {frac} should be warm-colored, got #{color}"
+
+
+def test_python_and_js_colorscale_match() -> None:
+    """Python THERMAL_COLORSCALE must exactly match the JS definition."""
+    import re
+    from pathlib import Path
+
+    from host.dashboard.chamber_viz import THERMAL_COLORSCALE
+
+    root = Path(app.__file__).resolve().parents[2]
+    js_source = (root / "host" / "api" / "static" / "live.js").read_text(encoding="utf-8")
+    assert "THERMAL_COLORSCALE" in js_source, "live.js must define THERMAL_COLORSCALE"
+    # Extract each [number, "#hex"] stop from the JS definition.
+    # Find the THERMAL_COLORSCALE block.
+    idx = js_source.index("THERMAL_COLORSCALE")
+    block = js_source[idx : idx + 600]  # generous window
+    stops = re.findall(r'\[\s*([\d.]+)\s*,\s*"(#[0-9A-Fa-f]{6})"\s*]', block)
+    assert len(stops) == len(THERMAL_COLORSCALE), (
+        f"JS has {len(stops)} stops, Python has {len(THERMAL_COLORSCALE)}"
+    )
+    for (js_frac, js_hex), py_stop in zip(stops, THERMAL_COLORSCALE):
+        assert float(js_frac) == py_stop[0], (
+            f"Fraction mismatch: JS={js_frac} vs Python={py_stop[0]}"
+        )
+        assert js_hex.upper() == py_stop[1].upper(), (
+            f"Color mismatch at {js_frac}: JS={js_hex} Python={py_stop[1]}"
+        )
+
+
+def test_si_markers_never_use_thermal_colorscale() -> None:
+    """SI7021 probes are solid teal — not coloured by the thermal scale."""
+    from host.dashboard.chamber_viz import chamber_figure
+
+    ntc = {f"NTC{i}": 25.0 + 0.1 * i for i in range(1, 9)}
+    si = {"SI7021 #1": 25.0, "SI7021 #2": 25.0}
+    fig = chamber_figure(ntc, si)
+    assert fig is not None
+    si_traces = [
+        t for t in fig.data
+        if t.type == "scatter3d" and getattr(t.marker, "symbol", None) == "diamond"
+    ]
+    for trace in si_traces:
+        assert trace.marker.color == "#18B8A6"
+        assert getattr(trace.marker, "colorscale", None) is None
+
+
 def test_history_series_keep_stable_identity() -> None:
     """Blue→red is for thermal magnitude only; history keeps distinct series."""
     import inspect
@@ -419,6 +513,6 @@ def test_history_series_keep_stable_identity() -> None:
     from host.dashboard.live_regions import history
 
     source = inspect.getsource(history)
-    assert "RdYlBu_r" not in source  # not thermal-scaled
+    assert "#313695" not in source  # not thermal-scaled
     assert "Inferno" not in source
     assert "PAL" in source and "line: { color: PAL" in source  # stable palette

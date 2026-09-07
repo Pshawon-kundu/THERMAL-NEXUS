@@ -197,7 +197,7 @@ def main() -> None:
     apply_theme()
     render_serial_sidebar(config)
     _register_pages()
-    selected = st.navigation(_PAGES, position="hidden")
+    selected = st.navigation(_PAGES, position="sidebar")
 
     st.sidebar.markdown("**Live Hardware**")
     for label, page in _primary_entries():

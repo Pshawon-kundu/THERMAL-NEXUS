@@ -28,6 +28,17 @@
   const SHORT = { NTC1: "N1", NTC2: "N2", NTC3: "N3", NTC4: "N4",
                   NTC5: "N5", NTC6: "N6", NTC7: "N7", NTC8: "N8" };
   const GRID_N = 10;
+  const THERMAL_COLORSCALE = [
+    [0.00, "#313695"],   // deep blue — coldest
+    [0.15, "#4575B4"],   // blue
+    [0.30, "#74ADD1"],   // light blue
+    [0.42, "#ABD9E9"],   // cyan / light cyan
+    [0.55, "#FFFFBF"],   // yellow
+    [0.70, "#FDAE61"],   // orange
+    [0.82, "#F46D43"],   // orange-red
+    [0.92, "#D73027"],   // red
+    [1.00, "#A50026"],   // deep red — hottest
+  ];
 
   function isValid(v) {
     return typeof v === "number" && isFinite(v) && Math.abs(v - -99.0) > 0.05;
@@ -127,7 +138,7 @@
       const tg = bilinearGrid(temps[0], temps[1], temps[2], temps[3]);
       traces.push({
         type: "surface", x: xs, y: ys, z: zs, surfacecolor: tg,
-        colorscale: "RdYlBu_r", cmin, cmax, showscale: firstSurface,
+        colorscale: THERMAL_COLORSCALE, cmin, cmax, showscale: firstSurface,
         colorbar: firstSurface ? { title: "°C", thickness: 14, len: 0.65 } : undefined,
         hovertemplate: "%{hovertext}<extra></extra>",
         hovertext: tg.map((row, j) => row.map((t, i) =>
@@ -157,7 +168,7 @@
         y: validLabels.map((l) => NTC_POS[l][1]),
         z: validLabels.map((l) => NTC_POS[l][2]),
         marker: { size: 6, color: validLabels.map((l) => ntc[l]),
-          colorscale: "RdYlBu_r", cmin, cmax, showscale: false,
+          colorscale: THERMAL_COLORSCALE, cmin, cmax, showscale: false,
           line: { color: "white", width: 1.5 } },
         text: validLabels.map((l) => SHORT[l]), textposition: "top center",
         textfont: { size: 10, color: "#E8EEF3" },
@@ -214,5 +225,6 @@
   }
 
   window.TN = { API, get, poll, isValid, fmtTemp, setText, bilinearGrid,
-                stableRange, chamberTraces, chamberLayout, NTC_POS, SI_POS };
+                stableRange, chamberTraces, chamberLayout, NTC_POS, SI_POS,
+                THERMAL_COLORSCALE, BUILD_ID: "thermal-color-v3" };
 })();

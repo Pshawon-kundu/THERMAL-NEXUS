@@ -3,9 +3,13 @@
 The 8 corner NTCs define the thermal field. Every cube face with four valid
 corner temperatures is rendered as a ``go.Surface`` over a bilinear
 interpolation grid (10x10), sharing one ``cmin``/``cmax``/cold-blue→hot-red
-scale (reversed RdYlBu) for the whole chamber. Faces touching an invalid (-99)
-corner render neutral grey — never interpolated fake data. SI7021 probes are
-independent teal diamonds and never influence interpolation.
+scale for the whole chamber. Faces touching an invalid (-99) corner render
+neutral grey — never interpolated fake data. SI7021 probes are independent
+teleal diamonds and never influence interpolation.
+
+The colorscale is an *explicit* array of [fraction, hex] stops rather than a
+named Plotly colorscale, so Python and browser-side Plotly.js render the
+identical gradient without any name-resolution ambiguity.
 
 Display values are smoothed only in the colour *range* (hysteresis);
 stored telemetry is never altered.
@@ -29,7 +33,17 @@ from host.dashboard.telemetry_model import (
 
 _RENDER_LOGGER = _logging.getLogger("thermal-nexus.render")
 
-THERMAL_COLORSCALE = "RdYlBu_r"
+THERMAL_COLORSCALE: list[list] = [
+    [0.00, "#313695"],   # deep blue — coldest
+    [0.15, "#4575B4"],   # blue
+    [0.30, "#74ADD1"],   # light blue
+    [0.42, "#ABD9E9"],   # cyan / light cyan
+    [0.55, "#FFFFBF"],   # yellow
+    [0.70, "#FDAE61"],   # orange
+    [0.82, "#F46D43"],   # orange-red
+    [0.92, "#D73027"],   # red
+    [1.00, "#A50026"],   # deep red — hottest
+]
 GRID_N = 10
 MIN_SPAN_C = 1.0
 _RANGE_STEP = 0.5

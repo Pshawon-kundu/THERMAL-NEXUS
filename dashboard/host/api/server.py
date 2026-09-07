@@ -218,7 +218,7 @@ class _Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def _send_file(self, path: Path, content_type: str) -> None:
+    def _send_file(self, path: Path, content_type: str, *, cache_control: str = "public, max-age=3600") -> None:
         try:
             body = path.read_bytes()
         except OSError:
@@ -226,7 +226,7 @@ class _Handler(BaseHTTPRequestHandler):
             return
         self.send_response(200)
         self.send_header("Content-Type", content_type)
-        self.send_header("Cache-Control", "public, max-age=3600")
+        self.send_header("Cache-Control", cache_control)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -273,7 +273,8 @@ class _Handler(BaseHTTPRequestHandler):
                 self._send_file(candidate, "application/javascript")
             elif parsed.path == "/static/live.js":
                 here = Path(__file__).resolve().parent / "static" / "live.js"
-                self._send_file(here, "application/javascript")
+                self._send_file(here, "application/javascript",
+                                cache_control="no-cache")
             else:
                 self.send_error(404)
         except (sqlite3.Error, ValueError, OverflowError) as exc:
