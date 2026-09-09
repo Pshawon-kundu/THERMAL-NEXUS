@@ -28,20 +28,37 @@
   const SHORT = { NTC1: "N1", NTC2: "N2", NTC3: "N3", NTC4: "N4",
                   NTC5: "N5", NTC6: "N6", NTC7: "N7", NTC8: "N8" };
   const GRID_N = 10;
+  /* THERMAL_CAMERA_SCALE — identical to host/dashboard/chamber_viz.py and
+   * the receiver TFT palette (receiver/src/state.h).
+   * Cold deep blue -> blue -> violet -> red -> orange -> yellow -> warm
+   * yellowish-white hottest (never pure white). */
   const THERMAL_COLORSCALE = [
-    [0.00, "#313695"],   // deep blue — coldest
-    [0.15, "#4575B4"],   // blue
-    [0.30, "#74ADD1"],   // light blue
-    [0.42, "#ABD9E9"],   // cyan / light cyan
-    [0.55, "#FFFFBF"],   // yellow
-    [0.70, "#FDAE61"],   // orange
-    [0.82, "#F46D43"],   // orange-red
-    [0.92, "#D73027"],   // red
-    [1.00, "#A50026"],   // deep red — hottest
+    [0.00, "#183A8F"],   // deep cold blue — coldest
+    [0.18, "#2563EB"],   // blue
+    [0.36, "#7C3AED"],   // violet transition
+    [0.55, "#D92D20"],   // red — clearly hot
+    [0.72, "#F97316"],   // orange
+    [0.88, "#FFD166"],   // yellow — very hot
+    [1.00, "#FFF1C1"],   // warm yellowish-white — hottest
   ];
 
   function isValid(v) {
     return typeof v === "number" && isFinite(v) && Math.abs(v - -99.0) > 0.05;
+  }
+
+  /* Thermal-chamber band: only sensors in [-10, 35] C feed the field. Real
+   * readings outside the band are OUTLIER (shown raw, excluded from
+   * interpolation / color range / aggregates). Mirrors telemetry_model.py. */
+  const CHAMBER_T_MIN = -10.0, CHAMBER_T_MAX = 35.0;
+  const OUTLIER_COLOR = "#F87171";  // design-system ERROR red (UI_CRIT)
+
+  function isChamberValid(v) {
+    return isValid(v) && v >= CHAMBER_T_MIN && v <= CHAMBER_T_MAX;
+  }
+
+  function chamberState(v) {
+    if (!isValid(v)) return "INVALID";
+    return isChamberValid(v) ? "VALID" : "OUTLIER";
   }
 
   async function get(path) {
@@ -104,12 +121,15 @@
     return [xs, ys, zs];
   }
 
+  /* Mirrors host/dashboard/chamber_viz.py stable_color_range: small padding
+   * around the raw extremes, 1.0 C minimum span, 0.5 C quantization,
+   * 0.15 C hysteresis. Valid NTC only (invalid -99 / SI filtered upstream). */
   function stableRange(vals, prev) {
     if (!vals.length) return [0, 1];
-    let lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
-    if (hi - lo < 1.0) { const mid = (hi + lo) / 2; lo = mid - 0.5; hi = mid + 0.5; }
+    let lo = Math.min.apply(null, vals) - 0.08, hi = Math.max.apply(null, vals) + 0.08;
+    if (hi - lo < 1.0) { const mid = (lo + hi) / 2; lo = mid - 0.5; hi = mid + 0.5; }
     lo = Math.floor(lo * 2) / 2; hi = Math.ceil(hi * 2) / 2;
-    if (prev && lo >= prev[0] - 0.25 && hi <= prev[1] + 0.25) return prev;
+    if (prev && lo >= prev[0] - 0.15 && hi <= prev[1] + 0.15) return prev;
     return [lo, hi];
   }
 
@@ -122,7 +142,7 @@
     FACES.forEach(([faceName, corners]) => {
       const temps = corners.map((c) => ntc[c]);
       const [xs, ys, zs] = posGrid(corners);
-      if (temps.some((t) => !isValid(t))) {
+      if (temps.some((t) => !isChamberValid(t))) {
         traces.push({
           type: "mesh3d",
           x: [xs[0][0], xs[0][GRID_N - 1], xs[GRID_N - 1][GRID_N - 1], xs[GRID_N - 1][0]],
@@ -130,7 +150,7 @@
           z: [zs[0][0], zs[0][GRID_N - 1], zs[GRID_N - 1][GRID_N - 1], zs[GRID_N - 1][0]],
           i: [0, 0], j: [1, 2], k: [2, 3],
           color: "#9AA5B1", opacity: 0.35, flatshading: true,
-          hovertemplate: faceName + " face<br>INVALID corner — no interpolation<extra></extra>",
+          hovertemplate: faceName + " face<br>INVALID/OUTLIER corner — no interpolation<extra></extra>",
           showlegend: false,
         });
         return;
@@ -161,7 +181,7 @@
         showlegend: false, hoverinfo: "skip" });
     });
 
-    const validLabels = Object.keys(ntc).filter((l) => isValid(ntc[l]));
+    const validLabels = Object.keys(ntc).filter((l) => isChamberValid(ntc[l]));
     if (validLabels.length) {
       traces.push({ type: "scatter3d", mode: "markers+text",
         x: validLabels.map((l) => NTC_POS[l][0]),
@@ -176,6 +196,21 @@
           "<b>" + l + "</b><br>" + ntc[l].toFixed(1) + " °C<br>Corner: " +
           CORNER_NAMES[l] + "<br>VALID<extra></extra>"),
         name: "NTC corners" });
+    }
+    const outlierLabels = Object.keys(ntc).filter((l) => chamberState(ntc[l]) === "OUTLIER");
+    if (outlierLabels.length) {
+      traces.push({ type: "scatter3d", mode: "markers+text",
+        x: outlierLabels.map((l) => NTC_POS[l][0]),
+        y: outlierLabels.map((l) => NTC_POS[l][1]),
+        z: outlierLabels.map((l) => NTC_POS[l][2]),
+        marker: { size: 6, color: OUTLIER_COLOR,
+          line: { color: "white", width: 1.5 } },
+        text: outlierLabels.map((l) => SHORT[l]), textposition: "top center",
+        textfont: { size: 10, color: OUTLIER_COLOR },
+        hovertemplate: outlierLabels.map((l) =>
+          "<b>" + l + "</b><br>" + ntc[l].toFixed(1) + " °C<br>Corner: " +
+          CORNER_NAMES[l] + "<br>OUTLIER — excluded from field<extra></extra>"),
+        name: "NTC outlier" });
     }
     const invalidLabels = Object.keys(ntc).filter((l) => !isValid(ntc[l]));
     if (invalidLabels.length) {
@@ -224,7 +259,7 @@
     };
   }
 
-  window.TN = { API, get, poll, isValid, fmtTemp, setText, bilinearGrid,
-                stableRange, chamberTraces, chamberLayout, NTC_POS, SI_POS,
-                THERMAL_COLORSCALE, BUILD_ID: "thermal-color-v3" };
+  window.TN = { API, get, poll, isValid, isChamberValid, chamberState, fmtTemp, setText,
+                bilinearGrid, stableRange, chamberTraces, chamberLayout, NTC_POS, SI_POS,
+                THERMAL_COLORSCALE, OUTLIER_COLOR, BUILD_ID: "thermal-camera-v4" };
 })();

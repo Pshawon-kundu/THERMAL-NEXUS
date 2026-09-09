@@ -11,6 +11,12 @@ The colorscale is an *explicit* array of [fraction, hex] stops rather than a
 named Plotly colorscale, so Python and browser-side Plotly.js render the
 identical gradient without any name-resolution ambiguity.
 
+The scale is the shared THERMAL_CAMERA_SCALE (thermal-camera semantics:
+cold deep blue -> blue -> violet -> red -> orange -> yellow -> warm
+yellowish-white hottest). It is defined identically in the receiver TFT
+firmware (receiver/src/state.h) and the browser client
+(host/api/static/live.js).
+
 Display values are smoothed only in the colour *range* (hysteresis);
 stored telemetry is never altered.
 """
@@ -26,29 +32,36 @@ import os as _os
 import time as _time
 
 from host.dashboard.telemetry_model import (
+    CHAMBER_VALID_MAX_C,
+    CHAMBER_VALID_MIN_C,
     NTC_POSITIONS_MM,
     SI_POSITIONS_MM,
     clean_temperature,
+    is_chamber_valid_temperature,
 )
 
 _RENDER_LOGGER = _logging.getLogger("thermal-nexus.render")
 
 THERMAL_COLORSCALE: list[list] = [
-    [0.00, "#313695"],   # deep blue — coldest
-    [0.15, "#4575B4"],   # blue
-    [0.30, "#74ADD1"],   # light blue
-    [0.42, "#ABD9E9"],   # cyan / light cyan
-    [0.55, "#FFFFBF"],   # yellow
-    [0.70, "#FDAE61"],   # orange
-    [0.82, "#F46D43"],   # orange-red
-    [0.92, "#D73027"],   # red
-    [1.00, "#A50026"],   # deep red — hottest
+    [0.00, "#183A8F"],   # deep cold blue — coldest
+    [0.18, "#2563EB"],   # blue
+    [0.36, "#7C3AED"],   # violet transition
+    [0.55, "#D92D20"],   # red — clearly hot
+    [0.72, "#F97316"],   # orange
+    [0.88, "#FFD166"],   # yellow — very hot
+    [1.00, "#FFF1C1"],   # warm yellowish-white — hottest (never pure white)
 ]
 GRID_N = 10
 MIN_SPAN_C = 1.0
 _RANGE_STEP = 0.5
-_HYSTERESIS_C = 0.25
+_RANGE_PAD_C = 0.08
+_HYSTERESIS_C = 0.15
 UIREVISION_CHAMBER = "thermal-nexus-chamber-v1"
+
+# Warning red for NTC sensors that are real but outside the normal chamber
+# band (-10..35 C). Matches the design-system ERROR red (#F87171) used by the
+# receiver TFT (UI_CRIT) and the browser client (live.js).
+OUTLIER_COLOR = "#F87171"
 
 # Corner names for hover detail (x: Left/Right, y: Front/Back, z: Bottom/Top).
 CORNER_NAMES: dict[str, str] = {
@@ -103,7 +116,14 @@ def bilinear_grid(
 
 
 def _expand_and_quantize(lo: float, hi: float) -> tuple[float, float]:
-    """Enforce minimum span and quantize to 0.5 C steps (display stability)."""
+    """Enforce minimum span, small data padding and 0.5 C quantization.
+
+    Mirrors the receiver TFT range algorithm: close-to-data range with a
+    small padding (~0.08 C) around the raw extremes, minimum 1.0 C span
+    (center +/-0.5), quantized to 0.5 C steps for display stability.
+    """
+    lo -= _RANGE_PAD_C
+    hi += _RANGE_PAD_C
     if hi - lo < MIN_SPAN_C:
         mid = (hi + lo) / 2.0
         lo, hi = mid - MIN_SPAN_C / 2.0, mid + MIN_SPAN_C / 2.0
@@ -169,15 +189,24 @@ def chamber_figure(
     """Build the interpolated-gradient chamber figure (None if all invalid)."""
     if _os.getenv("TN_RENDER_TRACE") == "1":
         _RENDER_LOGGER.info("[RENDER] chamber_figure build t=%.3f", _time.time())
-    valid = {label: temp for label, temp in ntc.items() if temp is not None}
+    chamber_valid = {
+        label: temp for label, temp in ntc.items()
+        if is_chamber_valid_temperature(temp)
+    }
+    outliers = {
+        label: temp for label, temp in ntc.items()
+        if temp is not None and not is_chamber_valid_temperature(temp)
+    }
+    invalid = {label: temp for label, temp in ntc.items() if temp is None}
     valid_si = {label: temp for label, temp in si.items() if temp is not None}
-    if not valid and not valid_si:
+    if not chamber_valid and not outliers and not valid_si:
         return None
 
-    scale_vals = list(valid.values()) or list(valid_si.values())
+    scale_vals = list(chamber_valid.values())
     cmin, cmax = (
         color_range if color_range is not None
         else stable_color_range([float(v) for v in scale_vals])
+        if scale_vals else (CHAMBER_VALID_MIN_C, CHAMBER_VALID_MAX_C)
     )
 
     fig = go.Figure()
@@ -186,8 +215,9 @@ def chamber_figure(
     for face_name, corners in FACES:
         temps = [ntc.get(label) for label in corners]
         xs, ys, zs = face_position_grid(corners)
-        if any(temp is None for temp in temps):
-            # Invalid corner: neutral translucent grey, markers retained.
+        if any(not is_chamber_valid_temperature(temp) for temp in temps):
+            # Invalid or OUTLIER corner: neutral translucent grey, markers
+            # retained. Never interpolate fake data across a faulty sensor.
             flat_x = [row[0] for row in xs]
             _ = flat_x
             fig.add_trace(go.Mesh3d(
@@ -196,7 +226,7 @@ def chamber_figure(
                 z=[zs[0][0], zs[0][-1], zs[-1][-1], zs[-1][0]],
                 i=[0, 0], j=[1, 2], k=[2, 3],
                 color="#9AA5B1", opacity=0.35, flatshading=True,
-                hovertemplate=f"{face_name} face<br>INVALID corner — no interpolation<extra></extra>",
+                hovertemplate=f"{face_name} face<br>INVALID/OUTLIER corner — no interpolation<extra></extra>",
                 name=f"{face_name} (invalid)", showlegend=False,
             ))
             continue
@@ -234,9 +264,9 @@ def chamber_figure(
             showlegend=False, hoverinfo="skip",
         ))
 
-    # Valid NTC corner markers (circles, full detail on hover).
-    if valid:
-        labels = list(valid)
+    # Valid NTC corner markers (circles, full detail on hover) — thermal fill.
+    if chamber_valid:
+        labels = list(chamber_valid)
         fig.add_trace(go.Scatter3d(
             x=[NTC_POSITIONS_MM[label][0] for label in labels],
             y=[NTC_POSITIONS_MM[label][1] for label in labels],
@@ -244,7 +274,7 @@ def chamber_figure(
             mode="markers+text",
             marker={
                 "size": 6,
-                "color": [valid[label] for label in labels],
+                "color": [chamber_valid[label] for label in labels],
                 "colorscale": THERMAL_COLORSCALE, "cmin": cmin, "cmax": cmax,
                 "showscale": False,
                 "line": {"color": "white", "width": 1.5},
@@ -253,15 +283,35 @@ def chamber_figure(
             textposition="top center",
             textfont={"size": 10, "color": "#E8EEF3"},
             hovertemplate=[
-                f"<b>{label}</b><br>{valid[label]:.1f} &deg;C<br>"
+                f"<b>{label}</b><br>{chamber_valid[label]:.1f} &deg;C<br>"
                 f"Corner: {CORNER_NAMES[label]}<br>VALID<extra></extra>"
                 for label in labels
             ],
             name="NTC corners",
         ))
 
+    # OUTLIER NTC markers (real reading, excluded from interpolation field).
+    if outliers:
+        olabels = list(outliers)
+        fig.add_trace(go.Scatter3d(
+            x=[NTC_POSITIONS_MM[label][0] for label in olabels],
+            y=[NTC_POSITIONS_MM[label][1] for label in olabels],
+            z=[NTC_POSITIONS_MM[label][2] for label in olabels],
+            mode="markers+text",
+            marker={"size": 6, "color": OUTLIER_COLOR,
+                    "line": {"color": "white", "width": 1.5}},
+            text=[_SHORT[label] for label in olabels],
+            textposition="top center",
+            textfont={"size": 10, "color": OUTLIER_COLOR},
+            hovertemplate=[
+                f"<b>{label}</b><br>{outliers[label]:.1f} &deg;C<br>"
+                f"Corner: {CORNER_NAMES[label]}<br>OUTLIER — excluded from field<extra></extra>"
+                for label in olabels
+            ],
+            name="NTC outlier",
+        ))
+
     # Invalid NTC markers (grey x).
-    invalid = [label for label, temp in ntc.items() if temp is None]
     if invalid:
         fig.add_trace(go.Scatter3d(
             x=[NTC_POSITIONS_MM[label][0] for label in invalid],
